@@ -48,10 +48,10 @@ SELECT
     COALESCE(SUM(si.quantity), 0) AS units_sold,
     COALESCE(SUM(si.line_total), 0) AS gross_revenue,
     COALESCE(SUM(si.quantity * si.unit_cost_snapshot), 0) AS total_cogs,
-    COALESCE(SUM(si.line_profit), 0) AS total_profit,
+    COALESCE(SUM(si.profit), 0) AS total_profit,
     CASE 
         WHEN COALESCE(SUM(si.line_total), 0) > 0 
-        THEN ROUND((COALESCE(SUM(si.line_profit), 0) / SUM(si.line_total) * 100), 2)
+        THEN ROUND((COALESCE(SUM(si.profit), 0) / SUM(si.line_total) * 100), 2)
         ELSE 0.00
     END AS gross_margin_percent
 FROM product_variants pv
@@ -103,7 +103,7 @@ BEGIN
                 'quantity', si.quantity,
                 'unit_price', si.unit_price,
                 'unit_cost_snapshot', si.unit_cost_snapshot,
-                'line_profit', si.line_profit,
+                'line_profit', si.profit,
                 'lot', CASE WHEN fgl.id IS NOT NULL THEN jsonb_build_object(
                     'lot_number', fgl.lot_number,
                     'unit_cost', fgl.unit_cost,
@@ -182,7 +182,7 @@ BEGIN
                     'quantity', si.quantity,
                     'unit_price', si.unit_price,
                     'line_total', si.line_total,
-                    'line_profit', si.line_profit
+                    'line_profit', si.profit
                 )
             ), '[]'::jsonb)
             FROM sales_items si

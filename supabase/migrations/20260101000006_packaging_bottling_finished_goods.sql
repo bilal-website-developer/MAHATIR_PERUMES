@@ -301,7 +301,7 @@ BEGIN
     -- 6. Deduct Packaging Materials and append to stock ledger
     IF v_variant.packaging_recipe_id IS NOT NULL THEN
         FOR v_item IN
-            SELECT pri.raw_material_id, pri.quantity_per_unit, rm.current_stock, rm.cost_per_unit
+            SELECT pri.raw_material_id, pri.quantity_per_unit, rm.current_stock, rm.cost_per_unit, rm.base_unit
             FROM packaging_recipe_items pri
             JOIN raw_materials rm ON rm.id = pri.raw_material_id
             WHERE pri.recipe_id = v_variant.packaging_recipe_id
@@ -314,13 +314,14 @@ BEGIN
 
             -- Insert ledger movement
             INSERT INTO stock_movements (
-                branch_id, raw_material_id, movement_type,
-                quantity, unit_cost, reference_id, reference_type,
-                notes, created_by
+                branch_id, item_type, item_id, quantity, unit, unit_cost,
+                total_cost, reference_type, reference_id, reason, user_id
             ) VALUES (
-                v_batch.branch_id, v_item.raw_material_id, 'batch_consumption',
-                -(p_quantity * v_item.quantity_per_unit), v_item.cost_per_unit,
-                p_batch_id, 'bottling_run',
+                v_batch.branch_id, 'raw_material', v_item.raw_material_id,
+                -(p_quantity * v_item.quantity_per_unit), v_item.base_unit,
+                v_item.cost_per_unit,
+                ROUND(-(p_quantity * v_item.quantity_per_unit) * v_item.cost_per_unit, 4),
+                'bottling_consumption', p_batch_id,
                 'Packaging consumed for bottling ' || p_quantity || ' units of ' || v_variant.sku,
                 p_user_id
             );

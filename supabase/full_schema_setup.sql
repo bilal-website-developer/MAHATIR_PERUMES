@@ -1975,7 +1975,7 @@ BEGIN
     -- 6. Deduct Packaging Materials and append to stock ledger
     IF v_variant.packaging_recipe_id IS NOT NULL THEN
         FOR v_item IN
-            SELECT pri.raw_material_id, pri.quantity_per_unit, rm.current_stock, rm.cost_per_unit
+            SELECT pri.raw_material_id, pri.quantity_per_unit, rm.current_stock, rm.cost_per_unit, rm.base_unit
             FROM packaging_recipe_items pri
             JOIN raw_materials rm ON rm.id = pri.raw_material_id
             WHERE pri.recipe_id = v_variant.packaging_recipe_id
@@ -1988,13 +1988,14 @@ BEGIN
 
             -- Insert ledger movement
             INSERT INTO stock_movements (
-                branch_id, raw_material_id, movement_type,
-                quantity, unit_cost, reference_id, reference_type,
-                notes, created_by
+                branch_id, item_type, item_id, quantity, unit, unit_cost,
+                total_cost, reference_type, reference_id, reason, user_id
             ) VALUES (
-                v_batch.branch_id, v_item.raw_material_id, 'batch_consumption',
-                -(p_quantity * v_item.quantity_per_unit), v_item.cost_per_unit,
-                p_batch_id, 'bottling_run',
+                v_batch.branch_id, 'raw_material', v_item.raw_material_id,
+                -(p_quantity * v_item.quantity_per_unit), v_item.base_unit,
+                v_item.cost_per_unit,
+                ROUND(-(p_quantity * v_item.quantity_per_unit) * v_item.cost_per_unit, 4),
+                'bottling_consumption', p_batch_id,
                 'Packaging consumed for bottling ' || p_quantity || ' units of ' || v_variant.sku,
                 p_user_id
             );
@@ -2565,10 +2566,10 @@ SELECT
     COALESCE(SUM(si.quantity), 0) AS units_sold,
     COALESCE(SUM(si.line_total), 0) AS gross_revenue,
     COALESCE(SUM(si.quantity * si.unit_cost_snapshot), 0) AS total_cogs,
-    COALESCE(SUM(si.line_profit), 0) AS total_profit,
+    COALESCE(SUM(si.profit), 0) AS total_profit,
     CASE 
         WHEN COALESCE(SUM(si.line_total), 0) > 0 
-        THEN ROUND((COALESCE(SUM(si.line_profit), 0) / SUM(si.line_total) * 100), 2)
+        THEN ROUND((COALESCE(SUM(si.profit), 0) / SUM(si.line_total) * 100), 2)
         ELSE 0.00
     END AS gross_margin_percent
 FROM product_variants pv
@@ -2620,7 +2621,7 @@ BEGIN
                 'quantity', si.quantity,
                 'unit_price', si.unit_price,
                 'unit_cost_snapshot', si.unit_cost_snapshot,
-                'line_profit', si.line_profit,
+                'line_profit', si.profit,
                 'lot', CASE WHEN fgl.id IS NOT NULL THEN jsonb_build_object(
                     'lot_number', fgl.lot_number,
                     'unit_cost', fgl.unit_cost,
@@ -2699,7 +2700,7 @@ BEGIN
                     'quantity', si.quantity,
                     'unit_price', si.unit_price,
                     'line_total', si.line_total,
-                    'line_profit', si.line_profit
+                    'line_profit', si.profit
                 )
             ), '[]'::jsonb)
             FROM sales_items si
@@ -2773,7 +2774,7 @@ CREATE TABLE IF NOT EXISTS alert_configurations (
 
 -- Seed default alert configuration for main branch
 INSERT INTO alert_configurations (branch_id, email_alerts_enabled, low_stock_days_threshold)
-SELECT id, false, 14.00 FROM branches WHERE is_default = true
+SELECT id, false, 14.00 FROM branches WHERE code = 'MAIN-01'
 ON CONFLICT (branch_id) DO NOTHING;
 
 -- 3. Indexes
@@ -2836,7 +2837,7 @@ DECLARE
     v_rec RECORD;
 BEGIN
     IF p_branch_id IS NULL THEN
-        SELECT id INTO v_branch_id FROM branches WHERE is_default = true LIMIT 1;
+        SELECT id INTO v_branch_id FROM branches WHERE code = 'MAIN-01' LIMIT 1;
     ELSE
         v_branch_id := p_branch_id;
     END IF;
@@ -2887,13 +2888,13 @@ BEGIN
 
     -- 2. Scan Finished Goods Variants below min_stock_level
     FOR v_rec IN 
-        SELECT pv.id, pv.sku, pv.name AS variant_name, p.name AS product_name, pv.stock_quantity, pv.min_stock_level
+        SELECT pv.id, pv.sku, pv.name AS variant_name, p.name AS product_name, pv.current_stock, pv.min_stock_level
         FROM product_variants pv
         JOIN products p ON pv.product_id = p.id
         WHERE pv.is_active = true 
           AND pv.deleted_at IS NULL
           AND pv.min_stock_level > 0
-          AND pv.stock_quantity <= pv.min_stock_level
+          AND pv.current_stock <= pv.min_stock_level
     LOOP
         IF NOT EXISTS (
             SELECT 1 FROM notifications
@@ -2914,16 +2915,16 @@ BEGIN
             ) VALUES (
                 v_branch_id,
                 'low_finished_goods',
-                CASE WHEN v_rec.stock_quantity <= 0 THEN 'critical'::alert_severity ELSE 'warning'::alert_severity END,
+                CASE WHEN v_rec.current_stock <= 0 THEN 'critical'::alert_severity ELSE 'warning'::alert_severity END,
                 'Low Finished Goods Stock: ' || v_rec.product_name || ' (' || v_rec.variant_name || ')',
-                'Finished inventory for ' || v_rec.product_name || ' (' || v_rec.variant_name || ') is ' || v_rec.stock_quantity || ' units, below threshold of ' || v_rec.min_stock_level || '.',
+                'Finished inventory for ' || v_rec.product_name || ' (' || v_rec.variant_name || ') is ' || v_rec.current_stock || ' units, below threshold of ' || v_rec.min_stock_level || '.',
                 'product_variant',
                 v_rec.id,
                 jsonb_build_object(
                     'sku', v_rec.sku,
                     'product_name', v_rec.product_name,
                     'variant_name', v_rec.variant_name,
-                    'stock_quantity', v_rec.stock_quantity,
+                    'current_stock', v_rec.current_stock,
                     'min_stock_level', v_rec.min_stock_level
                 )
             );
@@ -2967,14 +2968,14 @@ BEGIN
 
     -- 2. Check bulk batches
     FOR v_rec IN 
-        SELECT id, batch_number, remaining_volume 
+        SELECT id, batch_code, remaining_volume
         FROM batches 
         WHERE remaining_volume < 0
     LOOP
         v_violations := v_violations || jsonb_build_object(
             'table', 'batches',
             'id', v_rec.id,
-            'batch_number', v_rec.batch_number,
+            'batch_code', v_rec.batch_code,
             'negative_volume', v_rec.remaining_volume
         );
     END LOOP;
@@ -2995,16 +2996,16 @@ BEGIN
 
     -- 4. Check product variants
     FOR v_rec IN 
-        SELECT id, sku, name, stock_quantity 
+        SELECT id, sku, name, current_stock
         FROM product_variants 
-        WHERE stock_quantity < 0
+        WHERE current_stock < 0
     LOOP
         v_violations := v_violations || jsonb_build_object(
             'table', 'product_variants',
             'id', v_rec.id,
             'sku', v_rec.sku,
             'name', v_rec.name,
-            'negative_stock', v_rec.stock_quantity
+            'negative_stock', v_rec.current_stock
         );
     END LOOP;
 
@@ -3078,7 +3079,7 @@ CREATE INDEX IF NOT EXISTS idx_raw_materials_sku_search
     ON raw_materials(sku) WHERE is_active = true;
 
 CREATE INDEX IF NOT EXISTS idx_purchase_orders_supplier_status 
-    ON purchase_orders(supplier_id, status, po_date DESC);
+    ON purchase_orders(supplier_id, status, created_at DESC);
 
 CREATE INDEX IF NOT EXISTS idx_po_items_po_id 
     ON purchase_order_items(purchase_order_id);
@@ -3087,7 +3088,7 @@ CREATE INDEX IF NOT EXISTS idx_formulas_perfume_status
     ON formulas(perfume_name, status, version DESC);
 
 CREATE INDEX IF NOT EXISTS idx_formula_items_formula_id 
-    ON formula_items(formula_id);
+    ON formula_ingredients(formula_id);
 
 CREATE INDEX IF NOT EXISTS idx_batches_code_perfume 
     ON batches(batch_code, perfume_name);
@@ -3096,22 +3097,22 @@ CREATE INDEX IF NOT EXISTS idx_batches_status_branch
     ON batches(status, branch_id, production_date DESC);
 
 CREATE INDEX IF NOT EXISTS idx_batch_ingredients_batch_id 
-    ON batch_ingredients(batch_id);
+    ON batch_usage(batch_id);
 
 CREATE INDEX IF NOT EXISTS idx_finished_goods_sku 
-    ON finished_goods_variants(sku) WHERE is_active = true;
+    ON product_variants(sku) WHERE is_active = true;
 
 CREATE INDEX IF NOT EXISTS idx_finished_goods_perfume_size 
-    ON finished_goods_variants(perfume_name, size_ml);
+    ON products(name);
 
 CREATE INDEX IF NOT EXISTS idx_bottling_runs_batch_id 
-    ON bottling_runs(batch_id, run_date DESC);
+    ON bottling_runs(batch_id, created_at DESC);
 
 CREATE INDEX IF NOT EXISTS idx_bottling_runs_variant_id 
     ON bottling_runs(variant_id);
 
 CREATE INDEX IF NOT EXISTS idx_bottled_lots_variant_expiry 
-    ON bottled_lots(variant_id, expiry_date, current_quantity);
+    ON finished_goods_lots(variant_id, current_quantity);
 
 CREATE INDEX IF NOT EXISTS idx_sales_invoice_number 
     ON sales(invoice_number);
@@ -3120,19 +3121,19 @@ CREATE INDEX IF NOT EXISTS idx_sales_cashier_date
     ON sales(cashier_id, sale_date DESC);
 
 CREATE INDEX IF NOT EXISTS idx_sale_items_sale_id 
-    ON sale_items(sale_id);
+    ON sales_items(sale_id);
 
 CREATE INDEX IF NOT EXISTS idx_sale_items_lot_id 
-    ON sale_items(lot_id);
+    ON sales_items(lot_id);
 
 CREATE INDEX IF NOT EXISTS idx_notifications_recipient_unread 
-    ON notifications(user_id, is_read, created_at DESC);
+    ON notifications(branch_id, is_read, created_at DESC);
 
 CREATE INDEX IF NOT EXISTS idx_notifications_type_dedup 
-    ON notifications(notification_type, entity_id, created_at DESC);
+    ON notifications(type, entity_id, created_at DESC);
 
 CREATE INDEX IF NOT EXISTS idx_audit_log_table_row 
-    ON audit_log(table_name, record_id, changed_at DESC);
+    ON audit_log(table_name, row_id, created_at DESC);
 
 
 -- 2. Stored Procedure: verify_inventory_integrity()
@@ -3158,7 +3159,7 @@ BEGIN
     WITH ledger_calc AS (
         SELECT 
             sm.item_id,
-            COALESCE(SUM(sm.quantity_change), 0) AS total_ledger
+            COALESCE(SUM(sm.quantity), 0) AS total_ledger
         FROM stock_movements sm
         WHERE sm.item_type = 'raw_material'
           AND (p_branch_id IS NULL OR sm.branch_id = p_branch_id)
@@ -3184,7 +3185,7 @@ BEGIN
     WITH lot_ledger AS (
         SELECT 
             sm.item_id AS lot_id,
-            COALESCE(SUM(sm.quantity_change), 0) AS total_ledger
+            COALESCE(SUM(sm.quantity), 0) AS total_ledger
         FROM stock_movements sm
         WHERE sm.item_type = 'finished_goods_lot'
           AND (p_branch_id IS NULL OR sm.branch_id = p_branch_id)
@@ -3201,8 +3202,8 @@ BEGIN
             WHEN bl.current_quantity = COALESCE(ll.total_ledger, 0) THEN 'OK'
             ELSE 'DISCREPANCY'
         END AS status
-    FROM bottled_lots bl
-    JOIN finished_goods_variants fgv ON bl.variant_id = fgv.id
+    FROM finished_goods_lots bl
+    JOIN product_variants fgv ON bl.variant_id = fgv.id
     LEFT JOIN lot_ledger ll ON bl.id = ll.lot_id
     WHERE (p_branch_id IS NULL OR bl.branch_id = p_branch_id);
 
@@ -3212,28 +3213,28 @@ BEGIN
         'batch_volume_conservation'::TEXT AS check_name,
         b.id AS item_id,
         (b.batch_code || ' - ' || b.perfume_name)::TEXT AS item_reference,
-        b.actual_volume_ml AS cached_value,
-        (COALESCE(b.remaining_volume_ml, 0) + 
-         COALESCE(b.bottled_volume_ml, 0) + 
-         COALESCE(b.decanted_volume_ml, 0) + 
-         COALESCE(b.loss_volume_ml, 0)) AS ledger_calculated_value,
-        (b.actual_volume_ml - (
-            COALESCE(b.remaining_volume_ml, 0) + 
-            COALESCE(b.bottled_volume_ml, 0) + 
-            COALESCE(b.decanted_volume_ml, 0) + 
-            COALESCE(b.loss_volume_ml, 0)
+        b.actual_volume AS cached_value,
+        (COALESCE(b.remaining_volume, 0) +
+         COALESCE((SELECT SUM(br.bulk_volume_deducted) FROM bottling_runs br WHERE br.batch_id = b.id), 0) +
+         COALESCE((SELECT SUM(si.quantity) FROM sales_items si WHERE si.batch_id = b.id AND si.item_type = 'decant'), 0) +
+         COALESCE(b.loss_volume, 0)) AS ledger_calculated_value,
+        (b.actual_volume - (
+            COALESCE(b.remaining_volume, 0) +
+            COALESCE((SELECT SUM(br.bulk_volume_deducted) FROM bottling_runs br WHERE br.batch_id = b.id), 0) +
+            COALESCE((SELECT SUM(si.quantity) FROM sales_items si WHERE si.batch_id = b.id AND si.item_type = 'decant'), 0) +
+            COALESCE(b.loss_volume, 0)
         )) AS discrepancy,
-        CASE 
-            WHEN b.actual_volume_ml = (
-                COALESCE(b.remaining_volume_ml, 0) + 
-                COALESCE(b.bottled_volume_ml, 0) + 
-                COALESCE(b.decanted_volume_ml, 0) + 
-                COALESCE(b.loss_volume_ml, 0)
+        CASE
+            WHEN b.actual_volume = (
+                COALESCE(b.remaining_volume, 0) +
+                COALESCE((SELECT SUM(br.bulk_volume_deducted) FROM bottling_runs br WHERE br.batch_id = b.id), 0) +
+                COALESCE((SELECT SUM(si.quantity) FROM sales_items si WHERE si.batch_id = b.id AND si.item_type = 'decant'), 0) +
+                COALESCE(b.loss_volume, 0)
             ) THEN 'OK'
             ELSE 'DISCREPANCY'
         END AS status
     FROM batches b
-    WHERE b.status IN ('completed', 'matured')
+    WHERE b.status IN ('bulk', 'partial_bottled', 'completed');
       AND (p_branch_id IS NULL OR b.branch_id = p_branch_id);
 END;
 $$;

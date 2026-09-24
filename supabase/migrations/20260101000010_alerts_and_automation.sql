@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS alert_configurations (
 
 -- Seed default alert configuration for main branch
 INSERT INTO alert_configurations (branch_id, email_alerts_enabled, low_stock_days_threshold)
-SELECT id, false, 14.00 FROM branches WHERE is_default = true
+SELECT id, false, 14.00 FROM branches WHERE code = 'MAIN-01'
 ON CONFLICT (branch_id) DO NOTHING;
 
 -- 3. Indexes
@@ -116,7 +116,7 @@ DECLARE
     v_rec RECORD;
 BEGIN
     IF p_branch_id IS NULL THEN
-        SELECT id INTO v_branch_id FROM branches WHERE is_default = true LIMIT 1;
+        SELECT id INTO v_branch_id FROM branches WHERE code = 'MAIN-01' LIMIT 1;
     ELSE
         v_branch_id := p_branch_id;
     END IF;
@@ -167,13 +167,13 @@ BEGIN
 
     -- 2. Scan Finished Goods Variants below min_stock_level
     FOR v_rec IN 
-        SELECT pv.id, pv.sku, pv.name AS variant_name, p.name AS product_name, pv.stock_quantity, pv.min_stock_level
+        SELECT pv.id, pv.sku, pv.name AS variant_name, p.name AS product_name, pv.current_stock, pv.min_stock_level
         FROM product_variants pv
         JOIN products p ON pv.product_id = p.id
         WHERE pv.is_active = true 
           AND pv.deleted_at IS NULL
           AND pv.min_stock_level > 0
-          AND pv.stock_quantity <= pv.min_stock_level
+          AND pv.current_stock <= pv.min_stock_level
     LOOP
         IF NOT EXISTS (
             SELECT 1 FROM notifications
@@ -194,16 +194,16 @@ BEGIN
             ) VALUES (
                 v_branch_id,
                 'low_finished_goods',
-                CASE WHEN v_rec.stock_quantity <= 0 THEN 'critical'::alert_severity ELSE 'warning'::alert_severity END,
+                CASE WHEN v_rec.current_stock <= 0 THEN 'critical'::alert_severity ELSE 'warning'::alert_severity END,
                 'Low Finished Goods Stock: ' || v_rec.product_name || ' (' || v_rec.variant_name || ')',
-                'Finished inventory for ' || v_rec.product_name || ' (' || v_rec.variant_name || ') is ' || v_rec.stock_quantity || ' units, below threshold of ' || v_rec.min_stock_level || '.',
+                'Finished inventory for ' || v_rec.product_name || ' (' || v_rec.variant_name || ') is ' || v_rec.current_stock || ' units, below threshold of ' || v_rec.min_stock_level || '.',
                 'product_variant',
                 v_rec.id,
                 jsonb_build_object(
                     'sku', v_rec.sku,
                     'product_name', v_rec.product_name,
                     'variant_name', v_rec.variant_name,
-                    'stock_quantity', v_rec.stock_quantity,
+                    'current_stock', v_rec.current_stock,
                     'min_stock_level', v_rec.min_stock_level
                 )
             );
@@ -247,14 +247,14 @@ BEGIN
 
     -- 2. Check bulk batches
     FOR v_rec IN 
-        SELECT id, batch_number, remaining_volume 
+        SELECT id, batch_code, remaining_volume
         FROM batches 
         WHERE remaining_volume < 0
     LOOP
         v_violations := v_violations || jsonb_build_object(
             'table', 'batches',
             'id', v_rec.id,
-            'batch_number', v_rec.batch_number,
+            'batch_code', v_rec.batch_code,
             'negative_volume', v_rec.remaining_volume
         );
     END LOOP;
@@ -275,16 +275,16 @@ BEGIN
 
     -- 4. Check product variants
     FOR v_rec IN 
-        SELECT id, sku, name, stock_quantity 
+        SELECT id, sku, name, current_stock
         FROM product_variants 
-        WHERE stock_quantity < 0
+        WHERE current_stock < 0
     LOOP
         v_violations := v_violations || jsonb_build_object(
             'table', 'product_variants',
             'id', v_rec.id,
             'sku', v_rec.sku,
             'name', v_rec.name,
-            'negative_stock', v_rec.stock_quantity
+            'negative_stock', v_rec.current_stock
         );
     END LOOP;
 
