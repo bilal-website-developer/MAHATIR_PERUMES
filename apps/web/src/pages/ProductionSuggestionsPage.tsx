@@ -14,7 +14,6 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { apiClient } from '../lib/api';
-import { Badge } from '../components/ui/Badge';
 import { formatCurrency, formatNumber } from '../lib/utils';
 
 interface SalesVelocity {
@@ -114,7 +113,6 @@ export const ProductionSuggestionsPage: React.FC = () => {
             <h1 className="font-serif text-2xl font-bold tracking-wide text-slate-100">
               Smart Production Suggestions
             </h1>
-            <Badge variant="gold">Phase 9 AI/Algorithmic</Badge>
           </div>
           <p className="text-xs text-slate-400 mt-1">
             Predictive manufacturing replenishment powered by 30 / 60 / 90 day sales velocity and real-time BOM warehouse stock checks.
@@ -132,11 +130,10 @@ export const ProductionSuggestionsPage: React.FC = () => {
               <button
                 key={days}
                 onClick={() => setRunwayDays(days)}
-                className={`px-2.5 py-1 rounded-md font-semibold text-xs transition-colors ${
-                  runwayDays === days
-                    ? 'bg-gold-500 text-slate-950 shadow-sm'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
-                }`}
+                className={`px-2.5 py-1 rounded-md font-semibold text-xs transition-colors ${runwayDays === days
+                  ? 'bg-gold-500 text-slate-950 shadow-sm'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
+                  }`}
               >
                 {days}d
               </button>
@@ -299,13 +296,12 @@ export const ProductionSuggestionsPage: React.FC = () => {
                         </div>
                         <div className="mt-0.5 flex items-center space-x-1.5">
                           <span
-                            className={`font-bold font-serif ${
-                              daysLeft <= 7
-                                ? 'text-rose-400'
-                                : daysLeft <= 14
+                            className={`font-bold font-serif ${daysLeft <= 7
+                              ? 'text-rose-400'
+                              : daysLeft <= 14
                                 ? 'text-amber-400'
                                 : 'text-emerald-400'
-                            }`}
+                              }`}
                           >
                             {daysLeft > 900 ? '>90 days' : `${daysLeft} days`}
                           </span>

@@ -333,7 +333,7 @@ export const PurchaseOrdersPage: React.FC = () => {
         <div>
           <div className="flex items-center space-x-2 text-gold-400 text-xs font-semibold uppercase tracking-wider mb-1">
             <FileText className="h-4 w-4" />
-            <span>Purchasing & Supply Chain • Phase 2</span>
+            <span>Purchasing & Supply Chain</span>
           </div>
           <h1 className="text-2xl font-serif font-bold text-slate-100 flex items-center space-x-2">
             <span>Purchase Orders</span>
@@ -368,11 +368,10 @@ export const PurchaseOrdersPage: React.FC = () => {
 
       {feedback && (
         <div
-          className={`p-4 rounded-xl flex items-center justify-between border ${
-            feedback.type === 'success'
+          className={`p-4 rounded-xl flex items-center justify-between border ${feedback.type === 'success'
               ? 'bg-emerald-950/30 border-emerald-500/30 text-emerald-300'
               : 'bg-rose-950/30 border-rose-500/30 text-rose-300'
-          }`}
+            }`}
         >
           <div className="flex items-center space-x-3">
             {feedback.type === 'success' ? (
@@ -413,11 +412,10 @@ export const PurchaseOrdersPage: React.FC = () => {
             <button
               key={tab.id}
               onClick={() => setStatusFilter(tab.id)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
-                statusFilter === tab.id
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${statusFilter === tab.id
                   ? 'bg-gold-500/20 text-gold-300 border border-gold-500/30'
                   : 'text-slate-400 hover:text-slate-200 bg-slate-800/40 border border-transparent'
-              }`}
+                }`}
             >
               {tab.label}
             </button>
@@ -687,7 +685,7 @@ export const PurchaseOrdersPage: React.FC = () => {
                             → Converts to: <span className="text-slate-200 font-semibold">{convertedQty} {selectedMat?.base_unit}</span>
                           </span>
                           <span className="ml-3 font-mono font-bold text-gold-300">
-                            Line Total: ${( (parseFloat(line.quantity) || 0) * (parseFloat(line.unit_cost) || 0) ).toFixed(2)}
+                            Line Total: ${((parseFloat(line.quantity) || 0) * (parseFloat(line.unit_cost) || 0)).toFixed(2)}
                           </span>
                         </div>
                       </div>

@@ -115,7 +115,6 @@ export const SettingsPage: React.FC = () => {
           <h2 className="font-serif text-lg font-semibold text-slate-100">
             Company & System Defaults
           </h2>
-          <Badge variant="gold">Phase 0 Baseline</Badge>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs">

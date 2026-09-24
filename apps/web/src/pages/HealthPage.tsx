@@ -59,7 +59,7 @@ export const HealthPage: React.FC = () => {
             <span>System Architecture & Health Diagnostics</span>
           </h1>
           <p className="text-xs text-slate-400 mt-1">
-            Verification of Phase 0 Acceptance Criteria: Node.js API, database connectivity, and
+            Verification of Node.js API, database connectivity, and
             environment health.
           </p>
         </div>
@@ -185,7 +185,7 @@ export const HealthPage: React.FC = () => {
       <Card goldBorder className="space-y-4">
         <h3 className="font-serif text-base font-semibold text-slate-100 flex items-center gap-2">
           <CheckCircle className="h-5 w-5 text-gold-400" />
-          <span>Phase 0 Acceptance Criteria Checklist</span>
+          <span>Acceptance Criteria Checklist</span>
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">

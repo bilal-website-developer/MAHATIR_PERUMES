@@ -408,7 +408,7 @@ export const PosPage: React.FC = () => {
         <div>
           <div className="flex items-center space-x-2 text-xs font-semibold text-gold-400 uppercase tracking-widest mb-1">
             <Sparkles className="h-3.5 w-3.5" />
-            <span>Phase 6 • Luxury Boutique POS Counter</span>
+            <span>Luxury Boutique POS Counter</span>
           </div>
           <h1 className="text-2xl font-serif font-bold text-slate-100 flex items-center space-x-3">
             <span>Retail Point of Sale</span>
@@ -488,31 +488,28 @@ export const PosPage: React.FC = () => {
             <div className="flex items-center space-x-1.5 w-full sm:w-auto">
               <button
                 onClick={() => setActiveCategory('all')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                  activeCategory === 'all'
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${activeCategory === 'all'
                     ? 'bg-gold-500 text-slate-950 font-bold'
                     : 'bg-slate-800/80 text-slate-400 hover:text-slate-200'
-                }`}
+                  }`}
               >
                 All Products
               </button>
               <button
                 onClick={() => setActiveCategory('bottled')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                  activeCategory === 'bottled'
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${activeCategory === 'bottled'
                     ? 'bg-gold-500 text-slate-950 font-bold'
                     : 'bg-slate-800/80 text-slate-400 hover:text-slate-200'
-                }`}
+                  }`}
               >
                 Bottled Flacons
               </button>
               <button
                 onClick={() => setActiveCategory('decant')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                  activeCategory === 'decant'
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${activeCategory === 'decant'
                     ? 'bg-gold-500 text-slate-950 font-bold'
                     : 'bg-slate-800/80 text-slate-400 hover:text-slate-200'
-                }`}
+                  }`}
               >
                 Decant Liquid
               </button>
@@ -528,21 +525,19 @@ export const PosPage: React.FC = () => {
                   <div
                     key={lot.id}
                     onClick={() => stock > 0 && handleAddBottledToCart(lot)}
-                    className={`bg-[#121622] border rounded-xl p-3.5 flex flex-col justify-between cursor-pointer select-none transition-all shadow-sm ${
-                      stock > 0
+                    className={`bg-[#121622] border rounded-xl p-3.5 flex flex-col justify-between cursor-pointer select-none transition-all shadow-sm ${stock > 0
                         ? 'border-slate-800/80 hover:border-gold-500/40 hover:bg-slate-800/20 active:scale-[0.98]'
                         : 'border-slate-800/40 opacity-50 cursor-not-allowed'
-                    }`}
+                      }`}
                   >
                     <div>
                       <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 mb-1">
                         <span className="text-gold-400 font-semibold">{lot.variant_sku}</span>
                         <span
-                          className={`px-1.5 py-0.5 rounded text-[9px] ${
-                            stock > 5
+                          className={`px-1.5 py-0.5 rounded text-[9px] ${stock > 5
                               ? 'bg-emerald-950/60 text-emerald-400 border border-emerald-500/30'
                               : 'bg-amber-950/60 text-amber-400 border border-amber-500/30'
-                          }`}
+                            }`}
                         >
                           {stock.toFixed(0)} left
                         </span>
@@ -791,11 +786,10 @@ export const PosPage: React.FC = () => {
                       key={preset}
                       type="button"
                       onClick={() => setDecantVolumeMl(preset)}
-                      className={`px-3 py-1 rounded border text-xs font-mono font-bold ${
-                        decantVolumeMl === preset
+                      className={`px-3 py-1 rounded border text-xs font-mono font-bold ${decantVolumeMl === preset
                           ? 'bg-gold-500 text-slate-950 border-gold-400'
                           : 'bg-slate-900 text-slate-400 border-slate-800 hover:border-slate-700'
-                      }`}
+                        }`}
                     >
                       {preset} ml
                     </button>
@@ -876,11 +870,10 @@ export const PosPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setPaymentMethod('cash')}
-                className={`p-3 rounded-xl border flex flex-col items-center space-y-1.5 transition-all text-xs font-semibold ${
-                  paymentMethod === 'cash'
+                className={`p-3 rounded-xl border flex flex-col items-center space-y-1.5 transition-all text-xs font-semibold ${paymentMethod === 'cash'
                     ? 'bg-gold-500/15 border-gold-400 text-gold-300 font-bold'
                     : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
-                }`}
+                  }`}
               >
                 <Banknote className="h-4 w-4" />
                 <span>Cash</span>
@@ -889,11 +882,10 @@ export const PosPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setPaymentMethod('card')}
-                className={`p-3 rounded-xl border flex flex-col items-center space-y-1.5 transition-all text-xs font-semibold ${
-                  paymentMethod === 'card'
+                className={`p-3 rounded-xl border flex flex-col items-center space-y-1.5 transition-all text-xs font-semibold ${paymentMethod === 'card'
                     ? 'bg-gold-500/15 border-gold-400 text-gold-300 font-bold'
                     : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
-                }`}
+                  }`}
               >
                 <CreditCard className="h-4 w-4" />
                 <span>Card</span>
@@ -902,11 +894,10 @@ export const PosPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setPaymentMethod('bank_transfer')}
-                className={`p-3 rounded-xl border flex flex-col items-center space-y-1.5 transition-all text-xs font-semibold ${
-                  paymentMethod === 'bank_transfer'
+                className={`p-3 rounded-xl border flex flex-col items-center space-y-1.5 transition-all text-xs font-semibold ${paymentMethod === 'bank_transfer'
                     ? 'bg-gold-500/15 border-gold-400 text-gold-300 font-bold'
                     : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
-                }`}
+                  }`}
               >
                 <Building className="h-4 w-4" />
                 <span>Transfer</span>
@@ -915,11 +906,10 @@ export const PosPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setPaymentMethod('split')}
-                className={`p-3 rounded-xl border flex flex-col items-center space-y-1.5 transition-all text-xs font-semibold ${
-                  paymentMethod === 'split'
+                className={`p-3 rounded-xl border flex flex-col items-center space-y-1.5 transition-all text-xs font-semibold ${paymentMethod === 'split'
                     ? 'bg-gold-500/15 border-gold-400 text-gold-300 font-bold'
                     : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
-                }`}
+                  }`}
               >
                 <Split className="h-4 w-4" />
                 <span>Split</span>
@@ -1118,11 +1108,10 @@ export const PosPage: React.FC = () => {
                         </span>
                         <div>
                           <span
-                            className={`text-[9px] px-1.5 py-0.5 rounded font-bold uppercase ${
-                              s.status === 'completed'
+                            className={`text-[9px] px-1.5 py-0.5 rounded font-bold uppercase ${s.status === 'completed'
                                 ? 'bg-emerald-950 text-emerald-400 border border-emerald-500/30'
                                 : 'bg-rose-950 text-rose-400 border border-rose-500/30'
-                            }`}
+                              }`}
                           >
                             {s.status}
                           </span>

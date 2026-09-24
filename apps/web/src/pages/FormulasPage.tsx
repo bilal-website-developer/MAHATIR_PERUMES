@@ -314,7 +314,7 @@ export const FormulasPage: React.FC = () => {
         <div>
           <div className="flex items-center space-x-2 text-gold-400 text-xs font-semibold uppercase tracking-wider mb-1">
             <FlaskConical className="h-4 w-4" />
-            <span>Fragrance Lab • Phase 3</span>
+            <span>Fragrance Lab</span>
           </div>
           <h1 className="text-2xl font-serif font-bold text-slate-100 flex items-center space-x-2">
             <span>Formula & BOM Engine</span>
@@ -349,11 +349,10 @@ export const FormulasPage: React.FC = () => {
 
       {feedback && (
         <div
-          className={`p-4 rounded-xl flex items-center justify-between border ${
-            feedback.type === 'success'
+          className={`p-4 rounded-xl flex items-center justify-between border ${feedback.type === 'success'
               ? 'bg-emerald-950/30 border-emerald-500/30 text-emerald-300'
               : 'bg-rose-950/30 border-rose-500/30 text-rose-300'
-          }`}
+            }`}
         >
           <div className="flex items-center space-x-3">
             {feedback.type === 'success' ? (
@@ -421,11 +420,10 @@ export const FormulasPage: React.FC = () => {
             <button
               key={status}
               onClick={() => setStatusFilter(status)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-colors ${
-                statusFilter === status
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-colors ${statusFilter === status
                   ? 'bg-gold-500/20 text-gold-300 border border-gold-500/30'
                   : 'text-slate-400 hover:text-slate-200 bg-slate-800/40'
-              }`}
+                }`}
             >
               {status}
             </button>
@@ -606,11 +604,10 @@ export const FormulasPage: React.FC = () => {
                         setTargetBatchMl(val);
                         triggerScale(activeFormula.id, val);
                       }}
-                      className={`px-2.5 py-1 rounded text-xs font-mono font-medium transition-colors ${
-                        targetBatchMl === val
+                      className={`px-2.5 py-1 rounded text-xs font-mono font-medium transition-colors ${targetBatchMl === val
                           ? 'bg-gold-500 text-slate-950 font-bold'
                           : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-                      }`}
+                        }`}
                     >
                       {parseInt(val) >= 1000 ? `${parseInt(val) / 1000} L` : `${val} ml`}
                     </button>
@@ -643,9 +640,8 @@ export const FormulasPage: React.FC = () => {
                     <div className="p-3 bg-slate-900 border border-slate-800 rounded-lg">
                       <div className="text-[10px] uppercase text-slate-500 font-medium">Stock Status</div>
                       <div
-                        className={`text-xs font-bold ${
-                          scaleResult.is_fulfillable ? 'text-emerald-400' : 'text-rose-400'
-                        }`}
+                        className={`text-xs font-bold ${scaleResult.is_fulfillable ? 'text-emerald-400' : 'text-rose-400'
+                          }`}
                       >
                         {scaleResult.is_fulfillable ? 'In Stock (Ready)' : 'Shortage Detected'}
                       </div>
@@ -854,11 +850,10 @@ export const FormulasPage: React.FC = () => {
 
               {/* 100% Validation Indicator Bar */}
               <div
-                className={`p-3 rounded-xl border flex items-center justify-between text-xs ${
-                  isValid
+                className={`p-3 rounded-xl border flex items-center justify-between text-xs ${isValid
                     ? 'bg-emerald-950/20 border-emerald-500/30 text-emerald-300'
                     : 'bg-rose-950/20 border-rose-500/30 text-rose-300'
-                }`}
+                  }`}
               >
                 <div className="flex items-center space-x-2">
                   {isValid ? (
@@ -898,11 +893,10 @@ export const FormulasPage: React.FC = () => {
                 <button
                   type="submit"
                   disabled={!isValid}
-                  className={`px-4 py-2 rounded-lg font-bold shadow-md ${
-                    isValid
+                  className={`px-4 py-2 rounded-lg font-bold shadow-md ${isValid
                       ? 'bg-gold-500 hover:bg-gold-400 text-slate-950 cursor-pointer'
                       : 'bg-slate-800 text-slate-500 cursor-not-allowed'
-                  }`}
+                    }`}
                 >
                   Save Active Recipe
                 </button>

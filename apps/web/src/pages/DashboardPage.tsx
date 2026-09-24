@@ -118,10 +118,10 @@ export const DashboardPage: React.FC = () => {
                 {user?.role === 'production_manager'
                   ? 'Active Production Batches'
                   : user?.role === 'inventory_manager'
-                  ? 'Total Warehouse Valuation'
-                  : user?.role === 'sales_staff'
-                  ? "Today's Gross Sales"
-                  : 'Total Retail Revenue'}
+                    ? 'Total Warehouse Valuation'
+                    : user?.role === 'sales_staff'
+                      ? "Today's Gross Sales"
+                      : 'Total Retail Revenue'}
               </span>
               <TrendingUp className="h-4 w-4 text-gold-400" />
             </div>
@@ -129,8 +129,8 @@ export const DashboardPage: React.FC = () => {
               {user?.role === 'production_manager'
                 ? kpis.active_batches ?? 1
                 : user?.role === 'inventory_manager'
-                ? formatCurrency(kpis.total_warehouse_value || 0)
-                : formatCurrency(kpis.today_revenue || kpis.total_revenue || 0)}
+                  ? formatCurrency(kpis.total_warehouse_value || 0)
+                  : formatCurrency(kpis.today_revenue || kpis.total_revenue || 0)}
             </div>
             <p className="text-[10px] text-slate-400 font-mono">Audited financial ledger</p>
           </div>
@@ -142,10 +142,10 @@ export const DashboardPage: React.FC = () => {
                 {user?.role === 'production_manager'
                   ? 'Bulk Maceration Liquid'
                   : user?.role === 'inventory_manager'
-                  ? 'Raw Materials Valuation'
-                  : user?.role === 'sales_staff'
-                  ? 'Completed Invoices'
-                  : 'Net Gross Profit'}
+                    ? 'Raw Materials Valuation'
+                    : user?.role === 'sales_staff'
+                      ? 'Completed Invoices'
+                      : 'Net Gross Profit'}
               </span>
               <Percent className="h-4 w-4 text-emerald-400" />
             </div>
@@ -153,10 +153,10 @@ export const DashboardPage: React.FC = () => {
               {user?.role === 'production_manager'
                 ? `${formatNumber(kpis.bulk_liquid_volume_ml || 0)} ml`
                 : user?.role === 'inventory_manager'
-                ? formatCurrency(kpis.raw_materials_value || 0)
-                : user?.role === 'sales_staff'
-                ? kpis.completed_orders ?? 0
-                : formatCurrency(kpis.gross_profit || 0)}
+                  ? formatCurrency(kpis.raw_materials_value || 0)
+                  : user?.role === 'sales_staff'
+                    ? kpis.completed_orders ?? 0
+                    : formatCurrency(kpis.gross_profit || 0)}
             </div>
             <p className="text-[10px] text-slate-400 font-mono">
               {user?.role === 'admin' ? `${kpis.gross_margin || '0%'} Margin` : 'Verified stock balance'}
@@ -170,10 +170,10 @@ export const DashboardPage: React.FC = () => {
                 {user?.role === 'production_manager'
                   ? 'Bulk Valuation'
                   : user?.role === 'inventory_manager'
-                  ? 'Packaging Materials Value'
-                  : user?.role === 'sales_staff'
-                  ? 'Average Order Value'
-                  : 'Total Inventory Valuation'}
+                    ? 'Packaging Materials Value'
+                    : user?.role === 'sales_staff'
+                      ? 'Average Order Value'
+                      : 'Total Inventory Valuation'}
               </span>
               <Layers className="h-4 w-4 text-cyan-400" />
             </div>
@@ -181,10 +181,10 @@ export const DashboardPage: React.FC = () => {
               {user?.role === 'production_manager'
                 ? formatCurrency(kpis.bulk_inventory_valuation || 0)
                 : user?.role === 'inventory_manager'
-                ? formatCurrency(kpis.packaging_value || 0)
-                : user?.role === 'sales_staff'
-                ? formatCurrency(kpis.average_order_value || 0)
-                : formatCurrency(kpis.total_inventory_valuation || 0)}
+                  ? formatCurrency(kpis.packaging_value || 0)
+                  : user?.role === 'sales_staff'
+                    ? formatCurrency(kpis.average_order_value || 0)
+                    : formatCurrency(kpis.total_inventory_valuation || 0)}
             </div>
             <p className="text-[10px] text-slate-400 font-mono">Raw + Bulk + Finished Flacons</p>
           </div>
@@ -213,7 +213,6 @@ export const DashboardPage: React.FC = () => {
           <h2 className="font-serif text-xl font-semibold text-slate-100">
             Fragrance Production & Commerce Lifecycle
           </h2>
-          <Badge variant="gold">Strict Phase Sequenced</Badge>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-5 gap-3">

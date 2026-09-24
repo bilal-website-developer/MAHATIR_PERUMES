@@ -24,29 +24,27 @@ interface NavItem {
   name: string;
   href: string;
   icon: React.ElementType;
-  phase: string;
   module: string;
-  badge?: string;
 }
 
 const navigation: NavItem[] = [
-  { name: 'Dashboard', href: '/', icon: LayoutDashboard, phase: 'Core', module: 'dashboard' },
-  { name: 'System Diagnostics', href: '/health', icon: Activity, phase: 'Phase 0', module: 'health' },
-  { name: 'System Settings', href: '/settings', icon: Settings, phase: 'Phase 0', module: 'settings' },
-  { name: 'Staff & Roles', href: '/users', icon: Users, phase: 'Phase 1', module: 'users' },
-  { name: 'Audit Trail', href: '/audit', icon: ShieldAlert, phase: 'Phase 1', module: 'audit' },
-  { name: 'Raw Materials', href: '/raw-materials', icon: Layers, phase: 'Phase 2', module: 'raw_materials' },
-  { name: 'Purchase Orders', href: '/purchase-orders', icon: FileSpreadsheet, phase: 'Phase 2', module: 'purchases' },
-  { name: 'Suppliers Directory', href: '/suppliers', icon: Settings, phase: 'Phase 2', module: 'suppliers' },
-  { name: 'Formulas (BOM)', href: '/formulas', icon: FlaskConical, phase: 'Phase 3', module: 'formulas' },
-  { name: 'Batch Production', href: '/batches', icon: Factory, phase: 'Phase 4', module: 'batches' },
-  { name: 'Bottling & SKUs', href: '/finished-goods', icon: PackageCheck, phase: 'Phase 5', module: 'bottling' },
-  { name: 'Retail POS Counter', href: '/pos', icon: ShoppingCart, phase: 'Phase 6', module: 'pos', badge: 'Touch' },
-  { name: 'Dilution Calculator', href: '/dilution', icon: Calculator, phase: 'Phase 7', module: 'dilution' },
-  { name: 'Financial Reports', href: '/reports', icon: FileSpreadsheet, phase: 'Phase 8', module: 'reports' },
-  { name: 'Traceability Navigator', href: '/traceability', icon: Compass, phase: 'Phase 8', module: 'reports' },
-  { name: 'Alerts & System Health', href: '/alerts', icon: Bell, phase: 'Phase 9', module: 'dashboard' },
-  { name: 'Production Suggestions', href: '/suggestions', icon: Sparkles, phase: 'Phase 9', module: 'batches' },
+  { name: 'Dashboard', href: '/', icon: LayoutDashboard, module: 'dashboard' },
+  { name: 'System Diagnostics', href: '/health', icon: Activity, module: 'health' },
+  { name: 'System Settings', href: '/settings', icon: Settings, module: 'settings' },
+  { name: 'Staff & Roles', href: '/users', icon: Users, module: 'users' },
+  { name: 'Audit Trail', href: '/audit', icon: ShieldAlert, module: 'audit' },
+  { name: 'Raw Materials', href: '/raw-materials', icon: Layers, module: 'raw_materials' },
+  { name: 'Purchase Orders', href: '/purchase-orders', icon: FileSpreadsheet, module: 'purchases' },
+  { name: 'Suppliers Directory', href: '/suppliers', icon: Settings, module: 'suppliers' },
+  { name: 'Formulas (BOM)', href: '/formulas', icon: FlaskConical, module: 'formulas' },
+  { name: 'Batch Production', href: '/batches', icon: Factory, module: 'batches' },
+  { name: 'Bottling & SKUs', href: '/finished-goods', icon: PackageCheck, module: 'bottling' },
+  { name: 'Retail POS Counter', href: '/pos', icon: ShoppingCart, module: 'pos' },
+  { name: 'Dilution Calculator', href: '/dilution', icon: Calculator, module: 'dilution' },
+  { name: 'Financial Reports', href: '/reports', icon: FileSpreadsheet, module: 'reports' },
+  { name: 'Traceability Navigator', href: '/traceability', icon: Compass, module: 'reports' },
+  { name: 'Alerts & System Health', href: '/alerts', icon: Bell, module: 'dashboard' },
+  { name: 'Production Suggestions', href: '/suggestions', icon: Sparkles, module: 'batches' },
 ];
 
 export const Sidebar: React.FC = () => {
@@ -105,15 +103,6 @@ export const Sidebar: React.FC = () => {
                   />
                   <span>{item.name}</span>
                 </div>
-                {item.badge ? (
-                  <span className="text-[9px] font-semibold bg-gold-500/20 text-gold-300 px-1.5 py-0.5 rounded border border-gold-400/30">
-                    {item.badge}
-                  </span>
-                ) : (
-                  <span className="text-[9px] text-slate-600 group-hover:text-slate-500">
-                    {item.phase}
-                  </span>
-                )}
               </>
             )}
           </NavLink>
@@ -125,7 +114,7 @@ export const Sidebar: React.FC = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-xs text-slate-300 font-medium">Phase 1 Active</span>
+            <span className="text-xs text-slate-300 font-medium">System Active</span>
           </div>
           <span className="text-[10px] text-gold-400 font-mono font-medium">RLS On</span>
         </div>

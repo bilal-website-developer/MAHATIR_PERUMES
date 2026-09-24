@@ -99,7 +99,6 @@ export const LoginPage: React.FC = () => {
                 <Shield className="h-3.5 w-3.5 text-gold-400" />
                 <span>Instant Demo Role Access:</span>
               </span>
-              <span className="text-[10px] text-gold-400 font-semibold uppercase">Phase 1 Testing</span>
             </div>
 
             <div className="grid grid-cols-2 gap-2 text-xs">

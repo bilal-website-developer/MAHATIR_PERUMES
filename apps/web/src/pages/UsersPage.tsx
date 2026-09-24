@@ -181,7 +181,7 @@ export const UsersPage: React.FC = () => {
       <Card goldBorder className="p-5 space-y-3">
         <h3 className="font-serif text-sm font-semibold text-slate-100 flex items-center gap-2">
           <ShieldAlert className="h-4 w-4 text-gold-400" />
-          <span>Role Permission Matrix (Phase 1 Enforced)</span>
+          <span>Role Permission Matrix</span>
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
           <div className="bg-[#0f1219] p-3 rounded-lg border border-slate-800 space-y-1">

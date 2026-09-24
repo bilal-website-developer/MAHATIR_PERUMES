@@ -260,7 +260,7 @@ export const BottlingPage: React.FC = () => {
         <div>
           <div className="flex items-center space-x-2 text-xs font-semibold text-gold-400 uppercase tracking-widest mb-1">
             <Sparkles className="h-3.5 w-3.5" />
-            <span>Phase 5 • Assembly & Finished Goods</span>
+            <span>Assembly & Finished Goods</span>
           </div>
           <h1 className="text-2xl font-serif font-bold text-slate-100 flex items-center space-x-3">
             <span>Bottling & Finished Goods</span>
@@ -368,11 +368,10 @@ export const BottlingPage: React.FC = () => {
       <div className="flex border-b border-slate-800">
         <button
           onClick={() => setActiveTab('lots')}
-          className={`px-5 py-3 text-xs font-semibold border-b-2 transition-colors flex items-center space-x-2 ${
-            activeTab === 'lots'
+          className={`px-5 py-3 text-xs font-semibold border-b-2 transition-colors flex items-center space-x-2 ${activeTab === 'lots'
               ? 'border-gold-400 text-gold-300'
               : 'border-transparent text-slate-400 hover:text-slate-200'
-          }`}
+            }`}
         >
           <Boxes className="h-4 w-4" />
           <span>Finished Goods Lots ({lots.length})</span>
@@ -380,11 +379,10 @@ export const BottlingPage: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('skus')}
-          className={`px-5 py-3 text-xs font-semibold border-b-2 transition-colors flex items-center space-x-2 ${
-            activeTab === 'skus'
+          className={`px-5 py-3 text-xs font-semibold border-b-2 transition-colors flex items-center space-x-2 ${activeTab === 'skus'
               ? 'border-gold-400 text-gold-300'
               : 'border-transparent text-slate-400 hover:text-slate-200'
-          }`}
+            }`}
         >
           <Tag className="h-4 w-4" />
           <span>Product Variants & SKUs ({variants.length})</span>
@@ -392,11 +390,10 @@ export const BottlingPage: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('recipes')}
-          className={`px-5 py-3 text-xs font-semibold border-b-2 transition-colors flex items-center space-x-2 ${
-            activeTab === 'recipes'
+          className={`px-5 py-3 text-xs font-semibold border-b-2 transition-colors flex items-center space-x-2 ${activeTab === 'recipes'
               ? 'border-gold-400 text-gold-300'
               : 'border-transparent text-slate-400 hover:text-slate-200'
-          }`}
+            }`}
         >
           <Layers className="h-4 w-4" />
           <span>Packaging Recipes ({recipes.length})</span>
@@ -404,11 +401,10 @@ export const BottlingPage: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('runs')}
-          className={`px-5 py-3 text-xs font-semibold border-b-2 transition-colors flex items-center space-x-2 ${
-            activeTab === 'runs'
+          className={`px-5 py-3 text-xs font-semibold border-b-2 transition-colors flex items-center space-x-2 ${activeTab === 'runs'
               ? 'border-gold-400 text-gold-300'
               : 'border-transparent text-slate-400 hover:text-slate-200'
-          }`}
+            }`}
         >
           <Clock className="h-4 w-4" />
           <span>Bottling Runs ({runs.length})</span>
@@ -730,11 +726,10 @@ export const BottlingPage: React.FC = () => {
                     Bottling Calculation Preview
                   </span>
                   <span
-                    className={`text-[11px] font-bold px-2 py-0.5 rounded-full border ${
-                      preview.can_bottle
+                    className={`text-[11px] font-bold px-2 py-0.5 rounded-full border ${preview.can_bottle
                         ? 'bg-emerald-950/60 text-emerald-400 border-emerald-500/30'
                         : 'bg-rose-950/60 text-rose-400 border-rose-500/30'
-                    }`}
+                      }`}
                   >
                     {preview.can_bottle ? '✓ All Stocks Sufficient' : '✕ Stock Insufficient'}
                   </span>

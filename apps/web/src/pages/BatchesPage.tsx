@@ -300,7 +300,7 @@ export const BatchesPage: React.FC = () => {
         <div>
           <div className="flex items-center space-x-2 text-gold-400 text-xs font-semibold uppercase tracking-wider mb-1">
             <Factory className="h-4 w-4" />
-            <span>Manufacturing Lab • Phase 4</span>
+            <span>Manufacturing Lab</span>
           </div>
           <h1 className="text-2xl font-serif font-bold text-slate-100 flex items-center space-x-2">
             <span>Batch Production & Bulk Inventory</span>
@@ -335,11 +335,10 @@ export const BatchesPage: React.FC = () => {
 
       {feedback && (
         <div
-          className={`p-4 rounded-xl flex items-center justify-between border ${
-            feedback.type === 'success'
+          className={`p-4 rounded-xl flex items-center justify-between border ${feedback.type === 'success'
               ? 'bg-emerald-950/30 border-emerald-500/30 text-emerald-300'
               : 'bg-rose-950/30 border-rose-500/30 text-rose-300'
-          }`}
+            }`}
         >
           <div className="flex items-center space-x-3">
             {feedback.type === 'success' ? (
@@ -406,9 +405,8 @@ export const BatchesPage: React.FC = () => {
       <div className="flex border-b border-slate-800/80 space-x-6 text-sm font-medium">
         <button
           onClick={() => setActiveTab('batches')}
-          className={`pb-3 relative transition-colors ${
-            activeTab === 'batches' ? 'text-gold-400 font-bold' : 'text-slate-400 hover:text-slate-200'
-          }`}
+          className={`pb-3 relative transition-colors ${activeTab === 'batches' ? 'text-gold-400 font-bold' : 'text-slate-400 hover:text-slate-200'
+            }`}
         >
           <span>Manufacturing Batches ({batches.length})</span>
           {activeTab === 'batches' && (
@@ -418,9 +416,8 @@ export const BatchesPage: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('bulk')}
-          className={`pb-3 relative transition-colors ${
-            activeTab === 'bulk' ? 'text-gold-400 font-bold' : 'text-slate-400 hover:text-slate-200'
-          }`}
+          className={`pb-3 relative transition-colors ${activeTab === 'bulk' ? 'text-gold-400 font-bold' : 'text-slate-400 hover:text-slate-200'
+            }`}
         >
           <span>Bulk Liquid Tanks ({bulkLots.length})</span>
           {activeTab === 'bulk' && (
@@ -456,11 +453,10 @@ export const BatchesPage: React.FC = () => {
                 <button
                   key={tab.id}
                   onClick={() => setStatusFilter(tab.id)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
-                    statusFilter === tab.id
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${statusFilter === tab.id
                       ? 'bg-gold-500/20 text-gold-300 border border-gold-500/30'
                       : 'text-slate-400 hover:text-slate-200 bg-slate-800/40'
-                  }`}
+                    }`}
                 >
                   {tab.label}
                 </button>
@@ -638,7 +634,7 @@ export const BatchesPage: React.FC = () => {
 
               <div className="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between text-[11px] text-slate-500">
                 <span>Vessel: Tank A-01</span>
-                <span>Ready for Bottling (Phase 5)</span>
+                <span>Ready for Bottling</span>
               </div>
             </div>
           ))}

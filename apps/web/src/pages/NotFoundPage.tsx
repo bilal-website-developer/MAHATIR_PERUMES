@@ -11,7 +11,7 @@ export const NotFoundPage: React.FC = () => {
       </div>
       <h1 className="font-serif text-3xl font-bold text-slate-100">404 - Essence Not Found</h1>
       <p className="text-sm text-slate-400 max-w-md">
-        The requested screen or formulation module does not exist or has been moved in a future phase.
+        The requested screen or formulation module does not exist or has been moved.
       </p>
       <Link to="/">
         <Button variant="primary" size="md">

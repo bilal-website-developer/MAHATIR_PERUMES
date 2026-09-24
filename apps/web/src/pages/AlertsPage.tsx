@@ -14,7 +14,6 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { apiClient } from '../lib/api';
-import { Badge } from '../components/ui/Badge';
 import { NotificationItem } from '../components/layout/NotificationCenter';
 
 interface StockIntegrityResult {
@@ -123,7 +122,6 @@ export const AlertsPage: React.FC = () => {
             <h1 className="font-serif text-2xl font-bold tracking-wide text-slate-100">
               Alerts & System Automation
             </h1>
-            <Badge variant="gold">Phase 9</Badge>
           </div>
           <p className="text-xs text-slate-400 mt-1">
             Real-time inventory threshold telemetry, smart operational alerts, and atomic stock integrity guards.
@@ -227,51 +225,46 @@ export const AlertsPage: React.FC = () => {
           <div className="flex items-center space-x-1.5 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0">
             <button
               onClick={() => setFilterType('all')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
-                filterType === 'all'
-                  ? 'bg-gold-500/20 text-gold-300 border border-gold-500/30'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
-              }`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${filterType === 'all'
+                ? 'bg-gold-500/20 text-gold-300 border border-gold-500/30'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                }`}
             >
               All Alerts ({totalCount})
             </button>
             <button
               onClick={() => setFilterType('unread')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
-                filterType === 'unread'
-                  ? 'bg-gold-500/20 text-gold-300 border border-gold-500/30'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
-              }`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${filterType === 'unread'
+                ? 'bg-gold-500/20 text-gold-300 border border-gold-500/30'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                }`}
             >
               Unread ({unreadCount})
             </button>
             <button
               onClick={() => setFilterType('critical')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
-                filterType === 'critical'
-                  ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
-              }`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${filterType === 'critical'
+                ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                }`}
             >
               Critical ({criticalCount})
             </button>
             <button
               onClick={() => setFilterType('raw_material')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
-                filterType === 'raw_material'
-                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
-              }`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${filterType === 'raw_material'
+                ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                }`}
             >
               Raw Materials ({rawMaterialAlertsCount})
             </button>
             <button
               onClick={() => setFilterType('finished_goods')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
-                filterType === 'finished_goods'
-                  ? 'bg-sky-500/20 text-sky-300 border border-sky-500/30'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
-              }`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${filterType === 'finished_goods'
+                ? 'bg-sky-500/20 text-sky-300 border border-sky-500/30'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                }`}
             >
               Finished Goods ({finishedGoodsAlertsCount})
             </button>
@@ -308,9 +301,8 @@ export const AlertsPage: React.FC = () => {
             filtered.map((item) => (
               <div
                 key={item.id}
-                className={`p-4 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${
-                  !item.is_read ? 'bg-gold-500/[0.03]' : 'hover:bg-slate-800/30'
-                }`}
+                className={`p-4 transition-colors flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${!item.is_read ? 'bg-gold-500/[0.03]' : 'hover:bg-slate-800/30'
+                  }`}
               >
                 <div className="flex items-start space-x-3.5 flex-1">
                   <div className="mt-0.5">
@@ -332,9 +324,8 @@ export const AlertsPage: React.FC = () => {
                   <div className="flex-1">
                     <div className="flex items-center space-x-2">
                       <h3
-                        className={`text-xs font-semibold ${
-                          !item.is_read ? 'text-slate-100 font-bold' : 'text-slate-300'
-                        }`}
+                        className={`text-xs font-semibold ${!item.is_read ? 'text-slate-100 font-bold' : 'text-slate-300'
+                          }`}
                       >
                         {item.title}
                       </h3>

@@ -103,7 +103,7 @@ export const SuppliersPage: React.FC = () => {
         <div>
           <div className="flex items-center space-x-2 text-gold-400 text-xs font-semibold uppercase tracking-wider mb-1">
             <Building2 className="h-4 w-4" />
-            <span>Procurement & Suppliers • Phase 2</span>
+            <span>Procurement & Suppliers</span>
           </div>
           <h1 className="text-2xl font-serif font-bold text-slate-100">Fragrance Suppliers Directory</h1>
           <p className="text-sm text-slate-400 mt-1">
@@ -133,11 +133,10 @@ export const SuppliersPage: React.FC = () => {
 
       {feedback && (
         <div
-          className={`p-4 rounded-xl flex items-center justify-between border ${
-            feedback.type === 'success'
+          className={`p-4 rounded-xl flex items-center justify-between border ${feedback.type === 'success'
               ? 'bg-emerald-950/30 border-emerald-500/30 text-emerald-300'
               : 'bg-rose-950/30 border-rose-500/30 text-rose-300'
-          }`}
+            }`}
         >
           <div className="flex items-center space-x-3">
             {feedback.type === 'success' ? (

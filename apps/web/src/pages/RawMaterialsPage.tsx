@@ -201,7 +201,7 @@ export const RawMaterialsPage: React.FC = () => {
         <div>
           <div className="flex items-center space-x-2 text-gold-400 text-xs font-semibold uppercase tracking-wider mb-1">
             <Layers className="h-4 w-4" />
-            <span>Inventory Management • Phase 2</span>
+            <span>Inventory Management</span>
           </div>
           <h1 className="text-2xl font-serif font-bold text-slate-100 flex items-center space-x-2">
             <span>Raw Materials Catalog</span>
@@ -238,11 +238,10 @@ export const RawMaterialsPage: React.FC = () => {
       {/* Feedback Banner */}
       {feedback && (
         <div
-          className={`p-4 rounded-xl flex items-center justify-between border ${
-            feedback.type === 'success'
+          className={`p-4 rounded-xl flex items-center justify-between border ${feedback.type === 'success'
               ? 'bg-emerald-950/30 border-emerald-500/30 text-emerald-300'
               : 'bg-rose-950/30 border-rose-500/30 text-rose-300'
-          }`}
+            }`}
         >
           <div className="flex items-center space-x-3">
             {feedback.type === 'success' ? (
@@ -282,11 +281,10 @@ export const RawMaterialsPage: React.FC = () => {
 
         <div
           onClick={() => setOnlyLowStock(!onlyLowStock)}
-          className={`p-4 rounded-xl border cursor-pointer transition-all ${
-            onlyLowStock
+          className={`p-4 rounded-xl border cursor-pointer transition-all ${onlyLowStock
               ? 'bg-rose-950/40 border-rose-500/50 shadow-[0_0_15px_rgba(244,63,94,0.15)]'
               : 'bg-slate-900/60 border-slate-800/80 hover:border-rose-900/50'
-          }`}
+            }`}
         >
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-xs uppercase font-medium tracking-wider text-rose-400">
@@ -336,11 +334,10 @@ export const RawMaterialsPage: React.FC = () => {
             <button
               key={cat.id}
               onClick={() => setCategoryFilter(cat.id)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
-                categoryFilter === cat.id
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${categoryFilter === cat.id
                   ? 'bg-gold-500/20 text-gold-300 border border-gold-500/30'
                   : 'text-slate-400 hover:text-slate-200 bg-slate-800/40 border border-transparent'
-              }`}
+                }`}
             >
               {cat.label}
             </button>
@@ -494,11 +491,10 @@ export const RawMaterialsPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setAdjustData({ ...adjustData, type: 'add' })}
-                    className={`py-2 px-3 rounded-lg flex items-center justify-center space-x-2 border font-medium ${
-                      adjustData.type === 'add'
+                    className={`py-2 px-3 rounded-lg flex items-center justify-center space-x-2 border font-medium ${adjustData.type === 'add'
                         ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
                         : 'bg-slate-900 border-slate-800 text-slate-400'
-                    }`}
+                      }`}
                   >
                     <ArrowDownLeft className="h-4 w-4" />
                     <span>Intake / Surplus (+)</span>
@@ -506,11 +502,10 @@ export const RawMaterialsPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setAdjustData({ ...adjustData, type: 'subtract' })}
-                    className={`py-2 px-3 rounded-lg flex items-center justify-center space-x-2 border font-medium ${
-                      adjustData.type === 'subtract'
+                    className={`py-2 px-3 rounded-lg flex items-center justify-center space-x-2 border font-medium ${adjustData.type === 'subtract'
                         ? 'bg-rose-500/20 border-rose-500/40 text-rose-300'
                         : 'bg-slate-900 border-slate-800 text-slate-400'
-                    }`}
+                      }`}
                   >
                     <ArrowUpRight className="h-4 w-4" />
                     <span>Spill / Loss (-)</span>
@@ -755,11 +750,10 @@ export const RawMaterialsPage: React.FC = () => {
                       >
                         <div className="flex items-start space-x-3">
                           <div
-                            className={`p-2 rounded-lg mt-0.5 ${
-                              isPositive
+                            className={`p-2 rounded-lg mt-0.5 ${isPositive
                                 ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
                                 : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
-                            }`}
+                              }`}
                           >
                             {isPositive ? (
                               <ArrowDownLeft className="h-4 w-4" />
@@ -782,9 +776,8 @@ export const RawMaterialsPage: React.FC = () => {
 
                         <div className="text-right">
                           <div
-                            className={`font-mono font-bold text-sm ${
-                              isPositive ? 'text-emerald-400' : 'text-rose-400'
-                            }`}
+                            className={`font-mono font-bold text-sm ${isPositive ? 'text-emerald-400' : 'text-rose-400'
+                              }`}
                           >
                             {isPositive ? '+' : ''}
                             {m.quantity} {m.unit}

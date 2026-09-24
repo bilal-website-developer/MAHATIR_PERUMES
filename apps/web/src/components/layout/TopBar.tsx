@@ -1,6 +1,5 @@
 import React from 'react';
 import { Building2, Shield, User as UserIcon, LogOut } from 'lucide-react';
-import { Badge } from '../ui/Badge';
 import { useAuth, UserRole } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { NotificationCenter } from './NotificationCenter';
@@ -27,7 +26,6 @@ export const TopBar: React.FC = () => {
           <span className="text-slate-400">Branch:</span>
           <span className="font-semibold text-slate-200">Main Boutique & Lab</span>
         </div>
-        <Badge variant="gold">Phase 1 Secure</Badge>
       </div>
 
       {/* Right controls */}
