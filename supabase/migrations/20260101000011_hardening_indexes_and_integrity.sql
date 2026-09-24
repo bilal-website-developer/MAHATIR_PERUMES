@@ -59,7 +59,7 @@ CREATE INDEX IF NOT EXISTS idx_sales_invoice_number
     ON sales(invoice_number);
 
 CREATE INDEX IF NOT EXISTS idx_sales_cashier_date 
-    ON sales(cashier_id, sale_date DESC);
+    ON sales(cashier_id, created_at DESC);
 
 CREATE INDEX IF NOT EXISTS idx_sale_items_sale_id 
     ON sales_items(sale_id);
@@ -175,7 +175,7 @@ BEGIN
             ELSE 'DISCREPANCY'
         END AS status
     FROM batches b
-    WHERE b.status IN ('bulk', 'partial_bottled', 'completed');
+        WHERE b.status IN ('bulk', 'partial_bottled', 'completed')
       AND (p_branch_id IS NULL OR b.branch_id = p_branch_id);
 END;
 $$;
