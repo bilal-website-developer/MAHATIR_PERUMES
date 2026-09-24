@@ -82,9 +82,8 @@ export const ReportsPage: React.FC = () => {
         endpoint = '/api/v1/reports/inventory-valuation?format=csv';
         break;
       case 'sales':
-        endpoint = `/api/v1/reports/sales-performance?format=csv${startDate ? `&startDate=${startDate}` : ''}${
-          endDate ? `&endDate=${endDate}` : ''
-        }`;
+        endpoint = `/api/v1/reports/sales-performance?format=csv${startDate ? `&startDate=${startDate}` : ''}${endDate ? `&endDate=${endDate}` : ''
+          }`;
         break;
       case 'profitability':
         endpoint = '/api/v1/reports/product-profitability?format=csv';
@@ -97,7 +96,11 @@ export const ReportsPage: React.FC = () => {
         break;
     }
     const token = localStorage.getItem('mahatir_token') || 'demo-admin';
-    const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000';
+    const configuredApiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+    const baseUrl =
+      import.meta.env.PROD && configuredApiBaseUrl?.includes('localhost')
+        ? ''
+        : configuredApiBaseUrl ?? (import.meta.env.PROD ? '' : 'http://localhost:4000');
     window.open(`${baseUrl}${endpoint}&token=${token}`, '_blank');
   };
 
@@ -145,11 +148,10 @@ export const ReportsPage: React.FC = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as ReportTab)}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-xs font-medium transition-all whitespace-nowrap ${
-                isActive
-                  ? 'bg-gold-500 text-slate-950 font-bold shadow-md shadow-gold-500/10'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
-              }`}
+              className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-xs font-medium transition-all whitespace-nowrap ${isActive
+                ? 'bg-gold-500 text-slate-950 font-bold shadow-md shadow-gold-500/10'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
+                }`}
             >
               <Icon className="h-3.5 w-3.5" />
               <span>{tab.label}</span>
