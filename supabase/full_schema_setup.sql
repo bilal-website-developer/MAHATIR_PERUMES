@@ -160,8 +160,8 @@ ON CONFLICT (code) DO NOTHING;
 CREATE TABLE IF NOT EXISTS app_settings (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_name TEXT NOT NULL DEFAULT 'Mahatir Perfumes',
-    currency TEXT NOT NULL DEFAULT 'USD',
-    currency_symbol TEXT NOT NULL DEFAULT '$',
+    currency TEXT NOT NULL DEFAULT 'PKR',
+    currency_symbol TEXT NOT NULL DEFAULT 'Rs. ',
     tax_percentage NUMERIC(6, 2) NOT NULL DEFAULT 0.00 CHECK (tax_percentage >= 0 AND tax_percentage <= 100),
     invoice_prefix TEXT NOT NULL DEFAULT 'MP-INV-',
     logo_url TEXT,
@@ -212,8 +212,8 @@ INSERT INTO app_settings (
 VALUES (
     '00000000-0000-0000-0000-000000000002',
     'Mahatir Perfumes',
-    'USD',
-    '$',
+    'PKR',
+    'Rs. ',
     5.00,
     'MP-INV-',
     NULL,
@@ -2052,7 +2052,6 @@ BEGIN
 END;
 $$;
 
-
 -- ==============================================================================
 -- Mahatir Perfumes ERP - Migration 000007: POS Sales System
 -- ==============================================================================
@@ -3235,6 +3234,57 @@ BEGIN
         END AS status
     FROM batches b
         WHERE b.status IN ('bulk', 'partial_bottled', 'completed')
-      AND (p_branch_id IS NULL OR b.branch_id = p_branch_id);
+            AND (p_branch_id IS NULL OR b.branch_id = p_branch_id);
 END;
+$$;
+
+    -- One-time cleanup for seeded/demo transactional data.
+    CREATE TABLE IF NOT EXISTS demo_data_clearance (
+        id BOOLEAN PRIMARY KEY DEFAULT true,
+        cleared_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
+
+    CREATE OR REPLACE FUNCTION clear_demo_data()
+    RETURNS JSONB
+    LANGUAGE plpgsql
+    SECURITY DEFINER
+    SET search_path = public, pg_temp
+    AS $$
+    BEGIN
+        IF EXISTS (SELECT 1 FROM demo_data_clearance WHERE id = true) THEN
+            RETURN jsonb_build_object('cleared', false, 'already_cleared', true);
+        END IF;
+
+        INSERT INTO demo_data_clearance (id) VALUES (true);
+
+        DELETE FROM payments;
+        DELETE FROM sales_items;
+        DELETE FROM sales;
+        DELETE FROM customers;
+        DELETE FROM notifications;
+        DELETE FROM alert_configurations;
+        DELETE FROM bottling_runs;
+        DELETE FROM finished_goods_lots;
+        DELETE FROM packaging_recipe_items;
+        DELETE FROM product_variants;
+        DELETE FROM products;
+        DELETE FROM packaging_recipes;
+        DELETE FROM bulk_inventory;
+        DELETE FROM batch_losses;
+        DELETE FROM batch_usage;
+        DELETE FROM batches;
+        DELETE FROM formula_ingredients;
+        DELETE FROM formulas;
+        DELETE FROM purchase_order_items;
+        DELETE FROM purchase_orders;
+        DELETE FROM supplier_materials;
+        DELETE FROM suppliers;
+        DELETE FROM stock_movements;
+        DELETE FROM raw_materials;
+        DELETE FROM dilution_presets;
+        DELETE FROM audit_log;
+
+        RETURN jsonb_build_object('cleared', true, 'already_cleared', false);
+    END;
+    $$;
 $$;

@@ -92,6 +92,20 @@ usersRouter.get('/users', async (_req: Request, res: Response) => {
   }
 });
 
+// POST /api/v1/users/clear-demo-data
+usersRouter.post('/users/clear-demo-data', async (_req: Request, res: Response) => {
+  try {
+    const { data, error } = await supabaseAdmin.rpc('clear_demo_data');
+    if (error) {
+      return sendError(res, error.message, 400, 'DEMO_DATA_CLEAR_FAILED');
+    }
+
+    return sendSuccess(res, data);
+  } catch (_err) {
+    return sendError(res, 'Demo data cleanup service is unavailable', 503, 'DEMO_DATA_CLEAR_UNAVAILABLE');
+  }
+});
+
 // POST /api/v1/users
 usersRouter.post(
   '/users',

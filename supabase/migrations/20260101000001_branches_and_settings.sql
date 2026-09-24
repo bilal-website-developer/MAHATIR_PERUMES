@@ -60,8 +60,8 @@ ON CONFLICT (code) DO NOTHING;
 CREATE TABLE IF NOT EXISTS app_settings (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     company_name TEXT NOT NULL DEFAULT 'Mahatir Perfumes',
-    currency TEXT NOT NULL DEFAULT 'USD',
-    currency_symbol TEXT NOT NULL DEFAULT '$',
+    currency TEXT NOT NULL DEFAULT 'PKR',
+    currency_symbol TEXT NOT NULL DEFAULT 'Rs. ',
     tax_percentage NUMERIC(6, 2) NOT NULL DEFAULT 0.00 CHECK (tax_percentage >= 0 AND tax_percentage <= 100),
     invoice_prefix TEXT NOT NULL DEFAULT 'MP-INV-',
     logo_url TEXT,
@@ -112,8 +112,8 @@ INSERT INTO app_settings (
 VALUES (
     '00000000-0000-0000-0000-000000000002',
     'Mahatir Perfumes',
-    'USD',
-    '$',
+    'PKR',
+    'Rs. ',
     5.00,
     'MP-INV-',
     NULL,

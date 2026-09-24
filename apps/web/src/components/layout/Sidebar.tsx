@@ -32,7 +32,6 @@ const navigation: NavItem[] = [
   { name: 'System Diagnostics', href: '/health', icon: Activity, module: 'health' },
   { name: 'System Settings', href: '/settings', icon: Settings, module: 'settings' },
   { name: 'Staff & Roles', href: '/users', icon: Users, module: 'users' },
-  { name: 'Audit Trail', href: '/audit', icon: ShieldAlert, module: 'audit' },
   { name: 'Raw Materials', href: '/raw-materials', icon: Layers, module: 'raw_materials' },
   { name: 'Purchase Orders', href: '/purchase-orders', icon: FileSpreadsheet, module: 'purchases' },
   { name: 'Suppliers Directory', href: '/suppliers', icon: Settings, module: 'suppliers' },
@@ -45,6 +44,7 @@ const navigation: NavItem[] = [
   { name: 'Traceability Navigator', href: '/traceability', icon: Compass, module: 'reports' },
   { name: 'Alerts & System Health', href: '/alerts', icon: Bell, module: 'dashboard' },
   { name: 'Production Suggestions', href: '/suggestions', icon: Sparkles, module: 'batches' },
+  { name: 'Audit Trail', href: '/audit', icon: ShieldAlert, module: 'audit' },
 ];
 
 export const Sidebar: React.FC = () => {

@@ -30,8 +30,8 @@ INSERT INTO app_settings (
 VALUES (
     '00000000-0000-0000-0000-000000000002',
     'Mahatir Perfumes',
-    'USD',
-    '$',
+    'PKR',
+    'Rs. ',
     5.00,
     'MP-INV-',
     NULL,

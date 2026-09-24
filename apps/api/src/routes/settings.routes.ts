@@ -8,8 +8,8 @@ export const settingsRouter = Router();
 const DEFAULT_SETTINGS = {
   id: '00000000-0000-0000-0000-000000000002',
   company_name: 'Mahatir Perfumes',
-  currency: 'USD',
-  currency_symbol: '$',
+  currency: 'PKR',
+  currency_symbol: 'Rs. ',
   tax_percentage: '5.00',
   invoice_prefix: 'MP-INV-',
   logo_url: null,
