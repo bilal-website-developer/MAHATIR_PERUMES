@@ -5,8 +5,8 @@ import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { DataTable, Column } from '../components/common/DataTable';
 import { apiClient } from '../lib/api';
-import { Users, UserPlus, X, ShieldAlert } from 'lucide-react';
-import { UserRole } from '../context/AuthContext';
+import { Users, UserPlus, X, ShieldAlert, Trash2, Clock } from 'lucide-react';
+import { useAuth, UserRole } from '../context/AuthContext';
 
 interface UserProfile {
   id: string;
@@ -16,6 +16,8 @@ interface UserProfile {
   is_active: boolean;
   branch_id?: string;
   created_at: string;
+  last_sign_in_at?: string | null;
+  is_recently_active?: boolean;
 }
 
 export const UsersPage: React.FC = () => {
@@ -24,14 +26,20 @@ export const UsersPage: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [newEmail, setNewEmail] = useState('');
   const [newName, setNewName] = useState('');
+  const [newPassword, setNewPassword] = useState('');
   const [newRole, setNewRole] = useState<UserRole>('sales_staff');
   const [actionError, setActionError] = useState<string | null>(null);
+  const [recentlyActiveCount, setRecentlyActiveCount] = useState(0);
+  const { user: currentUser } = useAuth();
 
   const fetchUsers = async () => {
     setLoading(true);
     try {
       const res = await apiClient<UserProfile[]>('/api/v1/users');
-      if (res.data) setUsers(res.data);
+      if (res.data) {
+        setUsers(res.data);
+        setRecentlyActiveCount(Number(res.meta?.recently_active_count || 0));
+      }
     } finally {
       setLoading(false);
     }
@@ -49,6 +57,7 @@ export const UsersPage: React.FC = () => {
       body: JSON.stringify({
         email: newEmail,
         full_name: newName,
+        password: newPassword,
         role: newRole,
       }),
     });
@@ -61,6 +70,7 @@ export const UsersPage: React.FC = () => {
     setShowModal(false);
     setNewEmail('');
     setNewName('');
+    setNewPassword('');
     fetchUsers();
   };
 
@@ -77,6 +87,21 @@ export const UsersPage: React.FC = () => {
       method: 'PATCH',
       body: JSON.stringify({ is_active: !currentStatus }),
     });
+    fetchUsers();
+  };
+
+  const handleDeleteUser = async (user: UserProfile) => {
+    if (user.id === currentUser?.id) return;
+    if (!window.confirm(`Delete ${user.full_name}'s account? This removes their login and disables their profile.`)) {
+      return;
+    }
+
+    setActionError(null);
+    const res = await apiClient(`/api/v1/users/${user.id}`, { method: 'DELETE' });
+    if (res.error) {
+      setActionError(res.error.message);
+      return;
+    }
     fetchUsers();
   };
 
@@ -151,6 +176,38 @@ export const UsersPage: React.FC = () => {
         </span>
       ),
     },
+    {
+      key: 'last_sign_in_at',
+      header: 'Recent Activity',
+      sortable: true,
+      accessor: (user) => (
+        <div className="flex items-center gap-2 text-xs">
+          <span className={`h-2 w-2 rounded-full ${user.is_recently_active ? 'bg-emerald-400' : 'bg-slate-600'}`} />
+          <span className={user.is_recently_active ? 'text-emerald-300' : 'text-slate-500'}>
+            {user.is_recently_active
+              ? 'Active recently'
+              : user.last_sign_in_at
+                ? new Date(user.last_sign_in_at).toLocaleDateString()
+                : 'Never signed in'}
+          </span>
+        </div>
+      ),
+    },
+    {
+      key: 'actions',
+      header: 'Actions',
+      accessor: (user) => (
+        <button
+          type="button"
+          onClick={() => handleDeleteUser(user)}
+          disabled={user.id === currentUser?.id}
+          title={user.id === currentUser?.id ? 'You cannot delete your own account' : 'Delete user'}
+          className="p-1.5 text-slate-400 hover:text-rose-400 disabled:opacity-30 disabled:cursor-not-allowed"
+        >
+          <Trash2 className="h-4 w-4" />
+        </button>
+      ),
+    },
   ];
 
   return (
@@ -175,6 +232,25 @@ export const UsersPage: React.FC = () => {
           <UserPlus className="h-4 w-4" />
           <span>Add Staff Member</span>
         </Button>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <Card className="p-4">
+          <div className="text-[10px] uppercase tracking-wider text-slate-500">Total staff accounts</div>
+          <div className="text-2xl font-serif font-bold text-slate-100 mt-1">{users.length}</div>
+        </Card>
+        <Card className="p-4">
+          <div className="text-[10px] uppercase tracking-wider text-slate-500">Recently active</div>
+          <div className="text-2xl font-serif font-bold text-emerald-400 mt-1">{recentlyActiveCount}</div>
+          <div className="text-[10px] text-slate-500 mt-1">Signed in within 15 minutes</div>
+        </Card>
+        <Card className="p-4">
+          <div className="text-[10px] uppercase tracking-wider text-slate-500">Access management</div>
+          <div className="flex items-center gap-2 text-sm text-slate-300 mt-2">
+            <Clock className="h-4 w-4 text-gold-400" />
+            Last sign-ins from Supabase Auth
+          </div>
+        </Card>
       </div>
 
       {/* Permissions Matrix Reference */}
@@ -264,6 +340,16 @@ export const UsersPage: React.FC = () => {
                 required
               />
 
+              <Input
+                label="Temporary Password"
+                type="password"
+                placeholder="At least 8 characters"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                minLength={8}
+                required
+              />
+
               <div className="space-y-1.5">
                 <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
                   Assigned Operational Role
@@ -290,7 +376,7 @@ export const UsersPage: React.FC = () => {
                   Cancel
                 </Button>
                 <Button type="submit" variant="primary" size="sm">
-                  Create Profile
+                  Create User Account
                 </Button>
               </div>
             </form>

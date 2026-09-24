@@ -32,7 +32,7 @@ export async function apiClient<T>(
   }
 
   // Automatically attach auth token if available
-  const token = localStorage.getItem('mahatir_token') || 'demo-admin';
+  const token = localStorage.getItem('mahatir_token');
   if (token && !headers.has('Authorization')) {
     headers.set('Authorization', `Bearer ${token}`);
   }

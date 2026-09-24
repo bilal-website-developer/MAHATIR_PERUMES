@@ -20,46 +20,15 @@ interface AuthContextType {
   token: string | null;
   isLoading: boolean;
   login: (email: string, pass: string) => Promise<boolean>;
-  loginAs: (role: UserRole) => Promise<void>;
   logout: () => void;
   canAccess: (module: string) => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const DEMO_ACCOUNTS: Record<UserRole, { email: string; token: string; fullName: string }> = {
-  admin: {
-    email: 'admin@mahatir.com',
-    token: 'demo-admin',
-    fullName: 'Bilal Ahmad (Founder & Master Perfumer)',
-  },
-  production_manager: {
-    email: 'production@mahatir.com',
-    token: 'demo-production',
-    fullName: 'Farhan Malik (Lab & Batch Lead)',
-  },
-  inventory_manager: {
-    email: 'inventory@mahatir.com',
-    token: 'demo-inventory',
-    fullName: 'Tariq Al-Mansoor (Oils & Materials Custodian)',
-  },
-  sales_staff: {
-    email: 'sales@mahatir.com',
-    token: 'demo-sales',
-    fullName: 'Amina Zahra (Senior Fragrance Consultant)',
-  },
-};
-
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Default to Admin in initial load for developer convenience
-  const [user, setUser] = useState<User | null>({
-    id: '11111111-1111-1111-1111-111111111111',
-    email: 'admin@mahatir.com',
-    fullName: 'Bilal Ahmad (Founder & Master Perfumer)',
-    role: 'admin',
-    branchId: '00000000-0000-0000-0000-000000000001',
-  });
-  const [token, setToken] = useState<string | null>('demo-admin');
+  const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -94,21 +63,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const loginAs = async (role: UserRole): Promise<void> => {
-    const account = DEMO_ACCOUNTS[role];
-    const newUser: User = {
-      id: `usr-${role}`,
-      email: account.email,
-      fullName: account.fullName,
-      role,
-      branchId: '00000000-0000-0000-0000-000000000001',
-    };
-    setUser(newUser);
-    setToken(account.token);
-    localStorage.setItem('mahatir_token', account.token);
-    localStorage.setItem('mahatir_user', JSON.stringify(newUser));
   };
 
   const logout = () => {
@@ -154,7 +108,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         token,
         isLoading,
         login,
-        loginAs,
         logout,
         canAccess,
       }}

@@ -95,7 +95,7 @@ export const ReportsPage: React.FC = () => {
         endpoint = '/api/v1/reports/raw-material-consumption?format=csv';
         break;
     }
-    const token = localStorage.getItem('mahatir_token') || 'demo-admin';
+    const token = localStorage.getItem('mahatir_token') || '';
     const configuredApiBaseUrl = import.meta.env.VITE_API_BASE_URL;
     const baseUrl =
       import.meta.env.PROD && configuredApiBaseUrl?.includes('localhost')

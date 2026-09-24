@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth, UserRole } from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
-import { Sparkles, Shield, Lock, User, AlertCircle } from 'lucide-react';
+import { Sparkles, Lock, AlertCircle } from 'lucide-react';
 
 export const LoginPage: React.FC = () => {
-  const { login, loginAs, isLoading } = useAuth();
+  const { login, isLoading } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,13 +20,8 @@ export const LoginPage: React.FC = () => {
     if (success) {
       navigate('/');
     } else {
-      setError('Invalid email or password. Please try again or use a demo role below.');
+      setError('Invalid email or password. Please try again.');
     }
-  };
-
-  const handleRoleSelect = async (role: UserRole) => {
-    await loginAs(role);
-    navigate('/');
   };
 
   return (
@@ -92,65 +87,6 @@ export const LoginPage: React.FC = () => {
             </Button>
           </form>
 
-          {/* Quick Demo Role Switcher for Phase Verification */}
-          <div className="pt-4 border-t border-slate-800/80 space-y-3">
-            <div className="flex items-center justify-between text-xs">
-              <span className="text-slate-400 flex items-center gap-1">
-                <Shield className="h-3.5 w-3.5 text-gold-400" />
-                <span>Instant Demo Role Access:</span>
-              </span>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2 text-xs">
-              <button
-                type="button"
-                onClick={() => handleRoleSelect('admin')}
-                className="flex items-center gap-1.5 p-2 rounded-md bg-[#181d2a] hover:bg-gold-500/15 border border-slate-700/60 hover:border-gold-400/50 text-slate-200 transition-all text-left"
-              >
-                <User className="h-3.5 w-3.5 text-gold-400" />
-                <div>
-                  <div className="font-semibold text-[11px]">Admin</div>
-                  <div className="text-[9px] text-slate-400">Full Access</div>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleRoleSelect('production_manager')}
-                className="flex items-center gap-1.5 p-2 rounded-md bg-[#181d2a] hover:bg-gold-500/15 border border-slate-700/60 hover:border-gold-400/50 text-slate-200 transition-all text-left"
-              >
-                <User className="h-3.5 w-3.5 text-gold-400" />
-                <div>
-                  <div className="font-semibold text-[11px]">Production</div>
-                  <div className="text-[9px] text-slate-400">Lab & Batches</div>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleRoleSelect('inventory_manager')}
-                className="flex items-center gap-1.5 p-2 rounded-md bg-[#181d2a] hover:bg-gold-500/15 border border-slate-700/60 hover:border-gold-400/50 text-slate-200 transition-all text-left"
-              >
-                <User className="h-3.5 w-3.5 text-gold-400" />
-                <div>
-                  <div className="font-semibold text-[11px]">Inventory</div>
-                  <div className="text-[9px] text-slate-400">Oils & POs</div>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleRoleSelect('sales_staff')}
-                className="flex items-center gap-1.5 p-2 rounded-md bg-[#181d2a] hover:bg-gold-500/15 border border-slate-700/60 hover:border-gold-400/50 text-slate-200 transition-all text-left"
-              >
-                <User className="h-3.5 w-3.5 text-gold-400" />
-                <div>
-                  <div className="font-semibold text-[11px]">Sales Staff</div>
-                  <div className="text-[9px] text-slate-400">POS & Counter</div>
-                </div>
-              </button>
-            </div>
-          </div>
         </Card>
       </div>
     </div>

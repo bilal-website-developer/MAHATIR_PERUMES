@@ -1,16 +1,12 @@
 import React from 'react';
 import { Building2, Shield, User as UserIcon, LogOut } from 'lucide-react';
-import { useAuth, UserRole } from '../../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { NotificationCenter } from './NotificationCenter';
 
 export const TopBar: React.FC = () => {
-  const { user, loginAs, logout } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
-
-  const handleRoleSelect = async (e: React.ChangeEvent<HTMLSelectElement>) => {
-    await loginAs(e.target.value as UserRole);
-  };
 
   const handleLogout = () => {
     logout();
@@ -30,29 +26,6 @@ export const TopBar: React.FC = () => {
 
       {/* Right controls */}
       <div className="flex items-center space-x-4">
-        {/* Role Switcher for Testing Acceptance Criteria */}
-        <div className="flex items-center space-x-2 bg-[#161a24] px-2.5 py-1 rounded-lg border border-slate-700/60">
-          <span className="text-[11px] text-slate-400 hidden sm:inline">Active Role:</span>
-          <select
-            value={user?.role || 'admin'}
-            onChange={handleRoleSelect}
-            className="bg-transparent text-gold-300 font-semibold text-xs border-none focus:outline-none cursor-pointer"
-          >
-            <option value="admin" className="bg-[#141824] text-slate-100">
-              Admin (Full)
-            </option>
-            <option value="production_manager" className="bg-[#141824] text-slate-100">
-              Production Manager
-            </option>
-            <option value="inventory_manager" className="bg-[#141824] text-slate-100">
-              Inventory Manager
-            </option>
-            <option value="sales_staff" className="bg-[#141824] text-slate-100">
-              Sales Staff (POS)
-            </option>
-          </select>
-        </div>
-
         {/* In-App Notification Center */}
         <NotificationCenter />
 
