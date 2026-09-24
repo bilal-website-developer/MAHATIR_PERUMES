@@ -1,4 +1,4 @@
-import express, { Express } from 'express';
+import express, { Express, RequestHandler } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -29,7 +29,8 @@ export function createApp(): Express {
   const app = express();
 
   // Security headers
-  app.use(helmet());
+  const helmetMiddleware = (helmet as unknown as () => RequestHandler)();
+  app.use(helmetMiddleware);
 
   // CORS configuration
   app.use(
