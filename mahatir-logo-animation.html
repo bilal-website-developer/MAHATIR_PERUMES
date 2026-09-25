@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MAHATIR - Haute Parfumerie ERP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=Jost:wght@300;400&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --gold-hi: #f2d99a;
+            --gold-mid: #c99b4a;
+            --bronze: #7c4e22;
+            --pearl: #fffdf7;
+            --sub: #7c8a96;
+            --cream: #f6efe3;
+            --grey: #e4e0da;
+            --depth: 13px;
+            --icon-size: clamp(112px, 24vw, 164px);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            min-height: 100%;
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: radial-gradient(circle at 32% 24%, var(--cream) 0%, #eee9e1 44%, var(--grey) 100%);
+            color: var(--bronze);
+            font-family: Jost, sans-serif;
+        }
+
+        .stage {
+            position: relative;
+            display: grid;
+            min-height: 100svh;
+            place-items: center;
+            isolation: isolate;
+        }
+
+        .stage::before {
+            position: absolute;
+            width: min(62vw, 520px);
+            height: min(62vw, 520px);
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 253, 247, .92) 0%, rgba(242, 217, 154, .3) 38%, transparent 72%);
+            filter: blur(28px);
+            content: "";
+            opacity: .8;
+            z-index: -1;
+        }
+
+        .lockup {
+            display: flex;
+            width: min(90vw, 620px);
+            flex-direction: column;
+            align-items: center;
+            gap: clamp(18px, 3vw, 28px);
+            text-align: center;
+            transform: translateY(-2%);
+        }
+
+        .icon-camera {
+            position: relative;
+            display: grid;
+            width: var(--icon-size);
+            height: var(--icon-size);
+            perspective: 720px;
+            place-items: center;
+            filter: drop-shadow(18px 24px 17px rgba(81, 54, 31, .22));
+            animation: icon-settle 6s ease-in-out infinite;
+        }
+
+        .icon-box {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform: rotateX(3deg) rotateY(-15deg) scale(.8);
+            transform-style: preserve-3d;
+            animation: icon-motion 6s ease-in-out infinite;
+        }
+
+        .face,
+        .edge-right,
+        .edge-bottom {
+            position: absolute;
+            border-radius: 22%;
+            backface-visibility: hidden;
+        }
+
+        .face {
+            display: grid;
+            inset: 0;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--gold-hi) 0%, var(--gold-mid) 47%, var(--bronze) 100%);
+            box-shadow: inset 2px 2px 5px rgba(255, 253, 247, .52), inset -8px -10px 18px rgba(85, 45, 16, .22);
+            place-items: center;
+            transform: translateZ(var(--depth));
+        }
+
+        .face::after {
+            position: absolute;
+            inset: -35% -75%;
+            background: linear-gradient(115deg, transparent 40%, rgba(255, 253, 247, .7) 49%, transparent 57%);
+            content: "";
+            opacity: 0;
+            transform: translateX(-75%);
+            animation: specular-sweep 6s ease-in-out infinite;
+        }
+
+        .edge-right {
+            top: 0;
+            right: calc(var(--depth) * -1);
+            width: var(--depth);
+            height: 100%;
+            border-radius: 0 18% 18% 0;
+            background: linear-gradient(90deg, #a66d31, #633b1d);
+            transform: rotateY(90deg);
+            transform-origin: left center;
+        }
+
+        .edge-bottom {
+            bottom: calc(var(--depth) * -1);
+            left: 0;
+            width: 100%;
+            height: var(--depth);
+            border-radius: 0 0 18% 18%;
+            background: linear-gradient(180deg, #9a612b, #5c351a);
+            transform: rotateX(-90deg);
+            transform-origin: center top;
+        }
+
+        .sparkle {
+            position: relative;
+            z-index: 2;
+            width: 42%;
+            height: 42%;
+            filter: drop-shadow(0 0 5px rgba(255, 253, 247, .95)) drop-shadow(0 0 14px rgba(255, 253, 247, .65));
+            transform: translateY(0);
+            animation: sparkle-idle 6s ease-in-out infinite;
+        }
+
+        .sparkle-path {
+            fill: url(#pearl-fill);
+        }
+
+        .wordmark {
+            margin: 0;
+            color: transparent;
+            font-family: "Cormorant Garamond", Georgia, serif;
+            font-size: clamp(3.8rem, 12vw, 7.2rem);
+            font-weight: 600;
+            letter-spacing: .08em;
+            line-height: .72;
+            background: linear-gradient(115deg, var(--bronze) 12%, var(--gold-mid) 35%, var(--gold-hi) 50%, var(--gold-mid) 65%, var(--bronze) 88%);
+            background-size: 220% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            filter: drop-shadow(1px 2px 0 rgba(124, 78, 34, .28)) drop-shadow(2px 4px 0 rgba(124, 78, 34, .13));
+            white-space: nowrap;
+            animation: wordmark-shimmer 6s ease-in-out infinite;
+        }
+
+        .letter {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(9px) rotateX(35deg);
+            transform-origin: bottom center;
+            animation: letter-in 6s ease-in-out infinite;
+        }
+
+        .letter:nth-child(1) {
+            animation-delay: 2.00s;
+        }
+
+        .letter:nth-child(2) {
+            animation-delay: 2.08s;
+        }
+
+        .letter:nth-child(3) {
+            animation-delay: 2.16s;
+        }
+
+        .letter:nth-child(4) {
+            animation-delay: 2.24s;
+        }
+
+        .letter:nth-child(5) {
+            animation-delay: 2.32s;
+        }
+
+        .letter:nth-child(6) {
+            animation-delay: 2.40s;
+        }
+
+        .letter:nth-child(7) {
+            animation-delay: 2.48s;
+        }
+
+        .subtitle {
+            margin: 0;
+            color: var(--sub);
+            font-family: Jost, sans-serif;
+            font-size: clamp(.72rem, 2vw, 1rem);
+            font-weight: 300;
+            letter-spacing: .68em;
+            line-height: 1;
+            opacity: 0;
+            padding-left: .68em;
+            text-transform: uppercase;
+            animation: subtitle-in 6s ease-in-out infinite;
+        }
+
+        .veil {
+            position: fixed;
+            inset: 0;
+            z-index: 10;
+            pointer-events: none;
+            background: radial-gradient(circle at 32% 24%, var(--cream) 0%, #eee9e1 44%, var(--grey) 100%);
+            opacity: 0;
+            animation: veil-reset 6s ease-in-out infinite;
+        }
+
+        @keyframes icon-settle {
+
+            0%,
+            16.66% {
+                opacity: 0;
+                transform: scale(.8);
+            }
+
+            3%,
+            16% {
+                opacity: 1;
+            }
+
+            16.66%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes icon-motion {
+
+            0%,
+            16.66% {
+                transform: rotateX(5deg) rotateY(-15deg) scale(.8);
+            }
+
+            16.66%,
+            33% {
+                transform: rotateX(2deg) rotateY(0deg) scale(1);
+            }
+
+            33%,
+            58% {
+                transform: rotateX(0deg) rotateY(0deg) scale(1);
+            }
+
+            58%,
+            75% {
+                transform: rotateX(-7deg) rotateY(8deg) scale(1);
+            }
+
+            75%,
+            91.66% {
+                transform: rotateX(7deg) rotateY(-8deg) scale(1);
+            }
+
+            91.66%,
+            100% {
+                transform: rotateX(5deg) rotateY(-15deg) scale(.8);
+            }
+        }
+
+        @keyframes sparkle-idle {
+
+            0%,
+            16.66% {
+                opacity: 0;
+                transform: translateY(5px) scale(.8) rotate(-12deg);
+            }
+
+            16.66%,
+            33% {
+                opacity: 1;
+                transform: translateY(0) scale(1.12) rotate(90deg);
+            }
+
+            33%,
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1) rotate(360deg);
+            }
+        }
+
+        @keyframes specular-sweep {
+
+            0%,
+            22% {
+                opacity: 0;
+                transform: translateX(-75%);
+            }
+
+            25%,
+            34% {
+                opacity: .9;
+                transform: translateX(75%);
+            }
+
+            34%,
+            100% {
+                opacity: 0;
+                transform: translateX(75%);
+            }
+        }
+
+        @keyframes letter-in {
+
+            0%,
+            33% {
+                opacity: 0;
+                transform: translateY(9px) rotateX(35deg);
+            }
+
+            36%,
+            55% {
+                opacity: 1;
+                transform: translateY(0) rotateX(0deg);
+            }
+
+            55%,
+            100% {
+                opacity: 1;
+                transform: translateY(0) rotateX(0deg);
+            }
+        }
+
+        @keyframes subtitle-in {
+
+            0%,
+            58% {
+                opacity: 0;
+                letter-spacing: .68em;
+            }
+
+            62%,
+            75% {
+                opacity: 1;
+                letter-spacing: .34em;
+            }
+
+            75%,
+            100% {
+                opacity: 1;
+                letter-spacing: .28em;
+            }
+        }
+
+        @keyframes wordmark-shimmer {
+
+            0%,
+            35% {
+                background-position: 0% 50%;
+            }
+
+            55%,
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @keyframes veil-reset {
+
+            0%,
+            4% {
+                opacity: 1;
+            }
+
+            9%,
+            93% {
+                opacity: 0;
+            }
+
+            96%,
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .lockup {
+                gap: 20px;
+            }
+
+            .subtitle {
+                letter-spacing: .4em;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: .001ms !important;
+                animation-iteration-count: 1 !important;
+                animation-delay: 0ms !important;
+                scroll-behavior: auto !important;
+            }
+
+            .icon-camera,
+            .icon-box,
+            .sparkle,
+            .letter,
+            .subtitle {
+                opacity: 1;
+                transform: none;
+            }
+
+            .wordmark {
+                background-position: 50% 50%;
+            }
+
+            .veil {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="stage" aria-label="Mahatir Haute Parfumerie ERP logo animation">
+        <section class="lockup" aria-label="Mahatir Haute Parfumerie ERP">
+            <div class="icon-camera" aria-hidden="true">
+                <div class="icon-box">
+                    <div class="face">
+                        <svg class="sparkle" viewBox="0 0 100 100" role="img" aria-label="Sparkle">
+                            <defs>
+                                <radialGradient id="pearl-fill" cx="28%" cy="20%" r="90%">
+                                    <stop offset="0" stop-color="#ffffff" />
+                                    <stop offset=".57" stop-color="#fffdf7" />
+                                    <stop offset="1" stop-color="#f3ead9" />
+                                </radialGradient>
+                            </defs>
+                            <path class="sparkle-path"
+                                d="M50 2C55 32 68 45 98 50C68 55 55 68 50 98C45 68 32 55 2 50C32 45 45 32 50 2Z" />
+                        </svg>
+                    </div>
+                    <div class="edge-right"></div>
+                    <div class="edge-bottom"></div>
+                </div>
+            </div>
+
+            <h1 class="wordmark" aria-label="MAHATIR">
+                <span class="letter">M</span><span class="letter">A</span><span class="letter">H</span><span
+                    class="letter">A</span><span class="letter">T</span><span class="letter">I</span><span
+                    class="letter">R</span>
+            </h1>
+            <p class="subtitle">Haute Parfumerie ERP</p>
+        </section>
+        <div class="veil" aria-hidden="true"></div>
+    </main>
+</body>
+
+</html>

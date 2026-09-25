@@ -2,7 +2,6 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import {
-  Sparkles,
   Layers,
   FlaskConical,
   Factory,
@@ -21,6 +20,7 @@ import { Badge } from '../components/ui/Badge';
 import { useAuth } from '../context/AuthContext';
 import { apiClient } from '../lib/api';
 import { formatCurrency, formatNumber } from '../lib/utils';
+import { BrandLogo } from '../components/layout/BrandLogo';
 
 export const DashboardPage: React.FC = () => {
   const { user } = useAuth();
@@ -51,10 +51,7 @@ export const DashboardPage: React.FC = () => {
         <div className="absolute right-0 top-0 h-full w-1/3 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-gold-500/10 via-transparent to-transparent pointer-events-none" />
 
         <div className="max-w-3xl space-y-3">
-          <div className="inline-flex items-center space-x-2 bg-gold-500/15 border border-gold-400/30 px-3 py-1 rounded-full text-xs text-gold-300">
-            <Sparkles className="h-3.5 w-3.5 text-gold-400" />
-            <span>Mahatir Perfumes Haute Parfumerie ERP + POS</span>
-          </div>
+          <BrandLogo compact />
 
           <h1 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-slate-100">
             Welcome, {user?.fullName || 'Master Perfumer'}

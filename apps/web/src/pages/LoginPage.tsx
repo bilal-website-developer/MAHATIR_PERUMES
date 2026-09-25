@@ -4,7 +4,8 @@ import { useAuth } from '../context/AuthContext';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
-import { Sparkles, Lock, AlertCircle } from 'lucide-react';
+import { BrandLogo } from '../components/layout/BrandLogo';
+import { Lock, AlertCircle } from 'lucide-react';
 
 export const LoginPage: React.FC = () => {
   const { login, isLoading } = useAuth();
@@ -29,15 +30,8 @@ export const LoginPage: React.FC = () => {
       <div className="w-full max-w-md space-y-6">
         {/* Brand Header */}
         <div className="text-center space-y-2">
-          <div className="inline-flex h-12 w-12 rounded-xl bg-gradient-to-br from-gold-300 via-gold-500 to-amber-700 items-center justify-center shadow-[0_0_20px_rgba(212,175,55,0.4)]">
-            <Sparkles className="h-6 w-6 text-slate-950" />
-          </div>
-          <h1 className="font-serif text-3xl font-bold tracking-wider gold-gradient-text">
-            MAHATIR PERFUMES
-          </h1>
-          <p className="text-xs uppercase tracking-widest text-slate-400">
-            Manufacturing ERP & Retail POS Portal
-          </p>
+          <BrandLogo centered />
+          <p className="text-xs uppercase tracking-widest text-muted">Manufacturing ERP & Retail POS Portal</p>
         </div>
 
         {/* Login Card */}

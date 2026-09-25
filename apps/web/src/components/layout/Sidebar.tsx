@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { useAuth } from '../../context/AuthContext';
+import { BrandLogo } from './BrandLogo';
 
 interface NavItem {
   name: string;
@@ -105,18 +106,8 @@ export const Sidebar: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ is
       >
         {/* Brand Header */}
         <div className="h-20 flex items-center px-6 border-b border-border/60 bg-gradient-to-b from-card to-sidebar">
-          <div className="flex items-center space-x-3">
-            <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-gold-300 via-gold-500 to-amber-700 flex items-center justify-center shadow-[0_0_15px_rgba(212,175,55,0.3)]">
-              <Sparkles className="h-5 w-5 text-slate-950" />
-            </div>
-            <div>
-              <h1 className="font-serif text-lg font-bold tracking-wider gold-gradient-text">
-                MAHATIR
-              </h1>
-              <p className="text-[10px] tracking-widest uppercase text-sidebar-foreground/70 font-sans">
-                Haute Parfumerie ERP
-              </p>
-            </div>
+          <div className="flex min-w-0 flex-1 items-center">
+            <BrandLogo compact />
             <button
               type="button"
               aria-label="Close navigation"
