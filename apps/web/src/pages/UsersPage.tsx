@@ -3,6 +3,7 @@ import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
+import { ConfirmDialog } from '../components/ui/ConfirmDialog';
 import { DataTable, Column } from '../components/common/DataTable';
 import { apiClient } from '../lib/api';
 import { Users, UserPlus, X, ShieldAlert, Trash2, Clock } from 'lucide-react';
@@ -30,6 +31,7 @@ export const UsersPage: React.FC = () => {
   const [newRole, setNewRole] = useState<UserRole>('sales_staff');
   const [actionError, setActionError] = useState<string | null>(null);
   const [recentlyActiveCount, setRecentlyActiveCount] = useState(0);
+  const [userPendingDelete, setUserPendingDelete] = useState<UserProfile | null>(null);
   const { user: currentUser } = useAuth();
 
   const fetchUsers = async () => {
@@ -90,18 +92,20 @@ export const UsersPage: React.FC = () => {
     fetchUsers();
   };
 
-  const handleDeleteUser = async (user: UserProfile) => {
+  const handleDeleteUser = (user: UserProfile) => {
     if (user.id === currentUser?.id) return;
-    if (!window.confirm(`Delete ${user.full_name}'s account? This removes their login and disables their profile.`)) {
-      return;
-    }
+    setUserPendingDelete(user);
+  };
 
+  const confirmDeleteUser = async () => {
+    if (!userPendingDelete) return;
     setActionError(null);
-    const res = await apiClient(`/api/v1/users/${user.id}`, { method: 'DELETE' });
+    const res = await apiClient(`/api/v1/users/${userPendingDelete.id}`, { method: 'DELETE' });
     if (res.error) {
       setActionError(res.error.message);
       return;
     }
+    setUserPendingDelete(null);
     fetchUsers();
   };
 
@@ -140,7 +144,7 @@ export const UsersPage: React.FC = () => {
           <select
             value={user.role}
             onChange={(e) => handleRoleChange(user.id, e.target.value as UserRole)}
-            className="bg-[#0f1219] border border-slate-700 text-[11px] text-slate-300 rounded px-1.5 py-0.5 focus:border-gold-400 focus:outline-none"
+            className="bg-sidebar border border-slate-700 text-[11px] text-slate-300 rounded px-1.5 py-0.5 focus:border-gold-400 focus:outline-none"
           >
             <option value="admin">Admin</option>
             <option value="production_manager">Production</option>
@@ -233,6 +237,14 @@ export const UsersPage: React.FC = () => {
           <span>Add Staff Member</span>
         </Button>
       </div>
+      <ConfirmDialog
+        open={Boolean(userPendingDelete)}
+        title="Delete staff account?"
+        message={userPendingDelete ? `Delete ${userPendingDelete.full_name}'s account? This removes their login and disables their profile.` : ''}
+        confirmLabel="Delete account"
+        onConfirm={() => void confirmDeleteUser()}
+        onCancel={() => setUserPendingDelete(null)}
+      />
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <Card className="p-4">
@@ -260,25 +272,25 @@ export const UsersPage: React.FC = () => {
           <span>Role Permission Matrix</span>
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
-          <div className="bg-[#0f1219] p-3 rounded-lg border border-slate-800 space-y-1">
+          <div className="bg-sidebar p-3 rounded-lg border border-slate-800 space-y-1">
             <span className="font-semibold text-gold-300">Admin</span>
             <p className="text-slate-400 text-[11px]">
               Full ERP & POS access, user management, audit trails, and PO approvals.
             </p>
           </div>
-          <div className="bg-[#0f1219] p-3 rounded-lg border border-slate-800 space-y-1">
+          <div className="bg-sidebar p-3 rounded-lg border border-slate-800 space-y-1">
             <span className="font-semibold text-amber-300">Production Manager</span>
             <p className="text-slate-400 text-[11px]">
               Formula BOM, compounding batches, bottling runs, and dilution calculator.
             </p>
           </div>
-          <div className="bg-[#0f1219] p-3 rounded-lg border border-slate-800 space-y-1">
+          <div className="bg-sidebar p-3 rounded-lg border border-slate-800 space-y-1">
             <span className="font-semibold text-slate-300">Inventory Manager</span>
             <p className="text-slate-400 text-[11px]">
               Raw materials, suppliers, purchase order creation, and stock adjustments.
             </p>
           </div>
-          <div className="bg-[#0f1219] p-3 rounded-lg border border-slate-800 space-y-1">
+          <div className="bg-sidebar p-3 rounded-lg border border-slate-800 space-y-1">
             <span className="font-semibold text-emerald-300">Sales Staff</span>
             <p className="text-slate-400 text-[11px]">
               POS counter sales, touch interface, receipts, and customer management.
@@ -301,8 +313,8 @@ export const UsersPage: React.FC = () => {
 
       {/* Create User Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-[#141824] border border-gold-400/30 rounded-xl p-6 shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 bg-background/75 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="w-full max-w-md bg-card border border-gold-400/30 rounded-xl p-6 shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <h3 className="font-serif text-lg font-semibold text-slate-100 flex items-center gap-2">
                 <UserPlus className="h-5 w-5 text-gold-400" />
@@ -357,7 +369,7 @@ export const UsersPage: React.FC = () => {
                 <select
                   value={newRole}
                   onChange={(e) => setNewRole(e.target.value as UserRole)}
-                  className="w-full rounded-md bg-[#0f1219] px-3.5 py-2 text-sm text-slate-100 border border-slate-700/80 focus:border-gold-400 focus:outline-none"
+                  className="w-full rounded-md bg-sidebar px-3.5 py-2 text-sm text-slate-100 border border-slate-700/80 focus:border-gold-400 focus:outline-none"
                 >
                   <option value="sales_staff">Sales Staff (POS Counter)</option>
                   <option value="inventory_manager">Inventory Manager (Materials & POs)</option>

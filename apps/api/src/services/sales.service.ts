@@ -119,6 +119,13 @@ let memorySaleItems: SaleItem[] = [];
 let memoryPayments: Payment[] = [];
 
 export class SalesService {
+  static clearDemoData(): void {
+    memoryCustomers = memoryCustomers.filter((customer) => !customer.id.includes('00000001'));
+    memorySales = memorySales.filter((sale) => !sale.id.includes('00000001'));
+    memorySaleItems = memorySaleItems.filter((item) => !item.id.includes('00000001'));
+    memoryPayments = memoryPayments.filter((payment) => !payment.id.includes('00000001'));
+  }
+
   /**
    * Get Customers
    */

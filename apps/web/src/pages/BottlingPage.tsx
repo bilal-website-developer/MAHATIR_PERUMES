@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { apiClient } from '../lib/api';
 import { useAuth } from '../context/AuthContext';
+import { formatCurrency } from '../lib/utils';
 import { Decimal } from 'decimal.js';
 
 interface FinishedGoodsLot {
@@ -323,7 +324,7 @@ export const BottlingPage: React.FC = () => {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-[#121622] border border-slate-800/80 rounded-xl p-4 shadow-sm">
+        <div className="bg-surface border border-slate-800/80 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
             <span>Total Bottled Units</span>
             <Boxes className="h-4 w-4 text-gold-400" />
@@ -334,18 +335,18 @@ export const BottlingPage: React.FC = () => {
           <p className="text-[11px] text-emerald-400 mt-1">Available in retail inventory</p>
         </div>
 
-        <div className="bg-[#121622] border border-slate-800/80 rounded-xl p-4 shadow-sm">
+        <div className="bg-surface border border-slate-800/80 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
             <span>Finished Goods Valuation</span>
             <TrendingUp className="h-4 w-4 text-emerald-400" />
           </div>
           <div className="text-2xl font-bold font-mono text-gold-300">
-            ${totalAssetValuation.toFixed(2)}
+            {formatCurrency(totalAssetValuation.toString())}
           </div>
           <p className="text-[11px] text-slate-400 mt-1">Total manufacturing unit cost</p>
         </div>
 
-        <div className="bg-[#121622] border border-slate-800/80 rounded-xl p-4 shadow-sm">
+        <div className="bg-surface border border-slate-800/80 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
             <span>Active Finished SKUs</span>
             <Tag className="h-4 w-4 text-blue-400" />
@@ -354,7 +355,7 @@ export const BottlingPage: React.FC = () => {
           <p className="text-[11px] text-slate-400 mt-1">Configured bottle size variants</p>
         </div>
 
-        <div className="bg-[#121622] border border-slate-800/80 rounded-xl p-4 shadow-sm">
+        <div className="bg-surface border border-slate-800/80 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
             <span>Bottling Runs Executed</span>
             <CheckCircle2 className="h-4 w-4 text-purple-400" />
@@ -369,8 +370,8 @@ export const BottlingPage: React.FC = () => {
         <button
           onClick={() => setActiveTab('lots')}
           className={`px-5 py-3 text-xs font-semibold border-b-2 transition-colors flex items-center space-x-2 ${activeTab === 'lots'
-              ? 'border-gold-400 text-gold-300'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
+            ? 'border-gold-400 text-gold-300'
+            : 'border-transparent text-slate-400 hover:text-slate-200'
             }`}
         >
           <Boxes className="h-4 w-4" />
@@ -380,8 +381,8 @@ export const BottlingPage: React.FC = () => {
         <button
           onClick={() => setActiveTab('skus')}
           className={`px-5 py-3 text-xs font-semibold border-b-2 transition-colors flex items-center space-x-2 ${activeTab === 'skus'
-              ? 'border-gold-400 text-gold-300'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
+            ? 'border-gold-400 text-gold-300'
+            : 'border-transparent text-slate-400 hover:text-slate-200'
             }`}
         >
           <Tag className="h-4 w-4" />
@@ -391,8 +392,8 @@ export const BottlingPage: React.FC = () => {
         <button
           onClick={() => setActiveTab('recipes')}
           className={`px-5 py-3 text-xs font-semibold border-b-2 transition-colors flex items-center space-x-2 ${activeTab === 'recipes'
-              ? 'border-gold-400 text-gold-300'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
+            ? 'border-gold-400 text-gold-300'
+            : 'border-transparent text-slate-400 hover:text-slate-200'
             }`}
         >
           <Layers className="h-4 w-4" />
@@ -402,8 +403,8 @@ export const BottlingPage: React.FC = () => {
         <button
           onClick={() => setActiveTab('runs')}
           className={`px-5 py-3 text-xs font-semibold border-b-2 transition-colors flex items-center space-x-2 ${activeTab === 'runs'
-              ? 'border-gold-400 text-gold-300'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
+            ? 'border-gold-400 text-gold-300'
+            : 'border-transparent text-slate-400 hover:text-slate-200'
             }`}
         >
           <Clock className="h-4 w-4" />
@@ -422,13 +423,13 @@ export const BottlingPage: React.FC = () => {
                 placeholder="Search lot number, SKU, perfume..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-[#121622] border border-slate-800 rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-gold-500/50"
+                className="w-full bg-surface border border-slate-800 rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-gold-500/50"
               />
             </div>
             <span className="text-xs text-slate-500">Showing {filteredLots.length} lots</span>
           </div>
 
-          <div className="bg-[#121622] border border-slate-800/80 rounded-xl overflow-hidden shadow-sm">
+          <div className="bg-surface border border-slate-800/80 rounded-xl overflow-hidden shadow-sm">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
@@ -468,10 +469,10 @@ export const BottlingPage: React.FC = () => {
                           {Number(lot.current_quantity).toFixed(0)} <span className="text-[10px] font-sans text-slate-400 font-normal">units</span>
                         </td>
                         <td className="py-3.5 px-4 text-right font-mono text-gold-400">
-                          ${Number(lot.unit_cost).toFixed(2)}
+                          {formatCurrency(lot.unit_cost)}
                         </td>
                         <td className="py-3.5 px-4 text-right font-mono text-emerald-400">
-                          ${Number(lot.selling_price || 0).toFixed(2)}
+                          {formatCurrency(lot.selling_price || 0)}
                         </td>
                         <td className="py-3.5 px-4 text-center">
                           <button
@@ -494,7 +495,7 @@ export const BottlingPage: React.FC = () => {
 
       {/* Tab 2: Product Variants & SKUs */}
       {activeTab === 'skus' && (
-        <div className="bg-[#121622] border border-slate-800/80 rounded-xl overflow-hidden shadow-sm">
+        <div className="bg-surface border border-slate-800/80 rounded-xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
@@ -516,7 +517,7 @@ export const BottlingPage: React.FC = () => {
                     <td className="py-3 px-4 font-mono text-slate-300">{Number(v.size_ml).toFixed(0)} ml</td>
                     <td className="py-3 px-4 text-slate-400">{v.packaging_recipe_name || 'Standard Packaging'}</td>
                     <td className="py-3 px-4 text-right font-mono font-bold text-emerald-400">
-                      ${Number(v.selling_price).toFixed(2)}
+                      {formatCurrency(v.selling_price)}
                     </td>
                     <td className="py-3 px-4 text-right font-mono font-bold text-slate-100">
                       {Number(v.current_stock).toFixed(0)} units
@@ -538,7 +539,7 @@ export const BottlingPage: React.FC = () => {
       {activeTab === 'recipes' && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {recipes.map((recipe) => (
-            <div key={recipe.id} className="bg-[#121622] border border-slate-800/80 rounded-xl p-5 shadow-sm space-y-4">
+            <div key={recipe.id} className="bg-surface border border-slate-800/80 rounded-xl p-5 shadow-sm space-y-4">
               <div className="flex items-start justify-between border-b border-slate-800 pb-3">
                 <div>
                   <h3 className="font-serif font-bold text-slate-100 text-sm">{recipe.name}</h3>
@@ -549,7 +550,7 @@ export const BottlingPage: React.FC = () => {
                     {Number(recipe.size_ml).toFixed(0)} ml Flacon
                   </span>
                   <div className="text-xs font-mono text-emerald-400 mt-1 font-bold">
-                    ${Number(recipe.total_packaging_cost || 0).toFixed(2)} / unit
+                    {formatCurrency(recipe.total_packaging_cost || 0)} / unit
                   </div>
                 </div>
               </div>
@@ -570,7 +571,7 @@ export const BottlingPage: React.FC = () => {
                       </div>
                       <div className="text-right font-mono text-slate-300">
                         <div>{Number(item.quantity_per_unit).toFixed(0)} pcs</div>
-                        <div className="text-[10px] text-slate-500">${Number(item.unit_cost || 0).toFixed(2)} each</div>
+                        <div className="text-[10px] text-slate-500">{formatCurrency(item.unit_cost || 0)} each</div>
                       </div>
                     </div>
                   ))}
@@ -583,7 +584,7 @@ export const BottlingPage: React.FC = () => {
 
       {/* Tab 4: Bottling Execution History */}
       {activeTab === 'runs' && (
-        <div className="bg-[#121622] border border-slate-800/80 rounded-xl overflow-hidden shadow-sm">
+        <div className="bg-surface border border-slate-800/80 rounded-xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
@@ -620,7 +621,7 @@ export const BottlingPage: React.FC = () => {
                         {Number(run.bulk_volume_deducted).toFixed(2)} ml
                       </td>
                       <td className="py-3 px-4 text-right font-mono font-bold text-gold-300">
-                        ${Number(run.unit_cost).toFixed(2)}
+                        {formatCurrency(run.unit_cost)}
                       </td>
                       <td className="py-3 px-4 text-right text-slate-500">
                         {new Date(run.created_at).toLocaleDateString()}
@@ -637,7 +638,7 @@ export const BottlingPage: React.FC = () => {
       {/* New Bottling Run Modal / Wizard */}
       {isBottleModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-[#121622] border border-slate-800 rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl space-y-5 p-6">
+          <div className="bg-surface border border-slate-800 rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl space-y-5 p-6">
             <div className="flex items-center justify-between border-b border-slate-800 pb-4">
               <div>
                 <h3 className="font-serif font-bold text-slate-100 text-lg flex items-center space-x-2">
@@ -727,8 +728,8 @@ export const BottlingPage: React.FC = () => {
                   </span>
                   <span
                     className={`text-[11px] font-bold px-2 py-0.5 rounded-full border ${preview.can_bottle
-                        ? 'bg-emerald-950/60 text-emerald-400 border-emerald-500/30'
-                        : 'bg-rose-950/60 text-rose-400 border-rose-500/30'
+                      ? 'bg-emerald-950/60 text-emerald-400 border-emerald-500/30'
+                      : 'bg-rose-950/60 text-rose-400 border-rose-500/30'
                       }`}
                   >
                     {preview.can_bottle ? '✓ All Stocks Sufficient' : '✕ Stock Insufficient'}
@@ -749,17 +750,17 @@ export const BottlingPage: React.FC = () => {
                   <div className="p-2.5 rounded bg-slate-950/60 border border-slate-800/60">
                     <span className="text-[10px] text-slate-500 uppercase">Packaging / Bottle</span>
                     <div className="font-mono font-bold text-slate-200 mt-0.5">
-                      ${Number(preview.packaging_cost_per_unit).toFixed(2)}
+                      {formatCurrency(preview.packaging_cost_per_unit)}
                     </div>
                     <div className="text-[10px] text-slate-400 mt-0.5">
-                      Total: ${Number(preview.packaging_cost_total).toFixed(2)}
+                      Total: {formatCurrency(preview.packaging_cost_total)}
                     </div>
                   </div>
 
                   <div className="p-2.5 rounded bg-slate-950/60 border border-slate-800/60">
                     <span className="text-[10px] text-slate-500 uppercase">True Unit Cost</span>
                     <div className="font-mono font-bold text-gold-300 mt-0.5">
-                      ${Number(preview.estimated_unit_cost).toFixed(2)}
+                      {formatCurrency(preview.estimated_unit_cost)}
                     </div>
                     <div className="text-[10px] text-slate-400 mt-0.5">
                       Cost per bottle
@@ -843,7 +844,7 @@ export const BottlingPage: React.FC = () => {
       {/* Lot Details Modal */}
       {selectedLot && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-[#121622] border border-slate-800 rounded-2xl w-full max-w-lg p-6 space-y-4 shadow-2xl">
+          <div className="bg-surface border border-slate-800 rounded-2xl w-full max-w-lg p-6 space-y-4 shadow-2xl">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
                 <span className="text-[10px] font-mono text-gold-400 uppercase tracking-widest">
@@ -883,7 +884,7 @@ export const BottlingPage: React.FC = () => {
               <div className="flex justify-between py-1.5 border-b border-slate-800/60">
                 <span className="text-slate-400">True Manufacturing Unit Cost</span>
                 <span className="font-mono font-bold text-gold-300">
-                  ${Number(selectedLot.unit_cost).toFixed(2)}
+                  {formatCurrency(selectedLot.unit_cost)}
                 </span>
               </div>
               <div className="flex justify-between py-1.5 border-b border-slate-800/60">

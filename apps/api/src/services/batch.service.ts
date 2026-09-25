@@ -82,7 +82,7 @@ let memoryBatches: Batch[] = [
     actual_volume: '980.0000', // 980 ml (20 ml evaporation/testing loss)
     remaining_volume: '980.0000',
     total_cost: '13511.7000', // Total raw material cost
-    cost_per_ml: '13.7874', // $13,511.70 / 980 ml
+    cost_per_ml: '13.7874', // PKR 13,511.70 / 980 ml
     loss_percent: '2.0000', // 2% loss
     loss_volume: '20.0000',
     status: 'bulk',
@@ -144,6 +144,11 @@ let memoryBulkInventory: BulkInventoryLot[] = [
 ];
 
 export class BatchService {
+  static clearDemoData(): void {
+    memoryBatches = memoryBatches.filter((batch) => !batch.id.includes('00000001'));
+    memoryBulkInventory = memoryBulkInventory.filter((lot) => !lot.id.includes('00000001'));
+  }
+
   /**
    * List batches with status, search, and perfume filters
    */

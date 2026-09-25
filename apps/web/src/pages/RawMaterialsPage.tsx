@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { apiClient } from '../lib/api';
 import { useAuth } from '../context/AuthContext';
+import { formatCurrency } from '../lib/utils';
 import { Decimal } from 'decimal.js';
 
 interface RawMaterial {
@@ -217,7 +218,7 @@ export const RawMaterialsPage: React.FC = () => {
         <div className="flex items-center space-x-3">
           <button
             onClick={() => fetchMaterials()}
-            className="p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 bg-slate-900/60 text-slate-300 hover:text-white transition-colors"
+            className="p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 bg-slate-900/60 text-slate-300 hover:text-foreground transition-colors"
             title="Refresh Data"
           >
             <RefreshCw className="h-4 w-4" />
@@ -239,8 +240,8 @@ export const RawMaterialsPage: React.FC = () => {
       {feedback && (
         <div
           className={`p-4 rounded-xl flex items-center justify-between border ${feedback.type === 'success'
-              ? 'bg-emerald-950/30 border-emerald-500/30 text-emerald-300'
-              : 'bg-rose-950/30 border-rose-500/30 text-rose-300'
+            ? 'bg-emerald-950/30 border-emerald-500/30 text-emerald-300'
+            : 'bg-rose-950/30 border-rose-500/30 text-rose-300'
             }`}
         >
           <div className="flex items-center space-x-3">
@@ -251,7 +252,7 @@ export const RawMaterialsPage: React.FC = () => {
             )}
             <span className="text-sm font-medium">{feedback.message}</span>
           </div>
-          <button onClick={() => setFeedback(null)} className="text-slate-400 hover:text-white">
+          <button onClick={() => setFeedback(null)} className="text-slate-400 hover:text-foreground">
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -265,7 +266,7 @@ export const RawMaterialsPage: React.FC = () => {
             <TrendingUp className="h-4 w-4 text-gold-400" />
           </div>
           <div className="text-2xl font-serif font-bold text-gold-300">
-            ${totalValuation.toFixed(2)}
+            {formatCurrency(totalValuation.toString())}
           </div>
           <div className="text-[11px] text-slate-500 mt-1">Weighted average valuation</div>
         </div>
@@ -282,8 +283,8 @@ export const RawMaterialsPage: React.FC = () => {
         <div
           onClick={() => setOnlyLowStock(!onlyLowStock)}
           className={`p-4 rounded-xl border cursor-pointer transition-all ${onlyLowStock
-              ? 'bg-rose-950/40 border-rose-500/50 shadow-[0_0_15px_rgba(244,63,94,0.15)]'
-              : 'bg-slate-900/60 border-slate-800/80 hover:border-rose-900/50'
+            ? 'bg-rose-950/40 border-rose-500/50 shadow-[0_0_15px_rgba(244,63,94,0.15)]'
+            : 'bg-slate-900/60 border-slate-800/80 hover:border-rose-900/50'
             }`}
         >
           <div className="flex items-center justify-between text-slate-400 mb-2">
@@ -335,8 +336,8 @@ export const RawMaterialsPage: React.FC = () => {
               key={cat.id}
               onClick={() => setCategoryFilter(cat.id)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${categoryFilter === cat.id
-                  ? 'bg-gold-500/20 text-gold-300 border border-gold-500/30'
-                  : 'text-slate-400 hover:text-slate-200 bg-slate-800/40 border border-transparent'
+                ? 'bg-gold-500/20 text-gold-300 border border-gold-500/30'
+                : 'text-slate-400 hover:text-slate-200 bg-slate-800/40 border border-transparent'
                 }`}
             >
               {cat.label}
@@ -346,10 +347,10 @@ export const RawMaterialsPage: React.FC = () => {
       </div>
 
       {/* Materials Table */}
-      <div className="bg-[#0f121a] rounded-xl border border-slate-800/80 overflow-hidden shadow-xl">
+      <div className="bg-sidebar rounded-xl border border-slate-800/80 overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-[#141824] text-slate-400 uppercase tracking-wider border-b border-slate-800 text-[10px]">
+            <thead className="bg-card text-slate-400 uppercase tracking-wider border-b border-slate-800 text-[10px]">
               <tr>
                 <th className="py-3.5 px-4 font-semibold">SKU & Material Name</th>
                 <th className="py-3.5 px-4 font-semibold">Category</th>
@@ -423,10 +424,10 @@ export const RawMaterialsPage: React.FC = () => {
                         {item.min_stock_level} {item.base_unit}
                       </td>
                       <td className="py-3 px-4 font-mono text-gold-300 font-medium">
-                        ${parseFloat(item.cost_per_unit).toFixed(4)} / {item.base_unit}
+                        {formatCurrency(item.cost_per_unit)} / {item.base_unit}
                       </td>
                       <td className="py-3 px-4 font-mono font-semibold text-slate-100">
-                        ${valuation.toFixed(2)}
+                        {formatCurrency(valuation.toString())}
                       </td>
                       <td className="py-3 px-4 text-right">
                         <div className="flex items-center justify-end space-x-1.5">
@@ -463,7 +464,7 @@ export const RawMaterialsPage: React.FC = () => {
       {/* Stock Adjustment Modal */}
       {isAdjustModalOpen && selectedMaterial && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-          <div className="bg-[#121620] border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative">
+          <div className="bg-surface border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative">
             <div className="flex items-center justify-between pb-4 border-b border-slate-800">
               <div>
                 <h3 className="font-serif font-bold text-base text-slate-100">Adjust Physical Stock</h3>
@@ -471,7 +472,7 @@ export const RawMaterialsPage: React.FC = () => {
               </div>
               <button
                 onClick={() => setIsAdjustModalOpen(false)}
-                className="text-slate-400 hover:text-white"
+                className="text-slate-400 hover:text-foreground"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -492,8 +493,8 @@ export const RawMaterialsPage: React.FC = () => {
                     type="button"
                     onClick={() => setAdjustData({ ...adjustData, type: 'add' })}
                     className={`py-2 px-3 rounded-lg flex items-center justify-center space-x-2 border font-medium ${adjustData.type === 'add'
-                        ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
-                        : 'bg-slate-900 border-slate-800 text-slate-400'
+                      ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300'
+                      : 'bg-slate-900 border-slate-800 text-slate-400'
                       }`}
                   >
                     <ArrowDownLeft className="h-4 w-4" />
@@ -503,8 +504,8 @@ export const RawMaterialsPage: React.FC = () => {
                     type="button"
                     onClick={() => setAdjustData({ ...adjustData, type: 'subtract' })}
                     className={`py-2 px-3 rounded-lg flex items-center justify-center space-x-2 border font-medium ${adjustData.type === 'subtract'
-                        ? 'bg-rose-500/20 border-rose-500/40 text-rose-300'
-                        : 'bg-slate-900 border-slate-800 text-slate-400'
+                      ? 'bg-rose-500/20 border-rose-500/40 text-rose-300'
+                      : 'bg-slate-900 border-slate-800 text-slate-400'
                       }`}
                   >
                     <ArrowUpRight className="h-4 w-4" />
@@ -565,10 +566,10 @@ export const RawMaterialsPage: React.FC = () => {
       {/* Add New Raw Material Modal */}
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-          <div className="bg-[#121620] border border-slate-800 rounded-2xl w-full max-w-lg p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+          <div className="bg-surface border border-slate-800 rounded-2xl w-full max-w-lg p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-4 border-b border-slate-800">
               <h3 className="font-serif font-bold text-base text-slate-100">Add New Raw Material</h3>
-              <button onClick={() => setIsAddModalOpen(false)} className="text-slate-400 hover:text-white">
+              <button onClick={() => setIsAddModalOpen(false)} className="text-slate-400 hover:text-foreground">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -677,7 +678,7 @@ export const RawMaterialsPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-slate-300 font-medium mb-1">Cost Per Base Unit ($)</label>
+                  <label className="block text-slate-300 font-medium mb-1">Cost Per Base Unit (PKR)</label>
                   <input
                     type="number"
                     step="0.0001"
@@ -712,7 +713,7 @@ export const RawMaterialsPage: React.FC = () => {
       {/* Stock Ledger History Drawer / Modal */}
       {isLedgerOpen && selectedMaterial && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-          <div className="bg-[#121620] border border-slate-800 rounded-2xl w-full max-w-2xl p-6 shadow-2xl relative max-h-[85vh] flex flex-col">
+          <div className="bg-surface border border-slate-800 rounded-2xl w-full max-w-2xl p-6 shadow-2xl relative max-h-[85vh] flex flex-col">
             <div className="flex items-center justify-between pb-4 border-b border-slate-800">
               <div>
                 <h3 className="font-serif font-bold text-base text-slate-100 flex items-center space-x-2">
@@ -723,7 +724,7 @@ export const RawMaterialsPage: React.FC = () => {
                   Append-only immutable record for: <span className="text-slate-200 font-semibold">{selectedMaterial.name}</span>
                 </p>
               </div>
-              <button onClick={() => setIsLedgerOpen(false)} className="text-slate-400 hover:text-white">
+              <button onClick={() => setIsLedgerOpen(false)} className="text-slate-400 hover:text-foreground">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -751,8 +752,8 @@ export const RawMaterialsPage: React.FC = () => {
                         <div className="flex items-start space-x-3">
                           <div
                             className={`p-2 rounded-lg mt-0.5 ${isPositive
-                                ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-                                : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+                              ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
+                              : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
                               }`}
                           >
                             {isPositive ? (
@@ -783,10 +784,10 @@ export const RawMaterialsPage: React.FC = () => {
                             {m.quantity} {m.unit}
                           </div>
                           <div className="text-[11px] text-slate-400 font-mono mt-0.5">
-                            @ ${parseFloat(m.unit_cost).toFixed(4)} / {m.unit}
+                            @ {formatCurrency(m.unit_cost)} / {m.unit}
                           </div>
                           <div className="text-[10px] text-slate-500 font-mono">
-                            Total: ${parseFloat(m.total_cost).toFixed(2)}
+                            Total: {formatCurrency(m.total_cost)}
                           </div>
                         </div>
                       </div>

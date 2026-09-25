@@ -114,7 +114,7 @@ export const SuppliersPage: React.FC = () => {
         <div className="flex items-center space-x-3">
           <button
             onClick={() => fetchSuppliers()}
-            className="p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 bg-slate-900/60 text-slate-300 hover:text-white transition-colors"
+            className="p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 bg-slate-900/60 text-slate-300 hover:text-foreground transition-colors"
           >
             <RefreshCw className="h-4 w-4" />
           </button>
@@ -146,7 +146,7 @@ export const SuppliersPage: React.FC = () => {
             )}
             <span className="text-sm font-medium">{feedback.message}</span>
           </div>
-          <button onClick={() => setFeedback(null)} className="text-slate-400 hover:text-white">
+          <button onClick={() => setFeedback(null)} className="text-slate-400 hover:text-foreground">
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -180,7 +180,7 @@ export const SuppliersPage: React.FC = () => {
           filtered.map((sup) => (
             <div
               key={sup.id}
-              className="bg-[#0f121a] p-5 rounded-2xl border border-slate-800/80 hover:border-gold-500/30 transition-all flex flex-col justify-between shadow-lg"
+              className="bg-sidebar p-5 rounded-2xl border border-slate-800/80 hover:border-gold-500/30 transition-all flex flex-col justify-between shadow-lg"
             >
               <div>
                 <div className="flex items-start justify-between">
@@ -238,10 +238,10 @@ export const SuppliersPage: React.FC = () => {
       {/* Add Supplier Modal */}
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-          <div className="bg-[#121620] border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative">
+          <div className="bg-surface border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative">
             <div className="flex items-center justify-between pb-4 border-b border-slate-800">
               <h3 className="font-serif font-bold text-base text-slate-100">Add New Supplier</h3>
-              <button onClick={() => setIsAddModalOpen(false)} className="text-slate-400 hover:text-white">
+              <button onClick={() => setIsAddModalOpen(false)} className="text-slate-400 hover:text-foreground">
                 <X className="h-5 w-5" />
               </button>
             </div>

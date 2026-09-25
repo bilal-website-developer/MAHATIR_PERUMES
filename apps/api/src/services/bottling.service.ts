@@ -115,6 +115,12 @@ let memoryBottlingRuns: BottlingRun[] = [
 ];
 
 export class BottlingService {
+  static clearDemoData(): void {
+    const isSeeded = (id: string) => id.includes('00000001');
+    memoryFinishedGoodsLots = memoryFinishedGoodsLots.filter((lot) => !isSeeded(lot.id));
+    memoryBottlingRuns = memoryBottlingRuns.filter((run) => !isSeeded(run.id));
+  }
+
   /**
    * Preview a Bottling Run before execution:
    * Validates bulk liquid and packaging stocks, computes unit cost breakdown.

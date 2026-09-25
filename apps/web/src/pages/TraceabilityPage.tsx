@@ -160,7 +160,7 @@ export const TraceabilityPage: React.FC = () => {
       {isBatchQuery && forwardTrace && (
         <div className="space-y-6 animate-fadeIn">
           {/* Active Inspection Banner */}
-          <div className="p-5 rounded-2xl border border-gold-500/40 bg-gradient-to-r from-slate-900 via-slate-900/90 to-[#141923] flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="p-5 rounded-2xl border border-gold-500/40 bg-gradient-to-r from-slate-900 via-slate-900/90 to-card flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <div className="flex items-center space-x-2">
                 <span className="px-2.5 py-0.5 rounded text-[10px] uppercase font-mono font-bold bg-gold-500/20 border border-gold-500/40 text-gold-300">
@@ -322,7 +322,7 @@ export const TraceabilityPage: React.FC = () => {
       {isSaleQuery && backwardTrace && (
         <div className="space-y-6 animate-fadeIn">
           {/* Active Inspection Banner */}
-          <div className="p-5 rounded-2xl border border-cyan-500/40 bg-gradient-to-r from-slate-900 via-slate-900/90 to-[#141923] flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="p-5 rounded-2xl border border-cyan-500/40 bg-gradient-to-r from-slate-900 via-slate-900/90 to-card flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <div className="flex items-center space-x-2">
                 <span className="px-2.5 py-0.5 rounded text-[10px] uppercase font-mono font-bold bg-cyan-500/20 border border-cyan-500/40 text-cyan-300">

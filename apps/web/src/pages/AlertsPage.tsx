@@ -134,7 +134,7 @@ export const AlertsPage: React.FC = () => {
               refetchIntegrity();
               setShowIntegrityModal(true);
             }}
-            className="px-3 py-2 bg-[#161a24] hover:bg-slate-800 border border-slate-700/80 rounded-lg text-xs font-semibold text-slate-200 flex items-center space-x-2 transition-colors shadow-sm"
+            className="px-3 py-2 bg-card hover:bg-slate-800 border border-slate-700/80 rounded-lg text-xs font-semibold text-slate-200 flex items-center space-x-2 transition-colors shadow-sm"
           >
             <ShieldCheck className="h-4 w-4 text-emerald-400" />
             <span>Stock Integrity Guard</span>
@@ -153,7 +153,7 @@ export const AlertsPage: React.FC = () => {
 
       {/* KPI Telemetry Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-[#141824] border border-slate-800/80 rounded-xl p-4 shadow-sm">
+        <div className="bg-card border border-slate-800/80 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between text-slate-400 text-xs">
             <span>Active Alerts</span>
             <Bell className="h-4 w-4 text-gold-400" />
@@ -177,7 +177,7 @@ export const AlertsPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-[#141824] border border-slate-800/80 rounded-xl p-4 shadow-sm">
+        <div className="bg-card border border-slate-800/80 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between text-slate-400 text-xs">
             <span>Critical Shortages</span>
             <AlertOctagon className="h-4 w-4 text-rose-400" />
@@ -190,7 +190,7 @@ export const AlertsPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-[#141824] border border-slate-800/80 rounded-xl p-4 shadow-sm">
+        <div className="bg-card border border-slate-800/80 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between text-slate-400 text-xs">
             <span>Material & Variant Alarms</span>
             <Layers className="h-4 w-4 text-amber-400" />
@@ -203,7 +203,7 @@ export const AlertsPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-[#141824] border border-slate-800/80 rounded-xl p-4 shadow-sm">
+        <div className="bg-card border border-slate-800/80 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between text-slate-400 text-xs">
             <span>Stock Ledger Integrity</span>
             <ShieldCheck className="h-4 w-4 text-emerald-400" />
@@ -218,9 +218,9 @@ export const AlertsPage: React.FC = () => {
       </div>
 
       {/* Main Alerts Card */}
-      <div className="bg-[#141824] border border-slate-800/80 rounded-xl overflow-hidden shadow-md">
+      <div className="bg-card border border-slate-800/80 rounded-xl overflow-hidden shadow-md">
         {/* Controls Toolbar */}
-        <div className="p-4 border-b border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 bg-[#11141e]">
+        <div className="p-4 border-b border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 bg-surface">
           {/* Tabs */}
           <div className="flex items-center space-x-1.5 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0">
             <button
@@ -278,7 +278,7 @@ export const AlertsPage: React.FC = () => {
               placeholder="Search alerts or SKU..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-[#161a24] border border-slate-700/80 rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-gold-400/70"
+              className="w-full bg-card border border-slate-700/80 rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-gold-400/70"
             />
           </div>
         </div>
@@ -378,7 +378,7 @@ export const AlertsPage: React.FC = () => {
                   {item.type === 'low_raw_material' && (
                     <button
                       onClick={() => navigate('/purchase-orders')}
-                      className="px-2.5 py-1.5 bg-[#161a24] hover:bg-slate-800 border border-slate-700/80 rounded-lg text-[11px] font-semibold text-slate-300 flex items-center space-x-1 transition-colors"
+                      className="px-2.5 py-1.5 bg-card hover:bg-slate-800 border border-slate-700/80 rounded-lg text-[11px] font-semibold text-slate-300 flex items-center space-x-1 transition-colors"
                     >
                       <span>Create PO</span>
                       <ArrowRight className="h-3 w-3" />
@@ -388,7 +388,7 @@ export const AlertsPage: React.FC = () => {
                   {item.type === 'low_finished_goods' && (
                     <button
                       onClick={() => navigate('/suggestions')}
-                      className="px-2.5 py-1.5 bg-[#161a24] hover:bg-slate-800 border border-slate-700/80 rounded-lg text-[11px] font-semibold text-gold-300 flex items-center space-x-1 transition-colors"
+                      className="px-2.5 py-1.5 bg-card hover:bg-slate-800 border border-slate-700/80 rounded-lg text-[11px] font-semibold text-gold-300 flex items-center space-x-1 transition-colors"
                     >
                       <span>Suggest Batch</span>
                       <ArrowRight className="h-3 w-3" />
@@ -416,8 +416,8 @@ export const AlertsPage: React.FC = () => {
 
       {/* Stock Integrity Guard Review Modal */}
       {showIntegrityModal && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#141824] border border-slate-700 rounded-xl max-w-xl w-full p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-150">
+        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-card border border-slate-700 rounded-xl max-w-xl w-full p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-150">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div className="flex items-center space-x-2">
                 <ShieldCheck className="h-5 w-5 text-emerald-400" />
@@ -437,7 +437,7 @@ export const AlertsPage: React.FC = () => {
               Per Master Plan Section 4 (Rule 4), every stock alteration is locked, verified atomically inside PostgreSQL, and strictly prevented from dropping below 0.0000.
             </p>
 
-            <div className="space-y-3 bg-[#0f121a] p-4 rounded-lg border border-slate-800 text-xs">
+            <div className="space-y-3 bg-sidebar p-4 rounded-lg border border-slate-800 text-xs">
               <div className="flex items-center justify-between pb-2 border-b border-slate-800/80">
                 <span className="text-slate-400">Scan Status:</span>
                 <span className="text-emerald-400 font-bold flex items-center space-x-1">
@@ -447,19 +447,19 @@ export const AlertsPage: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-2 gap-2 text-slate-300">
-                <div className="p-2.5 bg-[#161a24] rounded border border-slate-800">
+                <div className="p-2.5 bg-card rounded border border-slate-800">
                   <div className="text-[10px] text-slate-500 uppercase font-bold">Raw Materials</div>
                   <div className="text-emerald-400 font-semibold mt-1">CHECK (current_stock &gt;= 0)</div>
                 </div>
-                <div className="p-2.5 bg-[#161a24] rounded border border-slate-800">
+                <div className="p-2.5 bg-card rounded border border-slate-800">
                   <div className="text-[10px] text-slate-500 uppercase font-bold">Bulk Batches</div>
                   <div className="text-emerald-400 font-semibold mt-1">CHECK (remaining_vol &gt;= 0)</div>
                 </div>
-                <div className="p-2.5 bg-[#161a24] rounded border border-slate-800">
+                <div className="p-2.5 bg-card rounded border border-slate-800">
                   <div className="text-[10px] text-slate-500 uppercase font-bold">Finished Goods Lots</div>
                   <div className="text-emerald-400 font-semibold mt-1">CHECK (current_qty &gt;= 0)</div>
                 </div>
-                <div className="p-2.5 bg-[#161a24] rounded border border-slate-800">
+                <div className="p-2.5 bg-card rounded border border-slate-800">
                   <div className="text-[10px] text-slate-500 uppercase font-bold">Catalogue SKUs</div>
                   <div className="text-emerald-400 font-semibold mt-1">CHECK (stock_qty &gt;= 0)</div>
                 </div>

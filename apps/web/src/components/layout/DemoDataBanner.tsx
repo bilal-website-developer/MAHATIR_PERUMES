@@ -1,29 +1,25 @@
 import React, { useState } from 'react';
-import { Database, X, Trash2 } from 'lucide-react';
+import { Database, Trash2 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { apiClient } from '../../lib/api';
+import { useLocation } from 'react-router-dom';
 
-const DISMISSED_KEY = 'mahatir_demo_data_prompt_dismissed';
+const CLEARED_PREFIX = 'mahatir_demo_data_cleared:';
 
 export const DemoDataBanner: React.FC = () => {
     const { user } = useAuth();
-    const [visible, setVisible] = useState(() => localStorage.getItem(DISMISSED_KEY) !== 'true');
+    const { pathname } = useLocation();
+    const storageKey = `${CLEARED_PREFIX}${pathname}`;
+    const [visible, setVisible] = useState(() => localStorage.getItem(storageKey) !== 'true');
     const [isClearing, setIsClearing] = useState(false);
+    const [isConfirmOpen, setIsConfirmOpen] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    if (!visible || user?.role !== 'admin') return null;
-
-    const dismiss = () => {
-        localStorage.setItem(DISMISSED_KEY, 'true');
-        setVisible(false);
-    };
+    if (!visible || !user) return null;
 
     const clearDemoData = async () => {
-        if (!window.confirm('Clear demo transactions, inventory, alerts, and audit entries? User accounts, branches, settings, and units will remain.')) {
-            return;
-        }
-
         setIsClearing(true);
+        setIsConfirmOpen(false);
         setError(null);
         const response = await apiClient<{ cleared: boolean; already_cleared: boolean }>('/api/v1/users/clear-demo-data', {
             method: 'POST',
@@ -35,34 +31,47 @@ export const DemoDataBanner: React.FC = () => {
             return;
         }
 
-        localStorage.setItem(DISMISSED_KEY, 'true');
+        localStorage.setItem(storageKey, 'true');
         setVisible(false);
     };
 
     return (
-        <div className="mb-5 border border-amber-500/30 bg-amber-500/10 px-4 py-3 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="mb-5 border border-warning/30 bg-warning/10 px-4 py-3 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-start gap-3">
-                <Database className="h-5 w-5 text-amber-300 mt-0.5 shrink-0" />
+                <Database className="h-5 w-5 text-warning mt-0.5 shrink-0" />
                 <div>
-                    <p className="text-sm font-semibold text-amber-100">Demo data is available</p>
-                    <p className="text-xs text-amber-200/70">Clear seeded transactions and inventory once, or dismiss this notice.</p>
-                    {error && <p className="text-xs text-rose-300 mt-1">{error}</p>}
+                    <p className="text-sm font-semibold text-foreground">Demo data is available</p>
+                    <p className="text-xs text-muted">Clear seeded transactions and inventory once.</p>
+                    {error && <p className="text-xs text-danger mt-1">{error}</p>}
                 </div>
             </div>
             <div className="flex items-center gap-2 shrink-0">
-                <button type="button" onClick={dismiss} className="p-2 text-slate-300 hover:text-white" title="Keep demo data and dismiss">
-                    <X className="h-4 w-4" />
-                </button>
                 <button
                     type="button"
-                    onClick={clearDemoData}
+                    onClick={() => setIsConfirmOpen(true)}
                     disabled={isClearing}
-                    className="inline-flex items-center gap-2 rounded-lg bg-rose-500/15 border border-rose-400/30 px-3 py-2 text-xs font-semibold text-rose-200 hover:bg-rose-500/25 disabled:opacity-50"
+                    className="inline-flex items-center gap-2 rounded-lg bg-danger/15 border border-danger/30 px-3 py-2 text-xs font-semibold text-danger hover:bg-danger/25 disabled:opacity-50"
                 >
                     <Trash2 className="h-3.5 w-3.5" />
-                    {isClearing ? 'Clearing...' : 'Clear demo data'}
+                    {isClearing ? 'Clearing...' : 'Clear All Demo Data'}
                 </button>
             </div>
+            {isConfirmOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/70 p-4" role="dialog" aria-modal="true" aria-labelledby="demo-data-confirm-title">
+                    <div className="w-full max-w-md rounded-xl border border-border bg-card p-6 shadow-2xl">
+                        <h2 id="demo-data-confirm-title" className="text-base font-semibold text-foreground">Remove demo data?</h2>
+                        <p className="mt-2 text-sm text-muted">Only records explicitly marked as demo data will be removed. Real user data will be kept.</p>
+                        <div className="mt-6 flex justify-end gap-3">
+                            <button type="button" onClick={() => setIsConfirmOpen(false)} className="rounded-lg border border-border px-4 py-2 text-xs font-semibold text-muted hover:bg-surface">
+                                Cancel
+                            </button>
+                            <button type="button" onClick={clearDemoData} className="rounded-lg bg-danger px-4 py-2 text-xs font-semibold text-accent-foreground hover:bg-danger/80">
+                                Remove demo data
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

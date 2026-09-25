@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { apiClient } from '../lib/api';
 import { useAuth } from '../context/AuthContext';
+import { formatCurrency } from '../lib/utils';
 import { Decimal } from 'decimal.js';
 
 interface FinishedGoodsLot {
@@ -473,7 +474,7 @@ export const PosPage: React.FC = () => {
         {/* Left Side: Product Browser (8 cols) */}
         <div className="lg:col-span-8 space-y-4">
           {/* Search and Filters */}
-          <div className="flex flex-col sm:flex-row gap-3 items-center justify-between bg-[#121622] p-3 rounded-xl border border-slate-800">
+          <div className="flex flex-col sm:flex-row gap-3 items-center justify-between bg-surface p-3 rounded-xl border border-slate-800">
             <div className="relative w-full sm:w-80">
               <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-slate-500" />
               <input
@@ -489,8 +490,8 @@ export const PosPage: React.FC = () => {
               <button
                 onClick={() => setActiveCategory('all')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${activeCategory === 'all'
-                    ? 'bg-gold-500 text-slate-950 font-bold'
-                    : 'bg-slate-800/80 text-slate-400 hover:text-slate-200'
+                  ? 'bg-gold-500 text-slate-950 font-bold'
+                  : 'bg-slate-800/80 text-slate-400 hover:text-slate-200'
                   }`}
               >
                 All Products
@@ -498,8 +499,8 @@ export const PosPage: React.FC = () => {
               <button
                 onClick={() => setActiveCategory('bottled')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${activeCategory === 'bottled'
-                    ? 'bg-gold-500 text-slate-950 font-bold'
-                    : 'bg-slate-800/80 text-slate-400 hover:text-slate-200'
+                  ? 'bg-gold-500 text-slate-950 font-bold'
+                  : 'bg-slate-800/80 text-slate-400 hover:text-slate-200'
                   }`}
               >
                 Bottled Flacons
@@ -507,8 +508,8 @@ export const PosPage: React.FC = () => {
               <button
                 onClick={() => setActiveCategory('decant')}
                 className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${activeCategory === 'decant'
-                    ? 'bg-gold-500 text-slate-950 font-bold'
-                    : 'bg-slate-800/80 text-slate-400 hover:text-slate-200'
+                  ? 'bg-gold-500 text-slate-950 font-bold'
+                  : 'bg-slate-800/80 text-slate-400 hover:text-slate-200'
                   }`}
               >
                 Decant Liquid
@@ -525,9 +526,9 @@ export const PosPage: React.FC = () => {
                   <div
                     key={lot.id}
                     onClick={() => stock > 0 && handleAddBottledToCart(lot)}
-                    className={`bg-[#121622] border rounded-xl p-3.5 flex flex-col justify-between cursor-pointer select-none transition-all shadow-sm ${stock > 0
-                        ? 'border-slate-800/80 hover:border-gold-500/40 hover:bg-slate-800/20 active:scale-[0.98]'
-                        : 'border-slate-800/40 opacity-50 cursor-not-allowed'
+                    className={`bg-surface border rounded-xl p-3.5 flex flex-col justify-between cursor-pointer select-none transition-all shadow-sm ${stock > 0
+                      ? 'border-slate-800/80 hover:border-gold-500/40 hover:bg-slate-800/20 active:scale-[0.98]'
+                      : 'border-slate-800/40 opacity-50 cursor-not-allowed'
                       }`}
                   >
                     <div>
@@ -535,8 +536,8 @@ export const PosPage: React.FC = () => {
                         <span className="text-gold-400 font-semibold">{lot.variant_sku}</span>
                         <span
                           className={`px-1.5 py-0.5 rounded text-[9px] ${stock > 5
-                              ? 'bg-emerald-950/60 text-emerald-400 border border-emerald-500/30'
-                              : 'bg-amber-950/60 text-amber-400 border border-amber-500/30'
+                            ? 'bg-emerald-950/60 text-emerald-400 border border-emerald-500/30'
+                            : 'bg-amber-950/60 text-amber-400 border border-amber-500/30'
                             }`}
                         >
                           {stock.toFixed(0)} left
@@ -550,7 +551,7 @@ export const PosPage: React.FC = () => {
 
                     <div className="mt-3 pt-2 border-t border-slate-800/60 flex items-center justify-between">
                       <span className="font-mono font-bold text-gold-300 text-sm">
-                        ${parseFloat(lot.selling_price || '295').toFixed(2)}
+                        {formatCurrency(lot.selling_price || '295')}
                       </span>
                       <span className="text-[10px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded">
                         Add +
@@ -571,7 +572,7 @@ export const PosPage: React.FC = () => {
                       setSelectedDecantBatchId(batch.id);
                       setIsDecantModalOpen(true);
                     }}
-                    className="bg-[#121622] border border-amber-500/30 hover:border-gold-400/60 rounded-xl p-3.5 flex flex-col justify-between cursor-pointer select-none transition-all shadow-sm hover:bg-amber-950/10 active:scale-[0.98]"
+                    className="bg-surface border border-amber-500/30 hover:border-gold-400/60 rounded-xl p-3.5 flex flex-col justify-between cursor-pointer select-none transition-all shadow-sm hover:bg-amber-950/10 active:scale-[0.98]"
                   >
                     <div>
                       <div className="flex items-center justify-between text-[10px] font-mono text-amber-400 mb-1">
@@ -591,7 +592,7 @@ export const PosPage: React.FC = () => {
 
                     <div className="mt-3 pt-2 border-t border-slate-800/60 flex items-center justify-between">
                       <span className="font-mono text-xs text-gold-300 font-bold">
-                        ${parseFloat(batch.cost_per_ml).toFixed(2)} / ml
+                        {formatCurrency(batch.cost_per_ml)} / ml
                       </span>
                       <span className="text-[10px] text-gold-400 bg-gold-500/10 border border-gold-500/30 px-2 py-0.5 rounded">
                         Dispense ⚗️
@@ -604,7 +605,7 @@ export const PosPage: React.FC = () => {
         </div>
 
         {/* Right Side: Cart & Checkout (4 cols) */}
-        <div className="lg:col-span-4 bg-[#121622] border border-slate-800 rounded-2xl p-4 shadow-xl space-y-4 sticky top-6">
+        <div className="lg:col-span-4 bg-surface border border-slate-800 rounded-2xl p-4 shadow-xl space-y-4 sticky top-6">
           <div className="flex items-center justify-between border-b border-slate-800 pb-3">
             <div className="flex items-center space-x-2">
               <ShoppingCart className="h-4 w-4 text-gold-400" />
@@ -680,10 +681,10 @@ export const PosPage: React.FC = () => {
 
                     <div className="text-right font-mono">
                       <div className="text-xs font-bold text-slate-100">
-                        ${(item.quantity * item.unit_price).toFixed(2)}
+                        {formatCurrency(item.quantity * item.unit_price)}
                       </div>
                       <div className="text-[9px] text-slate-500">
-                        ${item.unit_price.toFixed(2)} each
+                        {formatCurrency(item.unit_price)} each
                       </div>
                     </div>
                   </div>
@@ -696,11 +697,11 @@ export const PosPage: React.FC = () => {
           <div className="border-t border-slate-800 pt-3 space-y-2 text-xs">
             <div className="flex justify-between text-slate-400">
               <span>Subtotal</span>
-              <span className="font-mono text-slate-200">${subtotal.toFixed(2)}</span>
+              <span className="font-mono text-slate-200">{formatCurrency(subtotal.toString())}</span>
             </div>
 
             <div className="flex items-center justify-between text-slate-400">
-              <span>Discount ($)</span>
+              <span>Discount (PKR)</span>
               <input
                 type="number"
                 min="0"
@@ -713,13 +714,13 @@ export const PosPage: React.FC = () => {
 
             <div className="flex justify-between text-slate-400">
               <span>VAT / Tax (0%)</span>
-              <span className="font-mono text-slate-200">$0.00</span>
+              <span className="font-mono text-slate-200">{formatCurrency(0)}</span>
             </div>
 
             <div className="border-t border-slate-800/80 pt-2 flex justify-between items-baseline">
               <span className="font-serif font-bold text-slate-100 text-sm">Total Due</span>
               <span className="font-serif font-bold text-gold-300 text-xl font-mono">
-                ${grandTotal.toFixed(2)}
+                {formatCurrency(grandTotal.toString())}
               </span>
             </div>
 
@@ -727,7 +728,7 @@ export const PosPage: React.FC = () => {
             {(user?.role === 'admin' || user?.role === 'production_manager') && (
               <div className="p-2 rounded bg-emerald-950/20 border border-emerald-500/20 flex justify-between text-[11px] text-emerald-400 font-mono">
                 <span>Estimated Margin:</span>
-                <span>+${estimatedProfit.toFixed(2)}</span>
+                <span>+{formatCurrency(estimatedProfit.toString())}</span>
               </div>
             )}
           </div>
@@ -747,7 +748,7 @@ export const PosPage: React.FC = () => {
       {/* Quick Decant Dispenser Modal */}
       {isDecantModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-[#121622] border border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+          <div className="bg-surface border border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div className="flex items-center space-x-2">
                 <Droplet className="h-4 w-4 text-gold-400" />
@@ -787,8 +788,8 @@ export const PosPage: React.FC = () => {
                       type="button"
                       onClick={() => setDecantVolumeMl(preset)}
                       className={`px-3 py-1 rounded border text-xs font-mono font-bold ${decantVolumeMl === preset
-                          ? 'bg-gold-500 text-slate-950 border-gold-400'
-                          : 'bg-slate-900 text-slate-400 border-slate-800 hover:border-slate-700'
+                        ? 'bg-gold-500 text-slate-950 border-gold-400'
+                        : 'bg-slate-900 text-slate-400 border-slate-800 hover:border-slate-700'
                         }`}
                     >
                       {preset} ml
@@ -806,7 +807,7 @@ export const PosPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-slate-400 font-semibold mb-1">Selling Price per ml ($) *</label>
+                <label className="block text-slate-400 font-semibold mb-1">Selling Price per ml (PKR) *</label>
                 <input
                   type="number"
                   min="1"
@@ -820,7 +821,7 @@ export const PosPage: React.FC = () => {
               <div className="p-3 rounded-lg bg-slate-900/60 border border-slate-800 flex justify-between items-center text-xs">
                 <span className="text-slate-400">Total Decant Price:</span>
                 <span className="font-mono font-bold text-gold-300 text-base">
-                  ${((parseFloat(decantVolumeMl) || 0) * (parseFloat(decantPricePerMl) || 0)).toFixed(2)}
+                  {formatCurrency((parseFloat(decantVolumeMl) || 0) * (parseFloat(decantPricePerMl) || 0))}
                 </span>
               </div>
             </div>
@@ -848,14 +849,14 @@ export const PosPage: React.FC = () => {
       {/* Payment Tender Dialog */}
       {isPaymentModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-[#121622] border border-slate-800 rounded-2xl w-full max-w-lg p-6 space-y-4 shadow-2xl">
+          <div className="bg-surface border border-slate-800 rounded-2xl w-full max-w-lg p-6 space-y-4 shadow-2xl">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
                 <h3 className="font-serif font-bold text-slate-100 text-base flex items-center space-x-2">
                   <CreditCard className="h-4 w-4 text-gold-400" />
                   <span>Select Payment Tender</span>
                 </h3>
-                <p className="text-xs text-slate-400 mt-0.5">Amount Due: ${grandTotal.toFixed(2)}</p>
+                <p className="text-xs text-slate-400 mt-0.5">Amount Due: {formatCurrency(grandTotal.toString())}</p>
               </div>
               <button
                 onClick={() => setIsPaymentModalOpen(false)}
@@ -871,8 +872,8 @@ export const PosPage: React.FC = () => {
                 type="button"
                 onClick={() => setPaymentMethod('cash')}
                 className={`p-3 rounded-xl border flex flex-col items-center space-y-1.5 transition-all text-xs font-semibold ${paymentMethod === 'cash'
-                    ? 'bg-gold-500/15 border-gold-400 text-gold-300 font-bold'
-                    : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
+                  ? 'bg-gold-500/15 border-gold-400 text-gold-300 font-bold'
+                  : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
                   }`}
               >
                 <Banknote className="h-4 w-4" />
@@ -883,8 +884,8 @@ export const PosPage: React.FC = () => {
                 type="button"
                 onClick={() => setPaymentMethod('card')}
                 className={`p-3 rounded-xl border flex flex-col items-center space-y-1.5 transition-all text-xs font-semibold ${paymentMethod === 'card'
-                    ? 'bg-gold-500/15 border-gold-400 text-gold-300 font-bold'
-                    : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
+                  ? 'bg-gold-500/15 border-gold-400 text-gold-300 font-bold'
+                  : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
                   }`}
               >
                 <CreditCard className="h-4 w-4" />
@@ -895,8 +896,8 @@ export const PosPage: React.FC = () => {
                 type="button"
                 onClick={() => setPaymentMethod('bank_transfer')}
                 className={`p-3 rounded-xl border flex flex-col items-center space-y-1.5 transition-all text-xs font-semibold ${paymentMethod === 'bank_transfer'
-                    ? 'bg-gold-500/15 border-gold-400 text-gold-300 font-bold'
-                    : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
+                  ? 'bg-gold-500/15 border-gold-400 text-gold-300 font-bold'
+                  : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
                   }`}
               >
                 <Building className="h-4 w-4" />
@@ -907,8 +908,8 @@ export const PosPage: React.FC = () => {
                 type="button"
                 onClick={() => setPaymentMethod('split')}
                 className={`p-3 rounded-xl border flex flex-col items-center space-y-1.5 transition-all text-xs font-semibold ${paymentMethod === 'split'
-                    ? 'bg-gold-500/15 border-gold-400 text-gold-300 font-bold'
-                    : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
+                  ? 'bg-gold-500/15 border-gold-400 text-gold-300 font-bold'
+                  : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
                   }`}
               >
                 <Split className="h-4 w-4" />
@@ -920,7 +921,7 @@ export const PosPage: React.FC = () => {
             {paymentMethod === 'cash' && (
               <div className="space-y-3 bg-slate-900/60 p-4 rounded-xl border border-slate-800 text-xs">
                 <div>
-                  <label className="block text-slate-400 mb-1">Cash Tendered by Customer ($)</label>
+                  <label className="block text-slate-400 mb-1">Cash Tendered by Customer (PKR)</label>
                   <input
                     type="number"
                     min="0"
@@ -944,7 +945,7 @@ export const PosPage: React.FC = () => {
               <div className="space-y-3 bg-slate-900/60 p-4 rounded-xl border border-slate-800 text-xs">
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-slate-400 mb-1">Cash Part ($)</label>
+                    <label className="block text-slate-400 mb-1">Cash Part (PKR)</label>
                     <input
                       type="number"
                       min="0"
@@ -955,7 +956,7 @@ export const PosPage: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-slate-400 mb-1">Card Part ($)</label>
+                    <label className="block text-slate-400 mb-1">Card Part (PKR)</label>
                     <input
                       type="number"
                       min="0"
@@ -1003,9 +1004,9 @@ export const PosPage: React.FC = () => {
       {/* Completed Sale / Thermal Receipt Modal */}
       {completedSale && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-[#121622] border border-slate-800 rounded-2xl w-full max-w-sm p-6 space-y-4 shadow-2xl">
+          <div className="bg-surface border border-slate-800 rounded-2xl w-full max-w-sm p-6 space-y-4 shadow-2xl">
             {/* Printable Thermal Receipt Container */}
-            <div className="bg-white text-slate-950 p-5 rounded-lg font-mono text-[11px] space-y-3 shadow-inner">
+            <div className="bg-surface text-slate-950 p-5 rounded-lg font-mono text-[11px] space-y-3 shadow-inner">
               <div className="text-center space-y-0.5 border-b border-dashed border-slate-300 pb-3">
                 <div className="font-serif font-bold text-base tracking-widest">MAHATIR PERFUMES</div>
                 <div className="text-[9px] uppercase tracking-wider text-slate-600">Haute Parfumerie & Extraits</div>
@@ -1024,10 +1025,10 @@ export const PosPage: React.FC = () => {
                     <div>
                       <div className="font-bold">{item.item_name}</div>
                       <div className="text-[9px] text-slate-600">
-                        {item.quantity} x ${parseFloat(item.unit_price).toFixed(2)}
+                        {item.quantity} x {formatCurrency(item.unit_price)}
                       </div>
                     </div>
-                    <div className="font-bold">${parseFloat(item.line_total).toFixed(2)}</div>
+                    <div className="font-bold">{formatCurrency(item.line_total)}</div>
                   </div>
                 ))}
               </div>
@@ -1035,7 +1036,7 @@ export const PosPage: React.FC = () => {
               <div className="space-y-1 border-b border-dashed border-slate-300 pb-3 text-[11px]">
                 <div className="flex justify-between font-bold text-xs">
                   <span>TOTAL PAID:</span>
-                  <span>${parseFloat(completedSale.total_amount).toFixed(2)}</span>
+                  <span>{formatCurrency(completedSale.total_amount)}</span>
                 </div>
                 <div className="flex justify-between text-[9px] text-slate-600">
                   <span>Payment Tender:</span>
@@ -1072,7 +1073,7 @@ export const PosPage: React.FC = () => {
       {/* Invoices History Drawer */}
       {isHistoryOpen && (
         <div className="fixed inset-0 z-50 flex justify-end bg-slate-950/80 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-[#121622] border-l border-slate-800 w-full max-w-xl h-full p-6 space-y-4 overflow-y-auto">
+          <div className="bg-surface border-l border-slate-800 w-full max-w-xl h-full p-6 space-y-4 overflow-y-auto">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div className="flex items-center space-x-2">
                 <Clock className="h-4 w-4 text-gold-400" />
@@ -1104,13 +1105,13 @@ export const PosPage: React.FC = () => {
                       </div>
                       <div className="text-right">
                         <span className="font-mono font-bold text-slate-100 text-sm">
-                          ${parseFloat(s.total_amount).toFixed(2)}
+                          {formatCurrency(s.total_amount)}
                         </span>
                         <div>
                           <span
                             className={`text-[9px] px-1.5 py-0.5 rounded font-bold uppercase ${s.status === 'completed'
-                                ? 'bg-emerald-950 text-emerald-400 border border-emerald-500/30'
-                                : 'bg-rose-950 text-rose-400 border border-rose-500/30'
+                              ? 'bg-emerald-950 text-emerald-400 border border-emerald-500/30'
+                              : 'bg-rose-950 text-rose-400 border border-rose-500/30'
                               }`}
                           >
                             {s.status}
@@ -1161,7 +1162,7 @@ export const PosPage: React.FC = () => {
                   <button
                     disabled={!voidReason.trim() || voidSubmitting}
                     onClick={handleVoidSale}
-                    className="px-3 py-1 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded text-xs disabled:opacity-50"
+                    className="px-3 py-1 bg-rose-600 hover:bg-rose-500 text-accent-foreground font-bold rounded text-xs disabled:opacity-50"
                   >
                     {voidSubmitting ? 'Voiding...' : 'Confirm Void'}
                   </button>

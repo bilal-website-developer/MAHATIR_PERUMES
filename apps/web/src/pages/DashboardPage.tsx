@@ -47,7 +47,7 @@ export const DashboardPage: React.FC = () => {
   return (
     <div className="space-y-8 animate-fadeIn max-w-7xl mx-auto pb-12">
       {/* Hero Welcome Banner */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#171b26] via-[#1a2030] to-[#141923] border border-gold-400/25 p-8 shadow-2xl">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-card via-card to-card border border-gold-400/25 p-8 shadow-2xl">
         <div className="absolute right-0 top-0 h-full w-1/3 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-gold-500/10 via-transparent to-transparent pointer-events-none" />
 
         <div className="max-w-3xl space-y-3">

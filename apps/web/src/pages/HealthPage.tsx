@@ -189,7 +189,7 @@ export const HealthPage: React.FC = () => {
         </h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-          <div className="flex items-start space-x-2.5 bg-[#0f1219] p-3 rounded-lg border border-slate-800">
+          <div className="flex items-start space-x-2.5 bg-sidebar p-3 rounded-lg border border-slate-800">
             <CheckCircle className="h-4 w-4 text-emerald-400 mt-0.5 shrink-0" />
             <div>
               <div className="font-semibold text-slate-200">Monorepo & Strict TypeScript</div>
@@ -199,7 +199,7 @@ export const HealthPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-start space-x-2.5 bg-[#0f1219] p-3 rounded-lg border border-slate-800">
+          <div className="flex items-start space-x-2.5 bg-sidebar p-3 rounded-lg border border-slate-800">
             <CheckCircle className="h-4 w-4 text-emerald-400 mt-0.5 shrink-0" />
             <div>
               <div className="font-semibold text-slate-200">Versioned SQL Migrations</div>
@@ -209,7 +209,7 @@ export const HealthPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-start space-x-2.5 bg-[#0f1219] p-3 rounded-lg border border-slate-800">
+          <div className="flex items-start space-x-2.5 bg-sidebar p-3 rounded-lg border border-slate-800">
             <CheckCircle className="h-4 w-4 text-emerald-400 mt-0.5 shrink-0" />
             <div>
               <div className="font-semibold text-slate-200">Audit Trigger & Conventions</div>
@@ -219,7 +219,7 @@ export const HealthPage: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-start space-x-2.5 bg-[#0f1219] p-3 rounded-lg border border-slate-800">
+          <div className="flex items-start space-x-2.5 bg-sidebar p-3 rounded-lg border border-slate-800">
             <CheckCircle className="h-4 w-4 text-emerald-400 mt-0.5 shrink-0" />
             <div>
               <div className="font-semibold text-slate-200">Secrets Protocol Verified</div>

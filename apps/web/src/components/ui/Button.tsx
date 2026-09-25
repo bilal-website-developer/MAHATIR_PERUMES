@@ -9,7 +9,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', isLoading = false, children, disabled, ...props }, ref) => {
-    const baseClasses = 'inline-flex items-center justify-center font-medium transition-all duration-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#0c0e12] disabled:opacity-50 disabled:cursor-not-allowed select-none active:scale-[0.98]';
+    const baseClasses = 'inline-flex items-center justify-center font-medium transition-all duration-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed select-none active:scale-[0.98]';
 
     const sizeClasses = {
       sm: 'px-3 py-1.5 text-xs tracking-wide',
@@ -19,10 +19,10 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const variantClasses = {
       primary: 'bg-gradient-to-r from-gold-500 via-gold-400 to-gold-500 text-slate-950 font-semibold shadow-[0_2px_14px_rgba(212,175,55,0.25)] hover:shadow-[0_4px_20px_rgba(212,175,55,0.4)] hover:brightness-105 focus:ring-gold-400',
-      secondary: 'bg-[#1e2533] text-slate-200 hover:bg-[#273042] border border-slate-700/60 focus:ring-slate-500',
-      outline: 'border border-gold-400/40 text-gold-300 hover:bg-gold-500/10 focus:ring-gold-400',
-      ghost: 'text-slate-300 hover:text-white hover:bg-slate-800/50 focus:ring-slate-400',
-      danger: 'bg-rose-900/40 text-rose-200 border border-rose-700/50 hover:bg-rose-900/60 focus:ring-rose-500',
+      secondary: 'bg-surface text-foreground hover:bg-card border border-border/60 focus:ring-muted',
+      outline: 'border border-accent/40 text-accent hover:bg-accent/10 focus:ring-accent',
+      ghost: 'text-muted hover:text-foreground hover:bg-surface/50 focus:ring-muted',
+      danger: 'bg-danger/40 text-danger border border-danger/50 hover:bg-danger/60 focus:ring-danger',
     };
 
     return (

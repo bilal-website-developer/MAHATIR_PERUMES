@@ -25,7 +25,7 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#090b0f] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-6">
         {/* Brand Header */}
         <div className="text-center space-y-2">
@@ -41,7 +41,7 @@ export const LoginPage: React.FC = () => {
         </div>
 
         {/* Login Card */}
-        <Card goldBorder className="space-y-6 bg-[#131722]/95 backdrop-blur-xl p-8">
+        <Card goldBorder className="space-y-6 bg-card/95 backdrop-blur-xl p-8">
           <div className="border-b border-slate-800 pb-3">
             <h2 className="text-lg font-semibold text-slate-100 flex items-center gap-2">
               <Lock className="h-4 w-4 text-gold-400" />

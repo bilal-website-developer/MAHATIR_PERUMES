@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { apiClient } from '../lib/api';
 import { useAuth } from '../context/AuthContext';
+import { formatCurrency } from '../lib/utils';
 import { Decimal } from 'decimal.js';
 
 interface Formula {
@@ -316,7 +317,7 @@ export const BatchesPage: React.FC = () => {
         <div className="flex items-center space-x-3">
           <button
             onClick={() => fetchData()}
-            className="p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 bg-slate-900/60 text-slate-300 hover:text-white transition-colors"
+            className="p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 bg-slate-900/60 text-slate-300 hover:text-foreground transition-colors"
           >
             <RefreshCw className="h-4 w-4" />
           </button>
@@ -336,8 +337,8 @@ export const BatchesPage: React.FC = () => {
       {feedback && (
         <div
           className={`p-4 rounded-xl flex items-center justify-between border ${feedback.type === 'success'
-              ? 'bg-emerald-950/30 border-emerald-500/30 text-emerald-300'
-              : 'bg-rose-950/30 border-rose-500/30 text-rose-300'
+            ? 'bg-emerald-950/30 border-emerald-500/30 text-emerald-300'
+            : 'bg-rose-950/30 border-rose-500/30 text-rose-300'
             }`}
         >
           <div className="flex items-center space-x-3">
@@ -348,7 +349,7 @@ export const BatchesPage: React.FC = () => {
             )}
             <span className="text-sm font-medium">{feedback.message}</span>
           </div>
-          <button onClick={() => setFeedback(null)} className="text-slate-400 hover:text-white">
+          <button onClick={() => setFeedback(null)} className="text-slate-400 hover:text-foreground">
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -375,7 +376,7 @@ export const BatchesPage: React.FC = () => {
             <Sparkles className="h-4 w-4 text-emerald-400" />
           </div>
           <div className="text-2xl font-serif font-bold text-slate-100">
-            ${totalBulkValuation.toFixed(2)}
+            {formatCurrency(totalBulkValuation.toString())}
           </div>
           <div className="text-[11px] text-slate-500 mt-1">Matured liquid inventory value</div>
         </div>
@@ -454,8 +455,8 @@ export const BatchesPage: React.FC = () => {
                   key={tab.id}
                   onClick={() => setStatusFilter(tab.id)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${statusFilter === tab.id
-                      ? 'bg-gold-500/20 text-gold-300 border border-gold-500/30'
-                      : 'text-slate-400 hover:text-slate-200 bg-slate-800/40'
+                    ? 'bg-gold-500/20 text-gold-300 border border-gold-500/30'
+                    : 'text-slate-400 hover:text-slate-200 bg-slate-800/40'
                     }`}
                 >
                   {tab.label}
@@ -467,12 +468,12 @@ export const BatchesPage: React.FC = () => {
           {/* Batches Cards List */}
           <div className="space-y-3">
             {isLoading ? (
-              <div className="py-16 text-center text-slate-500 bg-[#0f121a] rounded-2xl border border-slate-800">
+              <div className="py-16 text-center text-slate-500 bg-sidebar rounded-2xl border border-slate-800">
                 <RefreshCw className="h-6 w-6 animate-spin mx-auto mb-2 text-gold-500" />
                 <span>Loading production batches...</span>
               </div>
             ) : filteredBatches.length === 0 ? (
-              <div className="py-16 text-center text-slate-500 bg-[#0f121a] rounded-2xl border border-slate-800">
+              <div className="py-16 text-center text-slate-500 bg-sidebar rounded-2xl border border-slate-800">
                 <Factory className="h-8 w-8 mx-auto mb-2 text-slate-600" />
                 <span>No manufacturing batches found matching your filters.</span>
               </div>
@@ -482,7 +483,7 @@ export const BatchesPage: React.FC = () => {
                 return (
                   <div
                     key={b.id}
-                    className="bg-[#0f121a] p-5 rounded-2xl border border-slate-800/80 hover:border-slate-700 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl"
+                    className="bg-sidebar p-5 rounded-2xl border border-slate-800/80 hover:border-slate-700 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl"
                   >
                     <div className="space-y-2">
                       <div className="flex items-center space-x-3">
@@ -538,10 +539,10 @@ export const BatchesPage: React.FC = () => {
                       <div className="text-right">
                         <div className="text-[10px] text-slate-500 uppercase font-medium">Batch Cost / Cost Per ml</div>
                         <div className="font-serif font-bold text-base text-gold-300">
-                          ${parseFloat(b.total_cost).toFixed(2)}
+                          {formatCurrency(b.total_cost)}
                         </div>
                         <div className="text-[10px] text-slate-400 font-mono">
-                          ${parseFloat(b.cost_per_ml).toFixed(4)} / ml
+                          {formatCurrency(b.cost_per_ml)} / ml
                         </div>
                       </div>
 
@@ -599,7 +600,7 @@ export const BatchesPage: React.FC = () => {
           {bulkLots.map((lot) => (
             <div
               key={lot.id}
-              className="bg-[#0f121a] p-5 rounded-2xl border border-slate-800/80 hover:border-gold-500/30 transition-all shadow-xl flex flex-col justify-between"
+              className="bg-sidebar p-5 rounded-2xl border border-slate-800/80 hover:border-gold-500/30 transition-all shadow-xl flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between">
@@ -626,7 +627,7 @@ export const BatchesPage: React.FC = () => {
                   <div className="flex justify-between text-xs">
                     <span className="text-slate-400">Cost / ml:</span>
                     <span className="font-mono text-gold-300">
-                      ${parseFloat(lot.cost_per_ml).toFixed(4)}
+                      {formatCurrency(lot.cost_per_ml)}
                     </span>
                   </div>
                 </div>
@@ -644,7 +645,7 @@ export const BatchesPage: React.FC = () => {
       {/* New Batch Wizard Modal */}
       {isWizardOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-          <div className="bg-[#121620] border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative">
+          <div className="bg-surface border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative">
             <div className="flex items-center justify-between pb-4 border-b border-slate-800">
               <div>
                 <h3 className="font-serif font-bold text-base text-slate-100">
@@ -654,7 +655,7 @@ export const BatchesPage: React.FC = () => {
                   Select active perfume formula and enter target volume.
                 </p>
               </div>
-              <button onClick={() => setIsWizardOpen(false)} className="text-slate-400 hover:text-white">
+              <button onClick={() => setIsWizardOpen(false)} className="text-slate-400 hover:text-foreground">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -726,7 +727,7 @@ export const BatchesPage: React.FC = () => {
       {/* Confirm Production Modal */}
       {isConfirmModalOpen && selectedBatch && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-          <div className="bg-[#121620] border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative">
+          <div className="bg-surface border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative">
             <div className="flex items-center justify-between pb-4 border-b border-slate-800">
               <div>
                 <h3 className="font-serif font-bold text-base text-slate-100">
@@ -736,7 +737,7 @@ export const BatchesPage: React.FC = () => {
                   Batch: {selectedBatch.batch_code} ({selectedBatch.perfume_name})
                 </p>
               </div>
-              <button onClick={() => setIsConfirmModalOpen(false)} className="text-slate-400 hover:text-white">
+              <button onClick={() => setIsConfirmModalOpen(false)} className="text-slate-400 hover:text-foreground">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -823,7 +824,7 @@ export const BatchesPage: React.FC = () => {
       {/* Reversal Modal */}
       {isReverseModalOpen && selectedBatch && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-          <div className="bg-[#121620] border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative">
+          <div className="bg-surface border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative">
             <div className="flex items-center space-x-2 text-rose-400 mb-2">
               <RotateCcw className="h-5 w-5" />
               <h3 className="font-serif font-bold text-base text-slate-100">
@@ -859,7 +860,7 @@ export const BatchesPage: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white font-bold"
+                  className="px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-accent-foreground font-bold"
                 >
                   Confirm Reversal
                 </button>
@@ -872,7 +873,7 @@ export const BatchesPage: React.FC = () => {
       {/* Batch Detail Modal */}
       {isDetailModalOpen && selectedBatch && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-          <div className="bg-[#121620] border border-slate-800 rounded-2xl w-full max-w-xl p-6 shadow-2xl relative max-h-[85vh] flex flex-col">
+          <div className="bg-surface border border-slate-800 rounded-2xl w-full max-w-xl p-6 shadow-2xl relative max-h-[85vh] flex flex-col">
             <div className="flex items-center justify-between pb-4 border-b border-slate-800">
               <div>
                 <h3 className="font-serif font-bold text-base text-slate-100">
@@ -882,7 +883,7 @@ export const BatchesPage: React.FC = () => {
                   {selectedBatch.perfume_name} ({selectedBatch.formula_version_label})
                 </p>
               </div>
-              <button onClick={() => setIsDetailModalOpen(false)} className="text-slate-400 hover:text-white">
+              <button onClick={() => setIsDetailModalOpen(false)} className="text-slate-400 hover:text-foreground">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -904,7 +905,7 @@ export const BatchesPage: React.FC = () => {
                 <div className="p-3 bg-slate-900 border border-slate-800 rounded-lg">
                   <div className="text-[10px] text-slate-500 uppercase">Cost Per ml</div>
                   <div className="font-mono font-bold text-gold-300 mt-0.5">
-                    ${parseFloat(selectedBatch.cost_per_ml).toFixed(4)}
+                    {formatCurrency(selectedBatch.cost_per_ml)}
                   </div>
                 </div>
               </div>
@@ -915,7 +916,7 @@ export const BatchesPage: React.FC = () => {
                 {selectedBatch.usages && selectedBatch.usages.length > 0 ? (
                   <div className="rounded-xl border border-slate-800 overflow-hidden">
                     <table className="w-full text-left text-xs">
-                      <thead className="bg-[#141824] text-slate-400 font-semibold text-[10px] uppercase">
+                      <thead className="bg-card text-slate-400 font-semibold text-[10px] uppercase">
                         <tr>
                           <th className="py-2 px-3">Material</th>
                           <th className="py-2 px-3">Quantity Used</th>
@@ -934,10 +935,10 @@ export const BatchesPage: React.FC = () => {
                               {u.quantity_used} {u.unit}
                             </td>
                             <td className="py-2 px-3 font-mono text-slate-400">
-                              ${parseFloat(u.unit_cost_snapshot).toFixed(4)}
+                              {formatCurrency(u.unit_cost_snapshot)}
                             </td>
                             <td className="py-2 px-3 font-mono text-right text-gold-300">
-                              ${parseFloat(u.line_cost).toFixed(2)}
+                              {formatCurrency(u.line_cost)}
                             </td>
                           </tr>
                         ))}

@@ -3,6 +3,7 @@ import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
 import { DataTable, Column } from '../components/common/DataTable';
+import { CopyButton } from '../components/common/CopyButton';
 import { apiClient } from '../lib/api';
 import { ShieldAlert, FileText, Eye, Filter, X } from 'lucide-react';
 
@@ -144,7 +145,7 @@ export const AuditLogPage: React.FC = () => {
         <select
           value={tableFilter}
           onChange={(e) => setTableFilter(e.target.value)}
-          className="bg-[#0f1219] border border-slate-700 text-xs text-slate-200 rounded px-2.5 py-1.5 focus:border-gold-400 focus:outline-none"
+          className="bg-sidebar border border-slate-700 text-xs text-slate-200 rounded px-2.5 py-1.5 focus:border-gold-400 focus:outline-none"
         >
           <option value="">All Tables</option>
           <option value="profiles">profiles</option>
@@ -158,7 +159,7 @@ export const AuditLogPage: React.FC = () => {
         <select
           value={actionFilter}
           onChange={(e) => setActionFilter(e.target.value)}
-          className="bg-[#0f1219] border border-slate-700 text-xs text-slate-200 rounded px-2.5 py-1.5 focus:border-gold-400 focus:outline-none"
+          className="bg-sidebar border border-slate-700 text-xs text-slate-200 rounded px-2.5 py-1.5 focus:border-gold-400 focus:outline-none"
         >
           <option value="">All Actions</option>
           <option value="INSERT">INSERT</option>
@@ -195,8 +196,8 @@ export const AuditLogPage: React.FC = () => {
 
       {/* JSON Diff Modal */}
       {selectedEntry && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-3xl bg-[#141824] border border-gold-400/40 rounded-xl p-6 shadow-2xl space-y-4 max-h-[85vh] flex flex-col">
+        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="w-full max-w-3xl bg-card border border-gold-400/40 rounded-xl p-6 shadow-2xl space-y-4 max-h-[85vh] flex flex-col">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div>
                 <h3 className="font-serif text-lg font-semibold text-slate-100 flex items-center gap-2">
@@ -220,9 +221,12 @@ export const AuditLogPage: React.FC = () => {
               <div className="space-y-2">
                 <div className="text-slate-400 font-semibold uppercase tracking-wider flex items-center justify-between">
                   <span>Previous State (OLD)</span>
-                  <Badge variant="neutral">Before</Badge>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="neutral">Before</Badge>
+                    {selectedEntry.old_data && <CopyButton value={JSON.stringify(selectedEntry.old_data, null, 2)} />}
+                  </div>
                 </div>
-                <div className="p-3 bg-[#0d1017] border border-slate-800 rounded-lg overflow-x-auto text-slate-300 max-h-96">
+                <div className="p-3 bg-sidebar border border-slate-800 rounded-lg overflow-x-auto text-slate-300 max-h-96">
                   {selectedEntry.old_data ? (
                     <pre>{JSON.stringify(selectedEntry.old_data, null, 2)}</pre>
                   ) : (
@@ -235,9 +239,12 @@ export const AuditLogPage: React.FC = () => {
               <div className="space-y-2">
                 <div className="text-gold-300 font-semibold uppercase tracking-wider flex items-center justify-between">
                   <span>Applied State (NEW)</span>
-                  <Badge variant="gold">After</Badge>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="gold">After</Badge>
+                    {selectedEntry.new_data && <CopyButton value={JSON.stringify(selectedEntry.new_data, null, 2)} />}
+                  </div>
                 </div>
-                <div className="p-3 bg-[#0d1017] border border-gold-400/20 rounded-lg overflow-x-auto text-gold-100 max-h-96">
+                <div className="p-3 bg-sidebar border border-gold-400/20 rounded-lg overflow-x-auto text-gold-100 max-h-96">
                   {selectedEntry.new_data ? (
                     <pre>{JSON.stringify(selectedEntry.new_data, null, 2)}</pre>
                   ) : (

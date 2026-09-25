@@ -52,7 +52,7 @@ describe('Health and Status Endpoints', () => {
 
       expect(response.status).toBe(200);
       expect(body.data).toHaveProperty('company_name', 'Mahatir Perfumes');
-      expect(body.data).toHaveProperty('currency', 'USD');
+      expect(body.data).toHaveProperty('currency', 'PKR');
     } finally {
       server.close();
     }

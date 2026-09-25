@@ -33,7 +33,7 @@ const INITIAL_AUDIT_LOGS = [
     old_data: null,
     new_data: {
       company_name: 'Mahatir Perfumes',
-      currency: 'USD',
+      currency: 'PKR',
       tax_percentage: '5.00',
     },
     user_id: '11111111-1111-1111-1111-111111111111',

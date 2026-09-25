@@ -716,6 +716,13 @@ Notes and assumptions log:
   - Deployment guide and role-based user manuals documented in `docs/phase-10.md`.
   - Assumptions: In-memory store (no live Supabase credentials provided) used for all tests; Supabase RPC fallback is implemented and production path is ready once credentials are supplied.
 
+- **Phase 10 Follow-up Hardening (2026-09-24)**:
+  - Added explicit per-page demo cleanup confirmation with a one-use local state and constrained the cleanup RPC to explicitly registered demo row IDs; unregistered user data is never inferred or deleted.
+  - Standardized frontend money display through `Intl.NumberFormat('en-PK', { style: 'currency', currency: 'PKR' })` and updated stale currency tests and defaults.
+  - Moved Audit Ledger to the final sidebar position.
+  - Added a reversal regression assertion ensuring reversed bulk lots are unavailable for further consumption.
+  - Verification: `npm run build` passes; all 67 API tests and 3 web tests pass.
+
 ---
 
 ## 10. FINAL DEFINITION OF DONE
@@ -725,5 +732,104 @@ Notes and assumptions log:
 - No secret is committed, and no secret key exists in the React app.
 - The full lifecycle works end to end: Raw Material -> Formula -> Batch -> Bottling -> Sale -> Traceability.
 - Documentation and role-based user manuals are delivered.
+
+## 11. THEME PHASES
+
+### PHASE T1: Color Token Foundation
+
+- Defined light and dark CSS color tokens for backgrounds, surfaces, cards, borders, text, accent, semantic states, and sidebar UI.
+- Mapped Tailwind semantic colors and legacy slate/gold families to CSS variables.
+- Added token-backed aliases for remaining legacy arbitrary page backgrounds.
+
+### PHASE T2: Theme State and Persistence
+
+- Added `ThemeProvider` with `light`, `dark`, and `system` modes, localStorage persistence under `mahatir-theme`, live OS preference updates, and zero-flash bootstrap in `index.html`.
+
+### PHASE T3: Theme Toggle
+
+- Added an accessible top-bar `ThemeToggle` with Light, Dark, and System options, active-state indication, keyboard navigation, and Escape/click-away handling.
+
+### PHASE T4: Cross-Device Sync
+
+- Optional and not enabled in this pass because the existing profile API does not expose a theme preference contract. Local persistence remains the source of truth.
+
+### PHASE T5: Visual QA
+
+- Tokenized shared layout and UI primitives, validated TypeScript/Vite production output, and confirmed both theme classes are applied from the document root.
+- Demo cleanup runtime issue fixed: the browser request requires the API on port 4000; production uses the migrated RPC, while the development fallback safely clears only known seeded in-memory IDs when that RPC is unavailable.
+
+## 12. UX PHASE TRACKER
+
+- [x] Phase 1: Foundation (theming and accessibility basics)
+- [x] Phase 2: Navigation and mobile experience
+- [x] Phase 3: Scroll and motion feedback
+- [x] Phase 4: Search and content discovery
+- [x] Phase 5: Forms and user input
+- [x] Phase 6: Trust, compliance, and edge pages
+- [x] Phase 7: Analytics, tracking, and developer niceties
+- [x] Phase 8: Final QA pass
+
+### Phase 1 Completed
+
+- No migrations, API endpoints, or business screens were added.
+- Added the first-focusable `Skip to content` link and focusable `main#main-content` target.
+- Added scroll-container detection so the sticky header gains a subtle shadow after scrolling, while preserving top spacing and readable content flow.
+- Existing light/dark/system theme state, persistence, zero-flash bootstrap, and header toggle remain active.
+- Verification: `npm run build --workspace @mahatir/web` passes; all 3 web tests pass.
+
+### Phase 2 Completed
+
+- No migrations, API endpoints, or business screens were added.
+- Added responsive mobile navigation with a hamburger trigger, scrim/outside-click close, link-close behavior, Escape handling, and keyboard focus trapping.
+- Added shared focus-visible and transition feedback for buttons, links, and form controls.
+- Added a fixed contact-support mail button positioned independently from future scroll controls.
+- Verification: `npm run build --workspace @mahatir/web` passes; all 3 web tests pass.
+
+### Phase 3 Completed
+
+- No migrations, API endpoints, or business screens were added.
+- Added a top-of-viewport scroll progress indicator calculated from the authenticated layout's scroll container.
+- Added a smooth back-to-top control after scrolling, positioned above the contact button to avoid overlap.
+- Existing page-level async loading indicators were retained and covered by the shared interaction states.
+- Verification: `npm run build --workspace @mahatir/web` passes; all 3 web tests pass.
+
+### Phase 4 Completed
+
+- No migrations, API endpoints, or business screens were added; the existing product endpoint is reused.
+- Added shared command search in the authenticated header with Ctrl/Cmd+K, arrow-key navigation, Enter selection, Escape close, click-away close, accessible module filtering, and mobile-friendly modal layout.
+- Search indexes accessible ERP modules plus products and variants/SKUs returned by the existing products API.
+- FAQ accordions and article last-updated metadata are not applicable to this ERP because no FAQ, blog, post, or article surface exists.
+- Verification: `npm run build --workspace @mahatir/web` passes; all 3 web tests pass.
+
+### Phase 5 Completed
+
+- No migrations, API endpoints, or business screens were added.
+- Added accessible show/hide password controls to the shared `Input`, covering login and staff-creation password fields.
+- Added reusable confirmation modal behavior for logout and staff-account deletion; existing POS void confirmation remains in place.
+- Newsletter signup is not applicable to this authenticated ERP and no newsletter form was introduced.
+- Verification: `npm run build --workspace @mahatir/web` passes; all 3 web tests pass.
+
+### Phase 6 Completed
+
+- No migrations, API endpoints, or business screens were added.
+- Added persistent Accept/Reject cookie preferences using `mahatir-cookie-choice` local storage.
+- Improved the 404 page with on-brand recovery actions to Dashboard and Reports.
+- Added print styles that hide navigation, header, buttons, cookie banner, and floating controls while making main content readable and paginated.
+- Verification: `npm run build --workspace @mahatir/web` passes; all 3 web tests pass.
+
+### Phase 7 Completed
+
+- No migrations, API endpoints, or business screens were added.
+- Added reusable `TrackedLink` and `withUtmParams` utilities for outbound HTTP links with shared UTM defaults.
+- Added reusable clipboard feedback and applied it to both Audit Ledger JSON code blocks.
+- The current ERP contains no public HTTP outbound links or documentation code-snippet pages; mailto and internal report-export links remain intentionally untracked.
+- Verification: `npm run build --workspace @mahatir/web` passes; all 3 web tests pass.
+
+### Phase 8 Completed
+
+- No migrations, API endpoints, or business screens were added.
+- Browser QA completed at desktop and mobile widths: theme mode switching, cookie persistence, first-focus skip link, mobile drawer/Escape close, command search/Escape close, responsive floating controls, and authenticated shell rendering.
+- Full verification passed: `npm run build` completed; all 67 API tests and 3 web tests passed; source diagnostics and `git diff --check` are clean.
+- Residual environment note: the browser session logged 401 responses from authenticated API calls because it was not connected to a live authenticated Supabase session; the existing demo/in-memory fallback still rendered the shell correctly.
 
 **END OF FILE**

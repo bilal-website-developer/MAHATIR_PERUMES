@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { apiClient } from '../lib/api';
 import { useAuth } from '../context/AuthContext';
+import { formatCurrency } from '../lib/utils';
 import { Decimal } from 'decimal.js';
 
 interface RawMaterial {
@@ -349,7 +350,7 @@ export const PurchaseOrdersPage: React.FC = () => {
         <div className="flex items-center space-x-3">
           <button
             onClick={() => fetchData()}
-            className="p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 bg-slate-900/60 text-slate-300 hover:text-white transition-colors"
+            className="p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 bg-slate-900/60 text-slate-300 hover:text-foreground transition-colors"
           >
             <RefreshCw className="h-4 w-4" />
           </button>
@@ -369,8 +370,8 @@ export const PurchaseOrdersPage: React.FC = () => {
       {feedback && (
         <div
           className={`p-4 rounded-xl flex items-center justify-between border ${feedback.type === 'success'
-              ? 'bg-emerald-950/30 border-emerald-500/30 text-emerald-300'
-              : 'bg-rose-950/30 border-rose-500/30 text-rose-300'
+            ? 'bg-emerald-950/30 border-emerald-500/30 text-emerald-300'
+            : 'bg-rose-950/30 border-rose-500/30 text-rose-300'
             }`}
         >
           <div className="flex items-center space-x-3">
@@ -381,7 +382,7 @@ export const PurchaseOrdersPage: React.FC = () => {
             )}
             <span className="text-sm font-medium">{feedback.message}</span>
           </div>
-          <button onClick={() => setFeedback(null)} className="text-slate-400 hover:text-white">
+          <button onClick={() => setFeedback(null)} className="text-slate-400 hover:text-foreground">
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -413,8 +414,8 @@ export const PurchaseOrdersPage: React.FC = () => {
               key={tab.id}
               onClick={() => setStatusFilter(tab.id)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${statusFilter === tab.id
-                  ? 'bg-gold-500/20 text-gold-300 border border-gold-500/30'
-                  : 'text-slate-400 hover:text-slate-200 bg-slate-800/40 border border-transparent'
+                ? 'bg-gold-500/20 text-gold-300 border border-gold-500/30'
+                : 'text-slate-400 hover:text-slate-200 bg-slate-800/40 border border-transparent'
                 }`}
             >
               {tab.label}
@@ -426,12 +427,12 @@ export const PurchaseOrdersPage: React.FC = () => {
       {/* Purchase Orders List */}
       <div className="space-y-3">
         {isLoading ? (
-          <div className="py-16 text-center text-slate-500 bg-[#0f121a] rounded-2xl border border-slate-800">
+          <div className="py-16 text-center text-slate-500 bg-sidebar rounded-2xl border border-slate-800">
             <RefreshCw className="h-6 w-6 animate-spin mx-auto mb-2 text-gold-500" />
             <span>Loading orders...</span>
           </div>
         ) : filtered.length === 0 ? (
-          <div className="py-16 text-center text-slate-500 bg-[#0f121a] rounded-2xl border border-slate-800">
+          <div className="py-16 text-center text-slate-500 bg-sidebar rounded-2xl border border-slate-800">
             <FileText className="h-8 w-8 mx-auto mb-2 text-slate-600" />
             <span>No purchase orders found.</span>
           </div>
@@ -439,7 +440,7 @@ export const PurchaseOrdersPage: React.FC = () => {
           filtered.map((po) => (
             <div
               key={po.id}
-              className="bg-[#0f121a] p-5 rounded-2xl border border-slate-800/80 hover:border-slate-700 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-lg"
+              className="bg-sidebar p-5 rounded-2xl border border-slate-800/80 hover:border-slate-700 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-lg"
             >
               <div className="space-y-2">
                 <div className="flex items-center space-x-3">
@@ -489,7 +490,7 @@ export const PurchaseOrdersPage: React.FC = () => {
                 <div className="text-right">
                   <div className="text-[11px] text-slate-500 uppercase font-medium">Order Total</div>
                   <div className="font-serif font-bold text-base text-slate-100">
-                    ${parseFloat(po.total_amount).toFixed(2)}
+                    {formatCurrency(po.total_amount)}
                   </div>
                 </div>
 
@@ -511,7 +512,7 @@ export const PurchaseOrdersPage: React.FC = () => {
                     <>
                       <button
                         onClick={() => handleApprovePO(po.id)}
-                        className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-lg flex items-center space-x-1 shadow transition-colors"
+                        className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-accent-foreground text-xs font-semibold rounded-lg flex items-center space-x-1 shadow transition-colors"
                       >
                         <CheckCircle2 className="h-3.5 w-3.5" />
                         <span>Approve</span>
@@ -548,7 +549,7 @@ export const PurchaseOrdersPage: React.FC = () => {
       {/* PO Builder Modal */}
       {isBuilderOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-          <div className="bg-[#121620] border border-slate-800 rounded-2xl w-full max-w-2xl p-6 shadow-2xl relative max-h-[90vh] flex flex-col">
+          <div className="bg-surface border border-slate-800 rounded-2xl w-full max-w-2xl p-6 shadow-2xl relative max-h-[90vh] flex flex-col">
             <div className="flex items-center justify-between pb-4 border-b border-slate-800">
               <div>
                 <h3 className="font-serif font-bold text-base text-slate-100">
@@ -558,7 +559,7 @@ export const PurchaseOrdersPage: React.FC = () => {
                   Live unit conversions & line calculations using Decimal.js
                 </p>
               </div>
-              <button onClick={() => setIsBuilderOpen(false)} className="text-slate-400 hover:text-white">
+              <button onClick={() => setIsBuilderOpen(false)} className="text-slate-400 hover:text-foreground">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -669,7 +670,7 @@ export const PurchaseOrdersPage: React.FC = () => {
 
                       <div className="flex items-center justify-between text-[11px] pt-1 border-t border-slate-800/40">
                         <div className="text-slate-400">
-                          Unit Cost ($):
+                          Unit Cost (PKR):
                           <input
                             type="number"
                             step="0.0001"
@@ -738,7 +739,7 @@ export const PurchaseOrdersPage: React.FC = () => {
       {/* Reject Modal */}
       {isRejectModalOpen && selectedPO && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-          <div className="bg-[#121620] border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative">
+          <div className="bg-surface border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative">
             <h3 className="font-serif font-bold text-base text-slate-100">
               Reject Purchase Order {selectedPO.po_number}
             </h3>
@@ -771,7 +772,7 @@ export const PurchaseOrdersPage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleRejectPO}
-                className="px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-semibold shadow-md"
+                className="px-4 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-accent-foreground text-xs font-semibold shadow-md"
               >
                 Confirm Rejection
               </button>

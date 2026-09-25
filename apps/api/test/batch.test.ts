@@ -164,6 +164,9 @@ describe('Phase 4: Manufacturing Batches & Bulk Inventory Engine', () => {
       expect(reverseResult.batch.status).toBe('reversed');
       expect(reverseResult.batch.remaining_volume).toBe('0.0000');
 
+      const bulkLotsAfterReversal = await BatchService.getBulkInventory();
+      expect(bulkLotsAfterReversal.data.find((lot) => lot.batch_id === confirmResult.batch.id)).toBeUndefined();
+
       // 3. Verify raw materials were restored to stock
       const roseAfterReversal = await InventoryService.getRawMaterialById('rm-00000001-0000-0000-0000-000000000002');
       const roseStockAfter = new Decimal(roseAfterReversal!.current_stock);

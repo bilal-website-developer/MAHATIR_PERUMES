@@ -371,7 +371,7 @@ export const DilutionPage: React.FC = () => {
               onClick={() => handleTypeSelect(arch.type)}
               className={`p-4 rounded-xl border text-left transition-all relative overflow-hidden ${
                 isSelected
-                  ? 'border-gold-500/80 bg-gradient-to-b from-slate-900 to-[#141923] shadow-lg shadow-gold-500/10'
+                  ? 'border-gold-500/80 bg-gradient-to-b from-slate-900 to-card shadow-lg shadow-gold-500/10'
                   : 'border-slate-800/80 bg-slate-900/60 hover:border-slate-700 text-slate-400'
               }`}
             >
@@ -766,7 +766,7 @@ export const DilutionPage: React.FC = () => {
 
       {/* Save as Formula Modal */}
       {showFormulaModal && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-slate-900 border border-gold-500/40 rounded-2xl max-w-md w-full p-6 space-y-5 shadow-2xl shadow-gold-500/10">
             <div className="flex items-center space-x-3">
               <div className="h-10 w-10 rounded-xl bg-gold-500/20 text-gold-400 flex items-center justify-center">
@@ -842,7 +842,7 @@ export const DilutionPage: React.FC = () => {
 
       {/* Convert to Batch Modal */}
       {showBatchModal && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-slate-900 border border-amber-500/40 rounded-2xl max-w-md w-full p-6 space-y-5 shadow-2xl shadow-amber-500/10">
             <div className="flex items-center space-x-3">
               <div className="h-10 w-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">

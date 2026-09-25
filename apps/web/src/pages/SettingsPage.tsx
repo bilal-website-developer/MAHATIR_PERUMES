@@ -118,7 +118,7 @@ export const SettingsPage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs">
-          <div className="bg-[#0f1219] p-3.5 rounded-lg border border-slate-800">
+          <div className="bg-sidebar p-3.5 rounded-lg border border-slate-800">
             <span className="text-slate-400 uppercase tracking-wider text-[10px] block">
               Company Name
             </span>
@@ -127,16 +127,16 @@ export const SettingsPage: React.FC = () => {
             </span>
           </div>
 
-          <div className="bg-[#0f1219] p-3.5 rounded-lg border border-slate-800">
+          <div className="bg-sidebar p-3.5 rounded-lg border border-slate-800">
             <span className="text-slate-400 uppercase tracking-wider text-[10px] block">
               Base Currency
             </span>
             <span className="text-gold-300 font-semibold text-sm mt-1 block">
-              {settings?.currency || 'USD'} ({settings?.currency_symbol || '$'})
+              {settings?.currency || 'PKR'} ({settings?.currency_symbol || 'Rs. '})
             </span>
           </div>
 
-          <div className="bg-[#0f1219] p-3.5 rounded-lg border border-slate-800">
+          <div className="bg-sidebar p-3.5 rounded-lg border border-slate-800">
             <span className="text-slate-400 uppercase tracking-wider text-[10px] block">
               Default VAT / Tax %
             </span>
@@ -145,7 +145,7 @@ export const SettingsPage: React.FC = () => {
             </span>
           </div>
 
-          <div className="bg-[#0f1219] p-3.5 rounded-lg border border-slate-800">
+          <div className="bg-sidebar p-3.5 rounded-lg border border-slate-800">
             <span className="text-slate-400 uppercase tracking-wider text-[10px] block">
               Invoice Prefix
             </span>

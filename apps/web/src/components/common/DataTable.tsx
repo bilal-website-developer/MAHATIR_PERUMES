@@ -132,7 +132,7 @@ export function DataTable<T extends Record<string, any>>({
       {/* Header controls */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         {title && (
-          <h3 className="font-serif text-xl font-semibold text-slate-100 flex items-center gap-2">
+          <h3 className="font-serif text-xl font-semibold text-foreground flex items-center gap-2">
             {title}
             <span className="text-xs font-sans font-normal text-gold-400 bg-gold-500/10 px-2 py-0.5 rounded-full border border-gold-400/20">
               {filteredData.length} records
@@ -152,7 +152,7 @@ export function DataTable<T extends Record<string, any>>({
                 setCurrentPage(1);
               }}
               placeholder={searchPlaceholder}
-              className="w-full bg-[#121620] border border-slate-700/80 rounded-md pl-9 pr-3 py-1.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-gold-400"
+              className="w-full bg-background border border-border/80 rounded-md pl-9 pr-3 py-1.5 text-xs text-foreground placeholder-muted focus:outline-none focus:border-accent"
             />
           </div>
 
@@ -174,9 +174,9 @@ export function DataTable<T extends Record<string, any>>({
       </div>
 
       {/* Table container */}
-      <div className="overflow-x-auto rounded-lg border border-slate-800 bg-[#121620]/80 shadow-md">
-        <table className="w-full text-left text-sm text-slate-300">
-          <thead className="bg-[#181e2b] text-xs uppercase tracking-wider text-slate-400 border-b border-slate-800">
+      <div className="overflow-x-auto rounded-lg border border-border bg-background/80 shadow-md">
+        <table className="w-full text-left text-sm text-foreground/80">
+          <thead className="bg-card text-xs uppercase tracking-wider text-muted border-b border-border">
             <tr>
               {columns.map((col) => (
                 <th

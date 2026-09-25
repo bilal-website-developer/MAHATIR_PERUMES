@@ -121,7 +121,7 @@ export const ProductionSuggestionsPage: React.FC = () => {
 
         {/* Target Runway Selector */}
         <div className="flex items-center space-x-3">
-          <div className="flex items-center space-x-1.5 bg-[#161a24] p-1 rounded-lg border border-slate-700/80 text-xs">
+          <div className="flex items-center space-x-1.5 bg-card p-1 rounded-lg border border-slate-700/80 text-xs">
             <span className="text-slate-400 px-2 flex items-center space-x-1">
               <Clock className="h-3.5 w-3.5 text-gold-400" />
               <span>Target Runway:</span>
@@ -143,7 +143,7 @@ export const ProductionSuggestionsPage: React.FC = () => {
           <button
             onClick={() => refetch()}
             disabled={isFetching}
-            className="p-2 bg-[#161a24] hover:bg-slate-800 border border-slate-700/80 text-slate-300 rounded-lg transition-colors"
+            className="p-2 bg-card hover:bg-slate-800 border border-slate-700/80 text-slate-300 rounded-lg transition-colors"
             title="Recalculate Predictions"
           >
             <RefreshCw className={`h-4 w-4 ${isFetching ? 'animate-spin text-gold-400' : ''}`} />
@@ -153,7 +153,7 @@ export const ProductionSuggestionsPage: React.FC = () => {
 
       {/* Telemetry Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-[#141824] border border-slate-800/80 rounded-xl p-4 shadow-sm">
+        <div className="bg-card border border-slate-800/80 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between text-slate-400 text-xs">
             <span>Critical Replenishment Needed</span>
             <AlertTriangle className="h-4 w-4 text-rose-400" />
@@ -169,7 +169,7 @@ export const ProductionSuggestionsPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-[#141824] border border-slate-800/80 rounded-xl p-4 shadow-sm">
+        <div className="bg-card border border-slate-800/80 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between text-slate-400 text-xs">
             <span>Target Production Runway</span>
             <Clock className="h-4 w-4 text-gold-400" />
@@ -182,7 +182,7 @@ export const ProductionSuggestionsPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-[#141824] border border-slate-800/80 rounded-xl p-4 shadow-sm">
+        <div className="bg-card border border-slate-800/80 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between text-slate-400 text-xs">
             <span>Material Readiness</span>
             <Layers className="h-4 w-4 text-emerald-400" />
@@ -198,7 +198,7 @@ export const ProductionSuggestionsPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-[#141824] border border-slate-800/80 rounded-xl p-4 shadow-sm">
+        <div className="bg-card border border-slate-800/80 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between text-slate-400 text-xs">
             <span>Suggested Compounding Vol</span>
             <Factory className="h-4 w-4 text-sky-400" />
@@ -213,8 +213,8 @@ export const ProductionSuggestionsPage: React.FC = () => {
       </div>
 
       {/* Main Suggestions Table */}
-      <div className="bg-[#141824] border border-slate-800/80 rounded-xl overflow-hidden shadow-md">
-        <div className="p-4 border-b border-slate-800 bg-[#11141e] flex items-center justify-between">
+      <div className="bg-card border border-slate-800/80 rounded-xl overflow-hidden shadow-md">
+        <div className="p-4 border-b border-slate-800 bg-surface flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Sparkles className="h-4 w-4 text-gold-400" />
             <h3 className="font-serif text-sm font-semibold text-slate-100">
@@ -377,7 +377,7 @@ export const ProductionSuggestionsPage: React.FC = () => {
 
                   {/* Expanded BOM Ingredients Breakdown */}
                   {isExpanded && (
-                    <div className="px-6 py-4 bg-[#0d1017] border-t border-slate-800/80 animate-in fade-in duration-150">
+                    <div className="px-6 py-4 bg-sidebar border-t border-slate-800/80 animate-in fade-in duration-150">
                       <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center space-x-2 text-xs">
                           <FlaskConical className="h-4 w-4 text-gold-400" />
@@ -400,7 +400,7 @@ export const ProductionSuggestionsPage: React.FC = () => {
                       ) : (
                         <div className="overflow-x-auto">
                           <table className="w-full text-xs text-left">
-                            <thead className="text-[10px] text-slate-400 uppercase bg-[#141824] border-y border-slate-800">
+                            <thead className="text-[10px] text-slate-400 uppercase bg-card border-y border-slate-800">
                               <tr>
                                 <th className="px-3 py-2">Raw Material</th>
                                 <th className="px-3 py-2">SKU</th>

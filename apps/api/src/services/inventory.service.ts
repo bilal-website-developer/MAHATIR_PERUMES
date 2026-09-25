@@ -92,7 +92,7 @@ let memoryRawMaterials: RawMaterial[] = [
     base_unit: 'ml',
     secondary_unit: 'l',
     conversion_rate: '1000.0000',
-    cost_per_unit: '45.0000', // $45/ml
+    cost_per_unit: '45.0000', // PKR 45/ml
     min_stock_level: '500.0000',
     current_stock: '2500.0000', // 2.5 L
     is_active: true,
@@ -124,7 +124,7 @@ let memoryRawMaterials: RawMaterial[] = [
     base_unit: 'ml',
     secondary_unit: 'l',
     conversion_rate: '1000.0000',
-    cost_per_unit: '0.0180', // $18 per Litre -> $0.018 per ml
+    cost_per_unit: '0.0180', // PKR 18 per Litre -> PKR 0.018 per ml
     min_stock_level: '10000.0000',
     current_stock: '45000.0000', // 45 Litres
     is_active: true,
@@ -140,7 +140,7 @@ let memoryRawMaterials: RawMaterial[] = [
     base_unit: 'g',
     secondary_unit: 'kg',
     conversion_rate: '1000.0000',
-    cost_per_unit: '1.2000', // $1.20 per gram
+    cost_per_unit: '1.2000', // PKR 1.20 per gram
     min_stock_level: '250.0000',
     current_stock: '1200.0000', // 1.2 kg
     is_active: true,
@@ -155,7 +155,7 @@ let memoryRawMaterials: RawMaterial[] = [
     category: 'packaging',
     base_unit: 'pcs',
     conversion_rate: '1.0000',
-    cost_per_unit: '3.5000', // $3.50 each
+    cost_per_unit: '3.5000', // PKR 3.50 each
     min_stock_level: '200.0000',
     current_stock: '850.0000',
     is_active: true,
@@ -170,7 +170,7 @@ let memoryRawMaterials: RawMaterial[] = [
     category: 'packaging',
     base_unit: 'pcs',
     conversion_rate: '1.0000',
-    cost_per_unit: '1.2000', // $1.20 each
+    cost_per_unit: '1.2000', // PKR 1.20 each
     min_stock_level: '250.0000',
     current_stock: '1200.0000',
     is_active: true,
@@ -185,7 +185,7 @@ let memoryRawMaterials: RawMaterial[] = [
     category: 'packaging',
     base_unit: 'pcs',
     conversion_rate: '1.0000',
-    cost_per_unit: '0.4500', // $0.45 each
+    cost_per_unit: '0.4500', // PKR 0.45 each
     min_stock_level: '500.0000',
     current_stock: '2500.0000',
     is_active: true,
@@ -200,7 +200,7 @@ let memoryRawMaterials: RawMaterial[] = [
     category: 'packaging',
     base_unit: 'pcs',
     conversion_rate: '1.0000',
-    cost_per_unit: '2.8000', // $2.80 each
+    cost_per_unit: '2.8000', // PKR 2.80 each
     min_stock_level: '150.0000',
     current_stock: '900.0000',
     is_active: true,
@@ -215,7 +215,7 @@ let memoryRawMaterials: RawMaterial[] = [
     category: 'packaging',
     base_unit: 'pcs',
     conversion_rate: '1.0000',
-    cost_per_unit: '7.5000', // $7.50 each
+    cost_per_unit: '7.5000', // PKR 7.50 each
     min_stock_level: '100.0000',
     current_stock: '450.0000',
     is_active: true,
@@ -289,10 +289,10 @@ let memoryPurchaseOrders: PurchaseOrder[] = [
         raw_material_name: 'Rose Damascena Absolute Grade A',
         quantity: '0.5000', // 0.5 Litres
         unit: 'l',
-        unit_cost: '28500.0000', // $28,500/L
+        unit_cost: '28500.0000', // PKR 28,500/L
         line_total: '14250.0000',
         converted_quantity: '500.0000', // 500 ml
-        converted_unit_cost: '28.5000', // $28.50/ml
+        converted_unit_cost: '28.5000', // PKR 28.50/ml
       },
     ],
   },
@@ -336,6 +336,14 @@ let memoryStockMovements: StockMovement[] = [
 let poCounter = 2;
 
 export class InventoryService {
+  static clearDemoData(): void {
+    const isSeeded = (id: string) => id.includes('00000001');
+    memoryRawMaterials = memoryRawMaterials.filter((item) => !isSeeded(item.id));
+    memorySuppliers = memorySuppliers.filter((item) => !isSeeded(item.id));
+    memoryPurchaseOrders = memoryPurchaseOrders.filter((item) => !isSeeded(item.id));
+    memoryStockMovements = memoryStockMovements.filter((item) => !isSeeded(item.id));
+  }
+
   /**
    * Helper: calculate unit conversion using decimal.js
    */

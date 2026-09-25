@@ -24,6 +24,7 @@ import { ReportsPage } from './pages/ReportsPage';
 import { TraceabilityPage } from './pages/TraceabilityPage';
 import { AlertsPage } from './pages/AlertsPage';
 import { ProductionSuggestionsPage } from './pages/ProductionSuggestionsPage';
+import { CookieBanner } from './components/layout/CookieBanner';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -198,6 +199,7 @@ export const App: React.FC = () => {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <BrowserRouter>
+          <CookieBanner />
           <AppRoutes />
         </BrowserRouter>
       </AuthProvider>

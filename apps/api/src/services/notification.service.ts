@@ -6,11 +6,11 @@ import { BatchService } from './batch.service.js';
 import { BottlingService } from './bottling.service.js';
 
 export type AlertSeverity = 'info' | 'warning' | 'critical';
-export type AlertType = 
-  | 'low_raw_material' 
-  | 'low_finished_goods' 
-  | 'production_needed' 
-  | 'negative_stock_attempt' 
+export type AlertType =
+  | 'low_raw_material'
+  | 'low_finished_goods'
+  | 'production_needed'
+  | 'negative_stock_attempt'
   | 'system';
 
 export interface NotificationItem {
@@ -83,6 +83,10 @@ let memoryNotifications: NotificationItem[] = [
 ];
 
 export class NotificationService {
+  static clearDemoData(): void {
+    memoryNotifications = memoryNotifications.filter((notification) => !notification.id.includes('00000001'));
+  }
+
   /**
    * Reset memory notifications (useful for tests)
    */

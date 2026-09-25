@@ -4,17 +4,58 @@
 
 @layer base {
   :root {
-    --bg-primary: #0c0e12;
-    --bg-surface: #141820;
-    --bg-card: #181d26;
-    --border-color: #262d3d;
-    --gold: #d4af37;
+    --bg: 248 247 244;
+    --surface: 255 255 255;
+    --card: 255 255 255;
+    --border: 214 211 202;
+    --text: 28 31 35;
+    --text-muted: 92 99 107;
+    --accent: 180 143 36;
+    --accent-foreground: 255 255 255;
+    --success: 22 125 82;
+    --warning: 166 103 18;
+    --danger: 185 55 55;
+    --sidebar-bg: 238 236 230;
+    --sidebar-text: 45 49 54;
+    --accent-soft: 245 239 213;
+  }
+
+  .dark {
+    --bg: 12 14 18;
+    --surface: 20 24 32;
+    --card: 24 29 38;
+    --border: 42 49 66;
+    --text: 226 232 240;
+    --text-muted: 148 160 173;
+    --accent: 212 175 55;
+    --accent-foreground: 12 14 18;
+    --success: 52 211 153;
+    --warning: 251 191 36;
+    --danger: 251 113 133;
+    --sidebar-bg: 15 18 26;
+    --sidebar-text: 203 213 225;
+    --accent-soft: 55 46 20;
   }
 
   body {
-    background-color: var(--bg-primary);
-    color: #e2e8f0;
+    background-color: rgb(var(--bg));
+    color: rgb(var(--text));
     overflow-x: hidden;
+  }
+
+  button,
+  a {
+    transition-property: color, background-color, border-color, box-shadow, opacity, transform;
+    transition-duration: 150ms;
+  }
+
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 2px;
   }
 }
 
@@ -25,27 +66,65 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #0c0e12;
+  background: rgb(var(--bg));
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #2a3142;
+  background: rgb(var(--border));
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #d4af37;
+  background: rgb(var(--accent));
 }
 
 /* Luxury Card Glass Effect */
 .glass-panel {
-  background: rgba(20, 24, 32, 0.75);
+  background: rgb(var(--surface) / 0.75);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(212, 175, 55, 0.12);
+  border: 1px solid rgb(var(--accent) / 0.12);
 }
 
 .gold-gradient-text {
-  background: linear-gradient(135deg, #f5efd5 0%, #d4af37 50%, #aa8222 100%);
+  background: linear-gradient(135deg, rgb(var(--accent-soft)) 0%, rgb(var(--accent)) 50%, rgb(var(--accent) / 0.72) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+@media print {
+  @page {
+    margin: 16mm;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  [data-print-hidden='true'],
+  .no-print,
+  button,
+  nav,
+  aside {
+    display: none !important;
+  }
+
+  main {
+    display: block !important;
+    max-width: none !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    color: black !important;
+  }
+
+  table,
+  tr,
+  img {
+    break-inside: avoid;
+  }
+
+  a {
+    color: black !important;
+    text-decoration: none !important;
+  }
 }

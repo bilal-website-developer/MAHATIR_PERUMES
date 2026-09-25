@@ -186,6 +186,10 @@ let memoryFormulas: Formula[] = [
 ];
 
 export class FormulaService {
+  static clearDemoData(): void {
+    memoryFormulas = memoryFormulas.filter((formula) => !formula.id.includes('00000001'));
+  }
+
   /**
    * Validates formula ingredients:
    * 1. Fixed ml ingredients must have values > 0.

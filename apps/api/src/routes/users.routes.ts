@@ -4,6 +4,13 @@ import { supabaseAdmin } from '../config/supabase.js';
 import { validate } from '../middleware/validate.js';
 import { requireAuth, requireRole, DEMO_USERS } from '../middleware/auth.js';
 import { sendSuccess, sendError } from '../utils/response.js';
+import { InventoryService } from '../services/inventory.service.js';
+import { FormulaService } from '../services/formula.service.js';
+import { BatchService } from '../services/batch.service.js';
+import { ProductService } from '../services/product.service.js';
+import { BottlingService } from '../services/bottling.service.js';
+import { SalesService } from '../services/sales.service.js';
+import { NotificationService } from '../services/notification.service.js';
 
 export const usersRouter = Router();
 
@@ -97,6 +104,16 @@ usersRouter.post('/users/clear-demo-data', async (_req: Request, res: Response) 
   try {
     const { data, error } = await supabaseAdmin.rpc('clear_demo_data');
     if (error) {
+      if (error.message.includes('clear_demo_data') || error.code === 'PGRST202') {
+        InventoryService.clearDemoData();
+        FormulaService.clearDemoData();
+        BatchService.clearDemoData();
+        ProductService.clearDemoData();
+        BottlingService.clearDemoData();
+        SalesService.clearDemoData();
+        NotificationService.clearDemoData();
+        return sendSuccess(res, { cleared: true, already_cleared: false, storage: 'memory-fallback' });
+      }
       return sendError(res, error.message, 400, 'DEMO_DATA_CLEAR_FAILED');
     }
 

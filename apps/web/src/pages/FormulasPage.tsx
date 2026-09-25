@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { apiClient } from '../lib/api';
 import { useAuth } from '../context/AuthContext';
+import { formatCurrency } from '../lib/utils';
 import { Decimal } from 'decimal.js';
 
 interface RawMaterial {
@@ -330,7 +331,7 @@ export const FormulasPage: React.FC = () => {
         <div className="flex items-center space-x-3">
           <button
             onClick={() => fetchData()}
-            className="p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 bg-slate-900/60 text-slate-300 hover:text-white transition-colors"
+            className="p-2.5 rounded-lg border border-slate-800 hover:border-slate-700 bg-slate-900/60 text-slate-300 hover:text-foreground transition-colors"
           >
             <RefreshCw className="h-4 w-4" />
           </button>
@@ -350,8 +351,8 @@ export const FormulasPage: React.FC = () => {
       {feedback && (
         <div
           className={`p-4 rounded-xl flex items-center justify-between border ${feedback.type === 'success'
-              ? 'bg-emerald-950/30 border-emerald-500/30 text-emerald-300'
-              : 'bg-rose-950/30 border-rose-500/30 text-rose-300'
+            ? 'bg-emerald-950/30 border-emerald-500/30 text-emerald-300'
+            : 'bg-rose-950/30 border-rose-500/30 text-rose-300'
             }`}
         >
           <div className="flex items-center space-x-3">
@@ -362,7 +363,7 @@ export const FormulasPage: React.FC = () => {
             )}
             <span className="text-sm font-medium">{feedback.message}</span>
           </div>
-          <button onClick={() => setFeedback(null)} className="text-slate-400 hover:text-white">
+          <button onClick={() => setFeedback(null)} className="text-slate-400 hover:text-foreground">
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -421,8 +422,8 @@ export const FormulasPage: React.FC = () => {
               key={status}
               onClick={() => setStatusFilter(status)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-colors ${statusFilter === status
-                  ? 'bg-gold-500/20 text-gold-300 border border-gold-500/30'
-                  : 'text-slate-400 hover:text-slate-200 bg-slate-800/40'
+                ? 'bg-gold-500/20 text-gold-300 border border-gold-500/30'
+                : 'text-slate-400 hover:text-slate-200 bg-slate-800/40'
                 }`}
             >
               {status}
@@ -434,12 +435,12 @@ export const FormulasPage: React.FC = () => {
       {/* Formulas List */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {isLoading ? (
-          <div className="col-span-full py-16 text-center text-slate-500 bg-[#0f121a] rounded-2xl border border-slate-800">
+          <div className="col-span-full py-16 text-center text-slate-500 bg-sidebar rounded-2xl border border-slate-800">
             <RefreshCw className="h-6 w-6 animate-spin mx-auto mb-2 text-gold-500" />
             <span>Loading perfume formulas...</span>
           </div>
         ) : filtered.length === 0 ? (
-          <div className="col-span-full py-16 text-center text-slate-500 bg-[#0f121a] rounded-2xl border border-slate-800">
+          <div className="col-span-full py-16 text-center text-slate-500 bg-sidebar rounded-2xl border border-slate-800">
             <FlaskConical className="h-8 w-8 mx-auto mb-2 text-slate-600" />
             <span>No perfume formulas found matching your filters.</span>
           </div>
@@ -447,7 +448,7 @@ export const FormulasPage: React.FC = () => {
           filtered.map((formula) => (
             <div
               key={formula.id}
-              className="bg-[#0f121a] p-5 rounded-2xl border border-slate-800/80 hover:border-gold-500/30 transition-all flex flex-col justify-between shadow-xl relative"
+              className="bg-sidebar p-5 rounded-2xl border border-slate-800/80 hover:border-gold-500/30 transition-all flex flex-col justify-between shadow-xl relative"
             >
               <div>
                 <div className="flex items-start justify-between">
@@ -558,7 +559,7 @@ export const FormulasPage: React.FC = () => {
       {/* Scaling Calculator Drawer / Modal */}
       {isScaleOpen && activeFormula && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-          <div className="bg-[#121620] border border-slate-800 rounded-2xl w-full max-w-2xl p-6 shadow-2xl relative max-h-[90vh] flex flex-col">
+          <div className="bg-surface border border-slate-800 rounded-2xl w-full max-w-2xl p-6 shadow-2xl relative max-h-[90vh] flex flex-col">
             <div className="flex items-center justify-between pb-4 border-b border-slate-800">
               <div>
                 <h3 className="font-serif font-bold text-base text-slate-100 flex items-center space-x-2">
@@ -569,7 +570,7 @@ export const FormulasPage: React.FC = () => {
                   Recipe: <span className="text-slate-100 font-semibold">{activeFormula.perfume_name}</span> ({activeFormula.version_label})
                 </p>
               </div>
-              <button onClick={() => setIsScaleOpen(false)} className="text-slate-400 hover:text-white">
+              <button onClick={() => setIsScaleOpen(false)} className="text-slate-400 hover:text-foreground">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -605,8 +606,8 @@ export const FormulasPage: React.FC = () => {
                         triggerScale(activeFormula.id, val);
                       }}
                       className={`px-2.5 py-1 rounded text-xs font-mono font-medium transition-colors ${targetBatchMl === val
-                          ? 'bg-gold-500 text-slate-950 font-bold'
-                          : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                        ? 'bg-gold-500 text-slate-950 font-bold'
+                        : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
                         }`}
                     >
                       {parseInt(val) >= 1000 ? `${parseInt(val) / 1000} L` : `${val} ml`}
@@ -628,13 +629,13 @@ export const FormulasPage: React.FC = () => {
                     <div className="p-3 bg-slate-900 border border-slate-800 rounded-lg">
                       <div className="text-[10px] uppercase text-slate-500 font-medium">Batch Cost</div>
                       <div className="font-serif font-bold text-gold-300 text-sm">
-                        ${parseFloat(scaleResult.estimated_total_cost).toFixed(2)}
+                        {formatCurrency(scaleResult.estimated_total_cost)}
                       </div>
                     </div>
                     <div className="p-3 bg-slate-900 border border-slate-800 rounded-lg">
                       <div className="text-[10px] uppercase text-slate-500 font-medium">Cost / ml</div>
                       <div className="font-mono font-bold text-slate-200 text-sm">
-                        ${parseFloat(scaleResult.cost_per_ml).toFixed(4)}
+                        {formatCurrency(scaleResult.cost_per_ml)}
                       </div>
                     </div>
                     <div className="p-3 bg-slate-900 border border-slate-800 rounded-lg">
@@ -651,7 +652,7 @@ export const FormulasPage: React.FC = () => {
                   {/* Scaled Ingredients Table */}
                   <div className="rounded-xl border border-slate-800 overflow-hidden">
                     <table className="w-full text-left text-xs">
-                      <thead className="bg-[#141824] text-slate-400 font-semibold text-[10px] uppercase border-b border-slate-800">
+                      <thead className="bg-card text-slate-400 font-semibold text-[10px] uppercase border-b border-slate-800">
                         <tr>
                           <th className="py-2.5 px-3">Ingredient</th>
                           <th className="py-2.5 px-3">Formula Value</th>
@@ -688,7 +689,7 @@ export const FormulasPage: React.FC = () => {
                                 )}
                               </td>
                               <td className="py-2.5 px-3 font-mono text-right text-gold-300">
-                                ${parseFloat(ing.line_cost).toFixed(2)}
+                                {formatCurrency(ing.line_cost)}
                               </td>
                             </tr>
                           );
@@ -716,7 +717,7 @@ export const FormulasPage: React.FC = () => {
       {/* Formula Builder Modal */}
       {isBuilderOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-          <div className="bg-[#121620] border border-slate-800 rounded-2xl w-full max-w-2xl p-6 shadow-2xl relative max-h-[90vh] flex flex-col">
+          <div className="bg-surface border border-slate-800 rounded-2xl w-full max-w-2xl p-6 shadow-2xl relative max-h-[90vh] flex flex-col">
             <div className="flex items-center justify-between pb-4 border-b border-slate-800">
               <div>
                 <h3 className="font-serif font-bold text-base text-slate-100">
@@ -726,7 +727,7 @@ export const FormulasPage: React.FC = () => {
                   Mix percentage (%) and fixed ml components. Percentages must total 100% of remaining volume.
                 </p>
               </div>
-              <button onClick={() => setIsBuilderOpen(false)} className="text-slate-400 hover:text-white">
+              <button onClick={() => setIsBuilderOpen(false)} className="text-slate-400 hover:text-foreground">
                 <X className="h-5 w-5" />
               </button>
             </div>
@@ -851,8 +852,8 @@ export const FormulasPage: React.FC = () => {
               {/* 100% Validation Indicator Bar */}
               <div
                 className={`p-3 rounded-xl border flex items-center justify-between text-xs ${isValid
-                    ? 'bg-emerald-950/20 border-emerald-500/30 text-emerald-300'
-                    : 'bg-rose-950/20 border-rose-500/30 text-rose-300'
+                  ? 'bg-emerald-950/20 border-emerald-500/30 text-emerald-300'
+                  : 'bg-rose-950/20 border-rose-500/30 text-rose-300'
                   }`}
               >
                 <div className="flex items-center space-x-2">
@@ -894,8 +895,8 @@ export const FormulasPage: React.FC = () => {
                   type="submit"
                   disabled={!isValid}
                   className={`px-4 py-2 rounded-lg font-bold shadow-md ${isValid
-                      ? 'bg-gold-500 hover:bg-gold-400 text-slate-950 cursor-pointer'
-                      : 'bg-slate-800 text-slate-500 cursor-not-allowed'
+                    ? 'bg-gold-500 hover:bg-gold-400 text-slate-950 cursor-pointer'
+                    : 'bg-slate-800 text-slate-500 cursor-not-allowed'
                     }`}
                 >
                   Save Active Recipe
@@ -909,7 +910,7 @@ export const FormulasPage: React.FC = () => {
       {/* Lock Confirmation Modal */}
       {isLockModalOpen && activeFormula && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
-          <div className="bg-[#121620] border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative">
+          <div className="bg-surface border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl relative">
             <div className="flex items-center space-x-3 text-amber-400 mb-2">
               <Lock className="h-5 w-5" />
               <h3 className="font-serif font-bold text-base text-slate-100">

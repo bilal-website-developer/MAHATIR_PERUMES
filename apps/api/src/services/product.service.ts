@@ -218,6 +218,13 @@ let memoryVariants: ProductVariant[] = [
 ];
 
 export class ProductService {
+  static clearDemoData(): void {
+    const isSeeded = (id: string) => id.includes('00000001') || id.startsWith('pkg-recipe-');
+    memoryPackagingRecipes = memoryPackagingRecipes.filter((recipe) => !isSeeded(recipe.id));
+    memoryProducts = memoryProducts.filter((product) => !isSeeded(product.id));
+    memoryVariants = memoryVariants.filter((variant) => !isSeeded(variant.id));
+  }
+
   /**
    * Get Packaging Recipes
    */
@@ -236,39 +243,39 @@ export class ProductService {
           .is('deleted_at', null)
           .order('created_at', { ascending: false });
 
-      if (!error && data) {
-        const enriched = data.map((recipe: any) => {
-          let totalCost = new Decimal(0);
-          const items = (recipe.items || []).map((item: any) => {
-            const unitCost = new Decimal(item.raw_materials?.cost_per_unit || '0');
-            const qty = new Decimal(item.quantity_per_unit);
-            const lineCost = unitCost.mul(qty);
-            totalCost = totalCost.add(lineCost);
+        if (!error && data) {
+          const enriched = data.map((recipe: any) => {
+            let totalCost = new Decimal(0);
+            const items = (recipe.items || []).map((item: any) => {
+              const unitCost = new Decimal(item.raw_materials?.cost_per_unit || '0');
+              const qty = new Decimal(item.quantity_per_unit);
+              const lineCost = unitCost.mul(qty);
+              totalCost = totalCost.add(lineCost);
+              return {
+                id: item.id,
+                recipe_id: item.recipe_id,
+                raw_material_id: item.raw_material_id,
+                raw_material_name: item.raw_materials?.name,
+                raw_material_sku: item.raw_materials?.sku,
+                quantity_per_unit: qty.toFixed(4),
+                unit_cost: unitCost.toFixed(4),
+                line_cost: lineCost.toFixed(4),
+              };
+            });
+
             return {
-              id: item.id,
-              recipe_id: item.recipe_id,
-              raw_material_id: item.raw_material_id,
-              raw_material_name: item.raw_materials?.name,
-              raw_material_sku: item.raw_materials?.sku,
-              quantity_per_unit: qty.toFixed(4),
-              unit_cost: unitCost.toFixed(4),
-              line_cost: lineCost.toFixed(4),
+              ...recipe,
+              size_ml: new Decimal(recipe.size_ml).toFixed(4),
+              items,
+              total_packaging_cost: totalCost.toFixed(4),
             };
           });
-
-          return {
-            ...recipe,
-            size_ml: new Decimal(recipe.size_ml).toFixed(4),
-            items,
-            total_packaging_cost: totalCost.toFixed(4),
-          };
-        });
-        return { data: enriched, total: enriched.length };
+          return { data: enriched, total: enriched.length };
+        }
+      } catch (_err) {
+        // fallback to memory
       }
-    } catch (_err) {
-      // fallback to memory
     }
-  }
 
     // Populate memory item costs dynamically from InventoryService
     const recipes = memoryPackagingRecipes.map((recipe) => {

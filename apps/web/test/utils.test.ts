@@ -8,10 +8,10 @@ describe('Web Utilities & Engineering Invariants', () => {
     expect(cn('p-4', false && 'p-2', 'p-6')).toBe('p-6'); // twMerge resolves conflicts
   });
 
-  it('formatCurrency correctly formats string and number currencies with symbol', () => {
-    expect(formatCurrency(125.5, '$')).toBe('$125.50');
-    expect(formatCurrency('89.999', '$')).toBe('$90.00');
-    expect(formatCurrency('invalid', '$')).toBe('$0.00');
+  it('formatCurrency correctly formats Pakistani Rupee values', () => {
+    expect(formatCurrency(125.5)).toMatch(/Rs.*125\.50/);
+    expect(formatCurrency('89.999')).toMatch(/Rs.*90\.00/);
+    expect(formatCurrency('invalid')).toMatch(/Rs.*0\.00/);
   });
 
   it('Decimal.js behaves with high precision and avoids floating point issues', () => {

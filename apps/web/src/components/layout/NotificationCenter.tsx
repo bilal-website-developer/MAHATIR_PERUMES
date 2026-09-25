@@ -112,7 +112,7 @@ export const NotificationCenter: React.FC = () => {
       >
         <Bell className="h-4 w-4" />
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white shadow-lg ring-2 ring-[#0f121a] animate-pulse">
+          <span className="absolute -top-1 -right-1 flex h-4 min-w-[16px] px-1 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-accent-foreground shadow-lg ring-2 ring-sidebar animate-pulse">
             {unreadCount > 99 ? '99+' : unreadCount}
           </span>
         )}
@@ -120,9 +120,9 @@ export const NotificationCenter: React.FC = () => {
 
       {/* Popover Dropdown */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-96 max-w-[90vw] bg-[#141824] border border-slate-700/80 rounded-xl shadow-2xl z-50 overflow-hidden flex flex-col backdrop-blur-xl animate-in fade-in slide-in-from-top-2 duration-150">
+        <div className="absolute right-0 mt-2 w-96 max-w-[90vw] bg-card border border-slate-700/80 rounded-xl shadow-2xl z-50 overflow-hidden flex flex-col backdrop-blur-xl animate-in fade-in slide-in-from-top-2 duration-150">
           {/* Header */}
-          <div className="p-4 border-b border-slate-800 flex items-center justify-between bg-[#11141e]">
+          <div className="p-4 border-b border-slate-800 flex items-center justify-between bg-surface">
             <div className="flex items-center space-x-2">
               <span className="font-serif text-sm font-semibold text-slate-100">
                 Operational Alerts
@@ -159,12 +159,12 @@ export const NotificationCenter: React.FC = () => {
           </div>
 
           {/* Filter Pills */}
-          <div className="px-4 py-2 bg-[#0d1017] border-b border-slate-800 flex items-center space-x-2 text-[11px]">
+          <div className="px-4 py-2 bg-sidebar border-b border-slate-800 flex items-center space-x-2 text-[11px]">
             <button
               onClick={() => setFilter('all')}
               className={`px-2.5 py-1 rounded-md transition-colors ${
                 filter === 'all'
-                  ? 'bg-slate-700 text-white font-medium'
+                  ? 'bg-slate-700 text-accent-foreground font-medium'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >
@@ -254,7 +254,7 @@ export const NotificationCenter: React.FC = () => {
           </div>
 
           {/* Footer Shortcuts */}
-          <div className="p-3 border-t border-slate-800 bg-[#11141e] flex items-center justify-between text-xs">
+          <div className="p-3 border-t border-slate-800 bg-surface flex items-center justify-between text-xs">
             <button
               onClick={() => {
                 setIsOpen(false);
