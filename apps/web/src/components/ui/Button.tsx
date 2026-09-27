@@ -1,5 +1,6 @@
 import React from 'react';
 import { cn } from '../../lib/utils';
+import { playClickSound } from '../../lib/sound';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
@@ -8,7 +9,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = 'primary', size = 'md', isLoading = false, children, disabled, ...props }, ref) => {
+  ({ className, variant = 'primary', size = 'md', isLoading = false, children, disabled, onClick, ...props }, ref) => {
     const baseClasses = 'inline-flex items-center justify-center font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed select-none';
 
     const sizeClasses = {
@@ -29,7 +30,12 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         disabled={disabled || isLoading}
+        data-sound-button="true"
         className={cn(baseClasses, sizeClasses[size], variantClasses[variant], className)}
+        onClick={(event) => {
+          playClickSound();
+          onClick?.(event);
+        }}
         {...props}
       >
         {isLoading ? (

@@ -25,6 +25,7 @@ import { TraceabilityPage } from './pages/TraceabilityPage';
 import { AlertsPage } from './pages/AlertsPage';
 import { ProductionSuggestionsPage } from './pages/ProductionSuggestionsPage';
 import { CookieBanner } from './components/layout/CookieBanner';
+import { playClickSound } from './lib/sound';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -196,13 +197,27 @@ export const AppRoutes: React.FC = () => {
 
 export const App: React.FC = () => {
   React.useEffect(() => {
+    const handleButtonClick = (event: MouseEvent) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const button = target.closest('button');
+      if (!button || button.disabled || button.dataset.soundButton === 'true') return;
+      if (button.getAttribute('role') === 'switch' || button.getAttribute('role') === 'checkbox') return;
+      playClickSound();
+    };
+
+    document.addEventListener('click', handleButtonClick);
+    return () => document.removeEventListener('click', handleButtonClick);
+  }, []);
+
+  React.useEffect(() => {
     const observedButtons = new WeakSet<Element>();
     const observer = 'IntersectionObserver' in window
       ? new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            (entry.target as HTMLElement).dataset.inView = entry.isIntersecting ? 'true' : 'false';
-          });
-        })
+        entries.forEach((entry) => {
+          (entry.target as HTMLElement).dataset.inView = entry.isIntersecting ? 'true' : 'false';
+        });
+      })
       : null;
 
     const observeButton = (element: Element) => {

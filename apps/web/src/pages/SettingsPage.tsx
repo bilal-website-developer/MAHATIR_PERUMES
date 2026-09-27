@@ -5,6 +5,7 @@ import { Button } from '../components/ui/Button';
 import { DataTable, Column } from '../components/common/DataTable';
 import { apiClient } from '../lib/api';
 import { Settings, Plus } from 'lucide-react';
+import { isSoundEnabled, setSoundEnabled, subscribeToSoundSetting } from '../lib/sound';
 
 interface BranchItem {
   id: string;
@@ -32,6 +33,9 @@ export const SettingsPage: React.FC = () => {
   const [settings, setSettings] = useState<AppSettings | null>(null);
   const [branches, setBranches] = useState<BranchItem[]>([]);
   const [loading, setLoading] = useState(false);
+  const [soundEnabled, setSoundEnabledState] = useState(isSoundEnabled);
+
+  useEffect(() => subscribeToSoundSetting(() => setSoundEnabledState(isSoundEnabled())), []);
 
   useEffect(() => {
     const loadData = async () => {
@@ -154,6 +158,27 @@ export const SettingsPage: React.FC = () => {
             </span>
           </div>
         </div>
+      </Card>
+
+      <Card className="flex items-center justify-between gap-4">
+        <div>
+          <h2 className="text-sm font-semibold text-foreground">Button click sounds</h2>
+          <p className="mt-1 text-xs text-muted">Play a short ascending chime when a meaningful action button is activated.</p>
+        </div>
+        <button
+          type="button"
+          role="switch"
+          aria-checked={soundEnabled}
+          aria-label="Button click sounds"
+          onClick={() => {
+            const nextValue = !soundEnabled;
+            setSoundEnabledState(nextValue);
+            setSoundEnabled(nextValue);
+          }}
+          className={`relative inline-flex h-6 w-11 shrink-0 rounded-full border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background ${soundEnabled ? 'border-accent bg-accent' : 'border-border bg-surface'}`}
+        >
+          <span className={`pointer-events-none h-5 w-5 translate-y-0.5 rounded-full bg-white shadow transition-transform ${soundEnabled ? 'translate-x-5' : 'translate-x-0.5'}`} />
+        </button>
       </Card>
 
       {/* Branches Table via Reusable DataTable */}
