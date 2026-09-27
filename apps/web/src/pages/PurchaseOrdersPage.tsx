@@ -358,7 +358,7 @@ export const PurchaseOrdersPage: React.FC = () => {
           {['admin', 'inventory_manager'].includes(user?.role || '') && (
             <button
               onClick={() => setIsBuilderOpen(true)}
-              className="px-4 py-2.5 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-slate-950 font-semibold text-xs rounded-lg flex items-center space-x-2 shadow-[0_0_15px_rgba(212,175,55,0.2)] transition-all"
+              className="erp-primary-button px-4 py-2.5 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-slate-950 font-semibold text-xs rounded-lg flex items-center space-x-2 shadow-[0_0_15px_rgba(212,175,55,0.2)] transition-all"
             >
               <Plus className="h-4 w-4" />
               <span>Create Purchase Order</span>
@@ -440,7 +440,7 @@ export const PurchaseOrdersPage: React.FC = () => {
           filtered.map((po) => (
             <div
               key={po.id}
-              className="bg-sidebar p-5 rounded-2xl border border-slate-800/80 hover:border-slate-700 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-lg"
+              className="erp-hover-card bg-sidebar p-5 rounded-2xl border border-slate-800/80 hover:border-slate-700 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-lg"
             >
               <div className="space-y-2">
                 <div className="flex items-center space-x-3">
@@ -533,7 +533,7 @@ export const PurchaseOrdersPage: React.FC = () => {
                   {po.status === 'approved' && ['admin', 'inventory_manager'].includes(user?.role || '') && (
                     <button
                       onClick={() => handleConfirmReceive(po.id)}
-                      className="px-3 py-1.5 bg-gold-500 hover:bg-gold-400 text-slate-950 text-xs font-bold rounded-lg flex items-center space-x-1.5 shadow-[0_0_12px_rgba(212,175,55,0.25)] transition-all"
+                      className="erp-primary-button px-3 py-1.5 bg-gold-500 hover:bg-gold-400 text-slate-950 text-xs font-bold rounded-lg flex items-center space-x-1.5 shadow-[0_0_12px_rgba(212,175,55,0.25)] transition-all"
                     >
                       <PackageCheck className="h-4 w-4" />
                       <span>Receive & Add Stock</span>
@@ -725,7 +725,7 @@ export const PurchaseOrdersPage: React.FC = () => {
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 rounded-lg bg-gold-500 hover:bg-gold-400 text-slate-950 font-bold shadow-md"
+                    className="erp-primary-button px-4 py-2 rounded-lg bg-gold-500 hover:bg-gold-400 text-slate-950 font-bold shadow-md"
                   >
                     Save as Draft PO
                   </button>

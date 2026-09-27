@@ -14,6 +14,8 @@ const envSchema = z.object({
   SUPABASE_DB_URL: z.string().optional(),
   SUPABASE_JWT_SECRET: z.string().optional(),
   RESEND_API_KEY: z.string().optional(),
+  GROQ_API_KEY: z.string().optional(),
+  GROQ_MODEL: z.string().default('openai/gpt-oss-20b'),
 });
 
 const parsed = envSchema.safeParse(process.env);

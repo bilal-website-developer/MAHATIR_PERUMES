@@ -325,7 +325,7 @@ export const BatchesPage: React.FC = () => {
           {['admin', 'production_manager'].includes(user?.role || '') && (
             <button
               onClick={() => setIsWizardOpen(true)}
-              className="px-4 py-2.5 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-slate-950 font-semibold text-xs rounded-lg flex items-center space-x-2 shadow-[0_0_15px_rgba(212,175,55,0.2)] transition-all"
+              className="erp-primary-button px-4 py-2.5 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-slate-950 font-semibold text-xs rounded-lg flex items-center space-x-2 shadow-[0_0_15px_rgba(212,175,55,0.2)] transition-all"
             >
               <Plus className="h-4 w-4" />
               <span>Initiate New Batch</span>
@@ -357,7 +357,7 @@ export const BatchesPage: React.FC = () => {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800/80">
+        <div className="erp-hover-card p-4 rounded-xl bg-slate-900/60 border border-slate-800/80">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-xs uppercase font-medium tracking-wider">Active Bulk Volume</span>
             <Layers className="h-4 w-4 text-gold-400" />
@@ -370,7 +370,7 @@ export const BatchesPage: React.FC = () => {
           <div className="text-[11px] text-slate-500 mt-1">Available for bottling & decants</div>
         </div>
 
-        <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800/80">
+        <div className="erp-hover-card p-4 rounded-xl bg-slate-900/60 border border-slate-800/80">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-xs uppercase font-medium tracking-wider">Bulk Valuation</span>
             <Sparkles className="h-4 w-4 text-emerald-400" />
@@ -381,7 +381,7 @@ export const BatchesPage: React.FC = () => {
           <div className="text-[11px] text-slate-500 mt-1">Matured liquid inventory value</div>
         </div>
 
-        <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800/80">
+        <div className="erp-hover-card p-4 rounded-xl bg-slate-900/60 border border-slate-800/80">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-xs uppercase font-medium tracking-wider">Total Batches</span>
             <Factory className="h-4 w-4 text-sky-400" />
@@ -390,7 +390,7 @@ export const BatchesPage: React.FC = () => {
           <div className="text-[11px] text-slate-500 mt-1">Recorded manufacturing runs</div>
         </div>
 
-        <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800/80">
+        <div className="erp-hover-card p-4 rounded-xl bg-slate-900/60 border border-slate-800/80">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-xs uppercase font-medium tracking-wider text-amber-400">
               Loss Precision
@@ -483,7 +483,7 @@ export const BatchesPage: React.FC = () => {
                 return (
                   <div
                     key={b.id}
-                    className="bg-sidebar p-5 rounded-2xl border border-slate-800/80 hover:border-slate-700 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl"
+                    className="erp-hover-card bg-sidebar p-5 rounded-2xl border border-slate-800/80 hover:border-slate-700 transition-all flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl"
                   >
                     <div className="space-y-2">
                       <div className="flex items-center space-x-3">
@@ -555,7 +555,7 @@ export const BatchesPage: React.FC = () => {
                               setActualVolume(b.expected_volume);
                               setIsConfirmModalOpen(true);
                             }}
-                            className="px-3.5 py-1.5 bg-gold-500 hover:bg-gold-400 text-slate-950 text-xs font-bold rounded-lg flex items-center space-x-1.5 shadow-[0_0_12px_rgba(212,175,55,0.25)] transition-all"
+                            className="erp-primary-button px-3.5 py-1.5 bg-gold-500 hover:bg-gold-400 text-slate-950 text-xs font-bold rounded-lg flex items-center space-x-1.5 shadow-[0_0_12px_rgba(212,175,55,0.25)] transition-all"
                           >
                             <CheckCircle2 className="h-4 w-4" />
                             <span>Confirm Production</span>
@@ -600,7 +600,7 @@ export const BatchesPage: React.FC = () => {
           {bulkLots.map((lot) => (
             <div
               key={lot.id}
-              className="bg-sidebar p-5 rounded-2xl border border-slate-800/80 hover:border-gold-500/30 transition-all shadow-xl flex flex-col justify-between"
+              className="erp-hover-card bg-sidebar p-5 rounded-2xl border border-slate-800/80 hover:border-gold-500/30 transition-all shadow-xl flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between">
@@ -714,7 +714,7 @@ export const BatchesPage: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-lg bg-gold-500 hover:bg-gold-400 text-slate-950 font-bold shadow-md"
+                  className="erp-primary-button px-4 py-2 rounded-lg bg-gold-500 hover:bg-gold-400 text-slate-950 font-bold shadow-md"
                 >
                   Create Batch Draft
                 </button>
@@ -811,7 +811,7 @@ export const BatchesPage: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-lg bg-gold-500 hover:bg-gold-400 text-slate-950 font-bold shadow-md"
+                  className="erp-primary-button px-4 py-2 rounded-lg bg-gold-500 hover:bg-gold-400 text-slate-950 font-bold shadow-md"
                 >
                   Confirm & Deduct Stock
                 </button>

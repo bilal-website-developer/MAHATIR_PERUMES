@@ -153,7 +153,7 @@ export const ProductionSuggestionsPage: React.FC = () => {
 
       {/* Telemetry Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-card border border-slate-800/80 rounded-xl p-4 shadow-sm">
+        <div className="erp-hover-card bg-card border border-slate-800/80 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between text-slate-400 text-xs">
             <span>Critical Replenishment Needed</span>
             <AlertTriangle className="h-4 w-4 text-rose-400" />
@@ -169,7 +169,7 @@ export const ProductionSuggestionsPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-card border border-slate-800/80 rounded-xl p-4 shadow-sm">
+        <div className="erp-hover-card bg-card border border-slate-800/80 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between text-slate-400 text-xs">
             <span>Target Production Runway</span>
             <Clock className="h-4 w-4 text-gold-400" />
@@ -182,7 +182,7 @@ export const ProductionSuggestionsPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-card border border-slate-800/80 rounded-xl p-4 shadow-sm">
+        <div className="erp-hover-card bg-card border border-slate-800/80 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between text-slate-400 text-xs">
             <span>Material Readiness</span>
             <Layers className="h-4 w-4 text-emerald-400" />
@@ -198,7 +198,7 @@ export const ProductionSuggestionsPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-card border border-slate-800/80 rounded-xl p-4 shadow-sm">
+        <div className="erp-hover-card bg-card border border-slate-800/80 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between text-slate-400 text-xs">
             <span>Suggested Compounding Vol</span>
             <Factory className="h-4 w-4 text-sky-400" />
@@ -213,7 +213,7 @@ export const ProductionSuggestionsPage: React.FC = () => {
       </div>
 
       {/* Main Suggestions Table */}
-      <div className="bg-card border border-slate-800/80 rounded-xl overflow-hidden shadow-md">
+      <div className="erp-hover-card bg-card border border-slate-800/80 rounded-xl overflow-hidden shadow-md">
         <div className="p-4 border-b border-slate-800 bg-surface flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Sparkles className="h-4 w-4 text-gold-400" />
@@ -366,7 +366,7 @@ export const ProductionSuggestionsPage: React.FC = () => {
                       {item.create_batch_payload && (
                         <button
                           onClick={() => handleCreateBatch(item)}
-                          className="px-3 py-1.5 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-slate-950 rounded-lg text-xs font-bold flex items-center space-x-1.5 transition-all shadow-sm"
+                          className="erp-primary-button px-3 py-1.5 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-slate-950 rounded-lg text-xs font-bold flex items-center space-x-1.5 transition-all shadow-sm"
                         >
                           <Factory className="h-3.5 w-3.5" />
                           <span>Create Batch</span>

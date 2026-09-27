@@ -174,8 +174,9 @@ export function DataTable<T extends Record<string, any>>({
       </div>
 
       {/* Table container */}
-      <div className="overflow-x-auto rounded-lg border border-border bg-background/80 shadow-md">
-        <table className="w-full text-left text-sm text-foreground/80">
+      <div className="erp-hover-card rounded-lg border border-border bg-background/80 shadow-md">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm text-foreground/80">
           <thead className="bg-card text-xs uppercase tracking-wider text-muted border-b border-border">
             <tr>
               {columns.map((col) => (
@@ -238,7 +239,8 @@ export function DataTable<T extends Record<string, any>>({
               ))
             )}
           </tbody>
-        </table>
+          </table>
+        </div>
       </div>
 
       {/* Pagination controls */}

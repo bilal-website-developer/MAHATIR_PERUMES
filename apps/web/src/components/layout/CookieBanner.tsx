@@ -20,7 +20,7 @@ export const CookieBanner: React.FC = () => {
                 <button type="button" onClick={() => choose('rejected')} className="rounded-lg border border-border px-2.5 py-1 text-[11px] font-semibold text-muted hover:bg-surface hover:text-foreground sm:px-3 sm:py-1.5 sm:text-xs">
                     Reject
                 </button>
-                <button type="button" onClick={() => choose('accepted')} className="rounded-lg bg-accent px-2.5 py-1 text-[11px] font-semibold text-accent-foreground hover:brightness-105 sm:px-3 sm:py-1.5 sm:text-xs">
+                <button type="button" onClick={() => choose('accepted')} className="erp-primary-button rounded-lg bg-accent px-2.5 py-1 text-[11px] font-semibold text-accent-foreground hover:brightness-105 sm:px-3 sm:py-1.5 sm:text-xs">
                     Accept
                 </button>
             </div>

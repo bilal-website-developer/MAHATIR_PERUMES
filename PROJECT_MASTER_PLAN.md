@@ -832,4 +832,53 @@ Notes and assumptions log:
 - Full verification passed: `npm run build` completed; all 67 API tests and 3 web tests passed; source diagnostics and `git diff --check` are clean.
 - Residual environment note: the browser session logged 401 responses from authenticated API calls because it was not connected to a live authenticated Supabase session; the existing demo/in-memory fallback still rendered the shell correctly.
 
+## 13. HELPER ASSISTANT PHASE TRACKER
+
+- [x] H1: Backend foundation
+- [x] H2: Frontend chat UI
+- [x] H3: Context awareness
+- [ ] H4: Data-aware read tools
+- [ ] H5: Guided draft actions
+- [ ] H6: Polish and guardrails
+
+### H1 Completed
+
+- Added `POST /api/v1/helper/chat` with existing authentication middleware.
+- Added server-only Groq client configuration through `GROQ_API_KEY` and `GROQ_MODEL`.
+- Added role, branch, current-page, read-only, and no-fabrication instructions to the server-built Helper prompt.
+- Added a per-user 10-request/minute rate limit and a 500-token response cap.
+- Added graceful fallback responses when Groq is unavailable or unconfigured.
+- Verified an authenticated live demo-admin request returned a real Groq response using an accessible model.
+- Verification: API build passes; all 67 API tests pass.
+
+### H2 Completed
+
+- Replaced the floating support mail button with a shared Helper AI panel mounted in `AppLayout`, so it appears on every authenticated page.
+- Added authenticated frontend calls to `POST /api/v1/helper/chat`, including the current route pathname as `current_page`.
+- Added session persistence for the open state, conversation id, and messages across page navigation; added loading, reset, fallback, error, auto-scroll, and accessible labels.
+- Added a server prompt boundary that prevents non-admin roles from receiving other users' private data; no client-side Groq key or privileged data path was added.
+- No migrations, database functions, or new API endpoints were required.
+- Verification: web typecheck and production build pass; all 67 API tests pass.
+
+### H3 Completed
+
+- Expanded Helper beyond ERP-only questions to provide general perfume education, including fragrance families, notes, concentration terminology, ingredients, blending, production, and storage.
+- Added a route-aware guide for every sidebar page, login/access-denied/not-found screens, and shared navigation, search, notification, theme, branch, profile, logout, and Helper controls.
+- Increased the response budget for detailed walkthroughs and bounded page explanations to eight steps.
+- Made the page guide authoritative so Helper does not invent UI controls, exact click paths, or undocumented permissions.
+- Added an implementation-verified Formula page control inventory, including its role-gated create/version/lock actions and batch scaling calculator.
+- Clarified that brand examples are general and non-ranked, while current sales rankings, prices, market trends, and live ERP figures require current sources or connected data tools.
+- Retained read-only, privacy, role-permission, and perfume safety boundaries; page context is resolved through a fixed route allowlist.
+- No migrations, database functions, API endpoints, or screens were added; the existing Helper endpoint and panel are reused.
+- Added focused tests for perfume/brand guidance, route context, global controls, and untrusted route input.
+- Verification: all 3 focused Helper tests pass.
+
+### Phase 1 Profile Follow-up (2026-09-27)
+
+- Added personal profile fields and the public-read, owner-write `avatars` storage bucket in migration `20260101000014_profiles_and_avatars.sql`.
+- Added self-scoped profile and avatar endpoints: `GET/PATCH /api/v1/me/profile`, `POST /api/v1/me/profile/avatar`, and `DELETE /api/v1/me/profile/avatar`.
+- Added strict payload validation, server-side JPG/PNG/WebP and 2MB checks, protected-field database enforcement, and the responsive header profile editor.
+- Added `docs/phase-01-profile.md` and `apps/api/test/profile.test.ts`.
+- Verification: focused profile tests pass for all four roles; API and web production builds pass.
+
 **END OF FILE**

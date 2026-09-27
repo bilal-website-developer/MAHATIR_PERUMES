@@ -195,6 +195,41 @@ export const AppRoutes: React.FC = () => {
 };
 
 export const App: React.FC = () => {
+  React.useEffect(() => {
+    const observedButtons = new WeakSet<Element>();
+    const observer = 'IntersectionObserver' in window
+      ? new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            (entry.target as HTMLElement).dataset.inView = entry.isIntersecting ? 'true' : 'false';
+          });
+        })
+      : null;
+
+    const observeButton = (element: Element) => {
+      if (!(element instanceof HTMLElement) || !element.matches('.erp-primary-button') || observedButtons.has(element)) return;
+      observedButtons.add(element);
+      if (observer) observer.observe(element);
+      else element.dataset.inView = 'true';
+    };
+
+    document.querySelectorAll('.erp-primary-button').forEach(observeButton);
+    const mutationObserver = new MutationObserver((records) => {
+      records.forEach((record) => {
+        record.addedNodes.forEach((node) => {
+          if (!(node instanceof HTMLElement)) return;
+          observeButton(node);
+          node.querySelectorAll('.erp-primary-button').forEach(observeButton);
+        });
+      });
+    });
+    mutationObserver.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      observer?.disconnect();
+      mutationObserver.disconnect();
+    };
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>

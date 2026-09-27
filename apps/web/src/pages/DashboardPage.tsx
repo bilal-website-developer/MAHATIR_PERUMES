@@ -47,7 +47,7 @@ export const DashboardPage: React.FC = () => {
   return (
     <div className="space-y-8 animate-fadeIn max-w-7xl mx-auto pb-12">
       {/* Hero Welcome Banner */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-card via-card to-card border border-gold-400/25 p-8 shadow-2xl">
+      <div className="erp-hover-card relative overflow-hidden rounded-2xl bg-gradient-to-r from-card via-card to-card border border-gold-400/25 p-8 shadow-2xl">
         <div className="absolute right-0 top-0 h-full w-1/3 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-gold-500/10 via-transparent to-transparent pointer-events-none" />
 
         <div className="max-w-3xl space-y-3">
@@ -65,7 +65,7 @@ export const DashboardPage: React.FC = () => {
           <div className="pt-2 flex flex-wrap gap-2.5">
             <Link
               to="/traceability"
-              className="inline-flex items-center space-x-2 px-4 py-2 rounded-lg bg-gold-500 text-slate-950 font-semibold text-xs hover:bg-gold-400 transition-colors shadow-sm"
+              className="erp-primary-button inline-flex items-center space-x-2 px-4 py-2 rounded-lg bg-gold-500 text-slate-950 font-semibold text-xs hover:bg-gold-400 transition-colors shadow-sm"
             >
               <Compass className="h-4 w-4" />
               <span>Trace Provenance</span>
@@ -109,7 +109,7 @@ export const DashboardPage: React.FC = () => {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {/* Card 1 */}
-          <div className="p-5 rounded-2xl border border-slate-800/80 bg-slate-900/60 backdrop-blur-sm space-y-1">
+          <div className="erp-hover-card p-5 rounded-2xl border border-slate-800/80 bg-slate-900/60 backdrop-blur-sm space-y-1">
             <div className="flex items-center justify-between">
               <span className="text-[10px] uppercase font-mono tracking-wider text-slate-400">
                 {user?.role === 'production_manager'
@@ -133,7 +133,7 @@ export const DashboardPage: React.FC = () => {
           </div>
 
           {/* Card 2 */}
-          <div className="p-5 rounded-2xl border border-slate-800/80 bg-slate-900/60 backdrop-blur-sm space-y-1">
+          <div className="erp-hover-card p-5 rounded-2xl border border-slate-800/80 bg-slate-900/60 backdrop-blur-sm space-y-1">
             <div className="flex items-center justify-between">
               <span className="text-[10px] uppercase font-mono tracking-wider text-slate-400">
                 {user?.role === 'production_manager'
@@ -161,7 +161,7 @@ export const DashboardPage: React.FC = () => {
           </div>
 
           {/* Card 3 */}
-          <div className="p-5 rounded-2xl border border-slate-800/80 bg-slate-900/60 backdrop-blur-sm space-y-1">
+          <div className="erp-hover-card p-5 rounded-2xl border border-slate-800/80 bg-slate-900/60 backdrop-blur-sm space-y-1">
             <div className="flex items-center justify-between">
               <span className="text-[10px] uppercase font-mono tracking-wider text-slate-400">
                 {user?.role === 'production_manager'
@@ -187,7 +187,7 @@ export const DashboardPage: React.FC = () => {
           </div>
 
           {/* Card 4 */}
-          <div className="p-5 rounded-2xl border border-slate-800/80 bg-slate-900/60 backdrop-blur-sm space-y-1">
+          <div className="erp-hover-card p-5 rounded-2xl border border-slate-800/80 bg-slate-900/60 backdrop-blur-sm space-y-1">
             <div className="flex items-center justify-between">
               <span className="text-[10px] uppercase font-mono tracking-wider text-slate-400">
                 {user?.role === 'sales_staff' ? 'Available Flacon Lots' : 'Low Stock Reorder Alerts'}
@@ -218,7 +218,7 @@ export const DashboardPage: React.FC = () => {
               <Card className="relative p-5 flex flex-col justify-between hover:border-gold-400/50 transition-all duration-200 h-full group">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <div className="h-9 w-9 rounded-lg bg-gold-500/10 border border-gold-400/20 flex items-center justify-center text-gold-400 group-hover:scale-105 transition-transform">
+                    <div data-card-icon className="h-9 w-9 rounded-lg bg-gold-500/10 border border-gold-400/20 flex items-center justify-center text-gold-400 group-hover:scale-105 transition-transform">
                       <step.icon className="h-5 w-5" />
                     </div>
                     <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">

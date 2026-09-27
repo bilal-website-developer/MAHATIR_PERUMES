@@ -100,7 +100,7 @@ export const TraceabilityPage: React.FC = () => {
       </div>
 
       {/* Unified Search Bar */}
-      <div className="p-4 rounded-2xl border border-slate-800/80 bg-slate-900/60 backdrop-blur-sm space-y-3">
+      <div className="erp-hover-card p-4 rounded-2xl border border-slate-800/80 bg-slate-900/60 backdrop-blur-sm space-y-3">
         <form onSubmit={handleSearchSubmit} className="flex gap-2">
           <div className="relative flex-1">
             <Search className="absolute left-3.5 top-3 h-4 w-4 text-slate-500" />
@@ -114,7 +114,7 @@ export const TraceabilityPage: React.FC = () => {
           </div>
           <button
             type="submit"
-            className="px-5 py-2.5 rounded-xl bg-gold-500 text-slate-950 font-semibold text-xs hover:bg-gold-400 transition-colors shadow-sm"
+            className="erp-primary-button px-5 py-2.5 rounded-xl bg-gold-500 text-slate-950 font-semibold text-xs hover:bg-gold-400 transition-colors shadow-sm"
           >
             Trace Provenance
           </button>
@@ -160,7 +160,7 @@ export const TraceabilityPage: React.FC = () => {
       {isBatchQuery && forwardTrace && (
         <div className="space-y-6 animate-fadeIn">
           {/* Active Inspection Banner */}
-          <div className="p-5 rounded-2xl border border-gold-500/40 bg-gradient-to-r from-slate-900 via-slate-900/90 to-card flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="erp-hover-card p-5 rounded-2xl border border-gold-500/40 bg-gradient-to-r from-slate-900 via-slate-900/90 to-card flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <div className="flex items-center space-x-2">
                 <span className="px-2.5 py-0.5 rounded text-[10px] uppercase font-mono font-bold bg-gold-500/20 border border-gold-500/40 text-gold-300">
@@ -199,7 +199,7 @@ export const TraceabilityPage: React.FC = () => {
           {/* Flow Stepper / Tree Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Step 1: Formula & Composition */}
-            <div className="p-5 rounded-2xl border border-slate-800/80 bg-slate-900/60 space-y-4">
+            <div className="erp-hover-card p-5 rounded-2xl border border-slate-800/80 bg-slate-900/60 space-y-4">
               <div className="flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-gold-400">
                 <FlaskConical className="h-4 w-4" />
                 <span>1. Formula BOM Origin</span>
@@ -229,7 +229,7 @@ export const TraceabilityPage: React.FC = () => {
             </div>
 
             {/* Step 2: Bottling Runs & Lots */}
-            <div className="p-5 rounded-2xl border border-slate-800/80 bg-slate-900/60 space-y-4">
+            <div className="erp-hover-card p-5 rounded-2xl border border-slate-800/80 bg-slate-900/60 space-y-4">
               <div className="flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-cyan-400">
                 <PackageCheck className="h-4 w-4" />
                 <span>2. Bottling Runs & Flacons ({forwardTrace.bottling_runs.length})</span>
@@ -244,7 +244,7 @@ export const TraceabilityPage: React.FC = () => {
                   {forwardTrace.bottling_runs.map((run: any) => (
                     <div
                       key={run.id}
-                      className="p-3.5 rounded-xl border border-slate-800 bg-slate-950 space-y-2 text-xs"
+                      className="erp-hover-card p-3.5 rounded-xl border border-slate-800 bg-slate-950 space-y-2 text-xs"
                     >
                       <div className="flex justify-between items-center">
                         <span className="font-mono font-bold text-cyan-300">{run.run_code}</span>
@@ -269,7 +269,7 @@ export const TraceabilityPage: React.FC = () => {
             </div>
 
             {/* Step 3: Consumer Sales Invoices */}
-            <div className="p-5 rounded-2xl border border-slate-800/80 bg-slate-900/60 space-y-4">
+            <div className="erp-hover-card p-5 rounded-2xl border border-slate-800/80 bg-slate-900/60 space-y-4">
               <div className="flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-emerald-400">
                 <ShoppingCart className="h-4 w-4" />
                 <span>3. Distributed Retail Sales ({forwardTrace.sales.length})</span>
@@ -284,7 +284,7 @@ export const TraceabilityPage: React.FC = () => {
                   {forwardTrace.sales.map((sale: any, idx: number) => (
                     <div
                       key={idx}
-                      className="p-3.5 rounded-xl border border-slate-800 bg-slate-950 space-y-1.5 text-xs"
+                      className="erp-hover-card p-3.5 rounded-xl border border-slate-800 bg-slate-950 space-y-1.5 text-xs"
                     >
                       <div className="flex justify-between items-center">
                         <button
@@ -354,7 +354,7 @@ export const TraceabilityPage: React.FC = () => {
             {backwardTrace.trace_items.map((item: any, idx: number) => (
               <div
                 key={idx}
-                className="p-6 rounded-2xl border border-slate-800/80 bg-slate-900/60 space-y-6"
+                className="erp-hover-card p-6 rounded-2xl border border-slate-800/80 bg-slate-900/60 space-y-6"
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800 pb-3 gap-2">
                   <div className="flex items-center space-x-2">

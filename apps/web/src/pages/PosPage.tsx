@@ -526,7 +526,7 @@ export const PosPage: React.FC = () => {
                   <div
                     key={lot.id}
                     onClick={() => stock > 0 && handleAddBottledToCart(lot)}
-                    className={`bg-surface border rounded-xl p-3.5 flex flex-col justify-between cursor-pointer select-none transition-all shadow-sm ${stock > 0
+                    className={`erp-hover-card bg-surface border rounded-xl p-3.5 flex flex-col justify-between cursor-pointer select-none transition-all shadow-sm ${stock > 0
                       ? 'border-slate-800/80 hover:border-gold-500/40 hover:bg-slate-800/20 active:scale-[0.98]'
                       : 'border-slate-800/40 opacity-50 cursor-not-allowed'
                       }`}
@@ -572,7 +572,7 @@ export const PosPage: React.FC = () => {
                       setSelectedDecantBatchId(batch.id);
                       setIsDecantModalOpen(true);
                     }}
-                    className="bg-surface border border-amber-500/30 hover:border-gold-400/60 rounded-xl p-3.5 flex flex-col justify-between cursor-pointer select-none transition-all shadow-sm hover:bg-amber-950/10 active:scale-[0.98]"
+                    className="erp-hover-card bg-surface border border-amber-500/30 hover:border-gold-400/60 rounded-xl p-3.5 flex flex-col justify-between cursor-pointer select-none transition-all shadow-sm hover:bg-amber-950/10 active:scale-[0.98]"
                   >
                     <div>
                       <div className="flex items-center justify-between text-[10px] font-mono text-amber-400 mb-1">
@@ -605,7 +605,7 @@ export const PosPage: React.FC = () => {
         </div>
 
         {/* Right Side: Cart & Checkout (4 cols) */}
-        <div className="lg:col-span-4 bg-surface border border-slate-800 rounded-2xl p-4 shadow-xl space-y-4 sticky top-6">
+        <div className="erp-hover-card lg:col-span-4 bg-surface border border-slate-800 rounded-2xl p-4 shadow-xl space-y-4 sticky top-6">
           <div className="flex items-center justify-between border-b border-slate-800 pb-3">
             <div className="flex items-center space-x-2">
               <ShoppingCart className="h-4 w-4 text-gold-400" />
@@ -737,7 +737,7 @@ export const PosPage: React.FC = () => {
           <button
             disabled={cart.length === 0}
             onClick={handleOpenPayment}
-            className="w-full py-3 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 disabled:opacity-40 disabled:cursor-not-allowed text-slate-950 font-bold rounded-xl text-xs tracking-wider uppercase flex items-center justify-center space-x-2 shadow-[0_0_20px_rgba(212,175,55,0.25)] transition-all"
+            className="erp-primary-button w-full py-3 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 disabled:opacity-40 disabled:cursor-not-allowed text-slate-950 font-bold rounded-xl text-xs tracking-wider uppercase flex items-center justify-center space-x-2 shadow-[0_0_20px_rgba(212,175,55,0.25)] transition-all"
           >
             <Banknote className="h-4 w-4" />
             <span>Pay & Complete Sale</span>
@@ -837,7 +837,7 @@ export const PosPage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleAddDecantToCart}
-                className="px-4 py-2 bg-gold-500 hover:bg-gold-400 text-slate-950 font-bold rounded-lg text-xs"
+                className="erp-primary-button px-4 py-2 bg-gold-500 hover:bg-gold-400 text-slate-950 font-bold rounded-lg text-xs"
               >
                 Add Decant to Cart
               </button>
@@ -982,7 +982,7 @@ export const PosPage: React.FC = () => {
                 type="button"
                 disabled={submittingSale}
                 onClick={handleCompleteSale}
-                className="px-5 py-2 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-slate-950 font-bold rounded-lg text-xs flex items-center space-x-1.5 shadow-[0_0_15px_rgba(212,175,55,0.2)]"
+                className="erp-primary-button px-5 py-2 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-slate-950 font-bold rounded-lg text-xs flex items-center space-x-1.5 shadow-[0_0_15px_rgba(212,175,55,0.2)]"
               >
                 {submittingSale ? (
                   <>
@@ -1061,7 +1061,7 @@ export const PosPage: React.FC = () => {
               </button>
               <button
                 onClick={() => setCompletedSale(null)}
-                className="px-4 py-1.5 bg-gold-500 hover:bg-gold-400 text-slate-950 font-bold rounded-lg text-xs"
+                className="erp-primary-button px-4 py-1.5 bg-gold-500 hover:bg-gold-400 text-slate-950 font-bold rounded-lg text-xs"
               >
                 Done / Next Sale
               </button>

@@ -288,7 +288,7 @@ export const BottlingPage: React.FC = () => {
                 setErrorMsg(null);
                 setSuccessMsg(null);
               }}
-              className="px-4 py-2 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-slate-950 rounded-lg text-xs font-bold tracking-wide flex items-center space-x-2 shadow-[0_0_15px_rgba(212,175,55,0.25)] transition-all"
+              className="erp-primary-button px-4 py-2 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-slate-950 rounded-lg text-xs font-bold tracking-wide flex items-center space-x-2 shadow-[0_0_15px_rgba(212,175,55,0.25)] transition-all"
             >
               <PackageCheck className="h-4 w-4" />
               <span>New Bottling Run</span>
@@ -324,7 +324,7 @@ export const BottlingPage: React.FC = () => {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-surface border border-slate-800/80 rounded-xl p-4 shadow-sm">
+        <div className="erp-hover-card bg-surface border border-slate-800/80 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
             <span>Total Bottled Units</span>
             <Boxes className="h-4 w-4 text-gold-400" />
@@ -335,7 +335,7 @@ export const BottlingPage: React.FC = () => {
           <p className="text-[11px] text-emerald-400 mt-1">Available in retail inventory</p>
         </div>
 
-        <div className="bg-surface border border-slate-800/80 rounded-xl p-4 shadow-sm">
+        <div className="erp-hover-card bg-surface border border-slate-800/80 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
             <span>Finished Goods Valuation</span>
             <TrendingUp className="h-4 w-4 text-emerald-400" />
@@ -346,7 +346,7 @@ export const BottlingPage: React.FC = () => {
           <p className="text-[11px] text-slate-400 mt-1">Total manufacturing unit cost</p>
         </div>
 
-        <div className="bg-surface border border-slate-800/80 rounded-xl p-4 shadow-sm">
+        <div className="erp-hover-card bg-surface border border-slate-800/80 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
             <span>Active Finished SKUs</span>
             <Tag className="h-4 w-4 text-blue-400" />
@@ -355,7 +355,7 @@ export const BottlingPage: React.FC = () => {
           <p className="text-[11px] text-slate-400 mt-1">Configured bottle size variants</p>
         </div>
 
-        <div className="bg-surface border border-slate-800/80 rounded-xl p-4 shadow-sm">
+        <div className="erp-hover-card bg-surface border border-slate-800/80 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between text-slate-400 text-xs mb-2">
             <span>Bottling Runs Executed</span>
             <CheckCircle2 className="h-4 w-4 text-purple-400" />
@@ -429,7 +429,7 @@ export const BottlingPage: React.FC = () => {
             <span className="text-xs text-slate-500">Showing {filteredLots.length} lots</span>
           </div>
 
-          <div className="bg-surface border border-slate-800/80 rounded-xl overflow-hidden shadow-sm">
+          <div className="erp-hover-card bg-surface border border-slate-800/80 rounded-xl overflow-hidden shadow-sm">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead>
@@ -495,7 +495,7 @@ export const BottlingPage: React.FC = () => {
 
       {/* Tab 2: Product Variants & SKUs */}
       {activeTab === 'skus' && (
-        <div className="bg-surface border border-slate-800/80 rounded-xl overflow-hidden shadow-sm">
+        <div className="erp-hover-card bg-surface border border-slate-800/80 rounded-xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
@@ -539,7 +539,7 @@ export const BottlingPage: React.FC = () => {
       {activeTab === 'recipes' && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {recipes.map((recipe) => (
-            <div key={recipe.id} className="bg-surface border border-slate-800/80 rounded-xl p-5 shadow-sm space-y-4">
+            <div key={recipe.id} className="erp-hover-card bg-surface border border-slate-800/80 rounded-xl p-5 shadow-sm space-y-4">
               <div className="flex items-start justify-between border-b border-slate-800 pb-3">
                 <div>
                   <h3 className="font-serif font-bold text-slate-100 text-sm">{recipe.name}</h3>
@@ -584,7 +584,7 @@ export const BottlingPage: React.FC = () => {
 
       {/* Tab 4: Bottling Execution History */}
       {activeTab === 'runs' && (
-        <div className="bg-surface border border-slate-800/80 rounded-xl overflow-hidden shadow-sm">
+        <div className="erp-hover-card bg-surface border border-slate-800/80 rounded-xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
@@ -822,7 +822,7 @@ export const BottlingPage: React.FC = () => {
                 type="button"
                 disabled={!preview || !preview.can_bottle || submitting}
                 onClick={handleExecuteBottling}
-                className="px-5 py-2 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 disabled:opacity-50 disabled:cursor-not-allowed text-slate-950 font-bold rounded-lg text-xs tracking-wide flex items-center space-x-2 shadow-[0_0_15px_rgba(212,175,55,0.2)]"
+                className="erp-primary-button px-5 py-2 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 disabled:opacity-50 disabled:cursor-not-allowed text-slate-950 font-bold rounded-lg text-xs tracking-wide flex items-center space-x-2 shadow-[0_0_15px_rgba(212,175,55,0.2)]"
               >
                 {submitting ? (
                   <>

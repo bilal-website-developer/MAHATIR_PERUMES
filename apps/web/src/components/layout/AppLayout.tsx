@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { TopBar } from './TopBar';
 import { DemoDataBanner } from './DemoDataBanner';
-import { ContactButton } from './ContactButton';
+import { HelperPanel } from './HelperPanel';
 import { ArrowUp } from 'lucide-react';
 
 export const AppLayout: React.FC = () => {
@@ -72,7 +72,7 @@ export const AppLayout: React.FC = () => {
             <ArrowUp className="h-4 w-4" />
           </button>
         )}
-        <ContactButton />
+        <HelperPanel />
       </div>
     </>
   );

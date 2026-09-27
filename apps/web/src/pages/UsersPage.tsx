@@ -272,25 +272,25 @@ export const UsersPage: React.FC = () => {
           <span>Role Permission Matrix</span>
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
-          <div className="bg-sidebar p-3 rounded-lg border border-slate-800 space-y-1">
+          <div className="erp-hover-card bg-sidebar p-3 rounded-lg border border-slate-800 space-y-1">
             <span className="font-semibold text-gold-300">Admin</span>
             <p className="text-slate-400 text-[11px]">
               Full ERP & POS access, user management, audit trails, and PO approvals.
             </p>
           </div>
-          <div className="bg-sidebar p-3 rounded-lg border border-slate-800 space-y-1">
+          <div className="erp-hover-card bg-sidebar p-3 rounded-lg border border-slate-800 space-y-1">
             <span className="font-semibold text-amber-300">Production Manager</span>
             <p className="text-slate-400 text-[11px]">
               Formula BOM, compounding batches, bottling runs, and dilution calculator.
             </p>
           </div>
-          <div className="bg-sidebar p-3 rounded-lg border border-slate-800 space-y-1">
+          <div className="erp-hover-card bg-sidebar p-3 rounded-lg border border-slate-800 space-y-1">
             <span className="font-semibold text-slate-300">Inventory Manager</span>
             <p className="text-slate-400 text-[11px]">
               Raw materials, suppliers, purchase order creation, and stock adjustments.
             </p>
           </div>
-          <div className="bg-sidebar p-3 rounded-lg border border-slate-800 space-y-1">
+          <div className="erp-hover-card bg-sidebar p-3 rounded-lg border border-slate-800 space-y-1">
             <span className="font-semibold text-emerald-300">Sales Staff</span>
             <p className="text-slate-400 text-[11px]">
               POS counter sales, touch interface, receipts, and customer management.

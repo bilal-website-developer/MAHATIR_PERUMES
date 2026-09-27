@@ -23,6 +23,8 @@ import { dilutionRouter } from './routes/dilution.routes.js';
 import { reportsRouter } from './routes/reports.routes.js';
 import { notificationsRouter } from './routes/notifications.routes.js';
 import { suggestionsRouter } from './routes/suggestions.routes.js';
+import { helperRouter } from './routes/helper.routes.js';
+import { profileRouter } from './routes/profile.routes.js';
 import { sendError } from './utils/response.js';
 
 export function createApp(): Express {
@@ -56,6 +58,7 @@ export function createApp(): Express {
   app.use('/api/v1', authRouter);
   app.use('/api/v1', settingsRouter);
   app.use('/api/v1', branchRouter);
+  app.use('/api/v1', profileRouter);
   app.use('/api/v1', usersRouter);
   app.use('/api/v1', auditRouter);
   app.use('/api/v1', rawMaterialsRouter);
@@ -72,6 +75,7 @@ export function createApp(): Express {
   app.use('/api/v1/notifications', notificationsRouter);
   app.use('/api/v1/suggestions', suggestionsRouter);
   app.use('/api/v1/system', notificationsRouter);
+  app.use('/api/v1', helperRouter);
 
   // 404 Handler
   app.use((_req, res) => {

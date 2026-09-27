@@ -143,7 +143,7 @@ export const AlertsPage: React.FC = () => {
           <button
             onClick={() => scanMutation.mutate()}
             disabled={scanMutation.isPending}
-            className="px-3.5 py-2 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-slate-950 rounded-lg text-xs font-bold flex items-center space-x-2 transition-all shadow-md disabled:opacity-50"
+            className="erp-primary-button px-3.5 py-2 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-slate-950 rounded-lg text-xs font-bold flex items-center space-x-2 transition-all shadow-md disabled:opacity-50"
           >
             <RefreshCw className={`h-3.5 w-3.5 ${scanMutation.isPending ? 'animate-spin' : ''}`} />
             <span>Scan Thresholds</span>
@@ -153,7 +153,7 @@ export const AlertsPage: React.FC = () => {
 
       {/* KPI Telemetry Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-card border border-slate-800/80 rounded-xl p-4 shadow-sm">
+        <div className="erp-hover-card bg-card border border-slate-800/80 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between text-slate-400 text-xs">
             <span>Active Alerts</span>
             <Bell className="h-4 w-4 text-gold-400" />
@@ -177,7 +177,7 @@ export const AlertsPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-card border border-slate-800/80 rounded-xl p-4 shadow-sm">
+        <div className="erp-hover-card bg-card border border-slate-800/80 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between text-slate-400 text-xs">
             <span>Critical Shortages</span>
             <AlertOctagon className="h-4 w-4 text-rose-400" />
@@ -190,7 +190,7 @@ export const AlertsPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-card border border-slate-800/80 rounded-xl p-4 shadow-sm">
+        <div className="erp-hover-card bg-card border border-slate-800/80 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between text-slate-400 text-xs">
             <span>Material & Variant Alarms</span>
             <Layers className="h-4 w-4 text-amber-400" />
@@ -203,7 +203,7 @@ export const AlertsPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-card border border-slate-800/80 rounded-xl p-4 shadow-sm">
+        <div className="erp-hover-card bg-card border border-slate-800/80 rounded-xl p-4 shadow-sm">
           <div className="flex items-center justify-between text-slate-400 text-xs">
             <span>Stock Ledger Integrity</span>
             <ShieldCheck className="h-4 w-4 text-emerald-400" />
@@ -218,7 +218,7 @@ export const AlertsPage: React.FC = () => {
       </div>
 
       {/* Main Alerts Card */}
-      <div className="bg-card border border-slate-800/80 rounded-xl overflow-hidden shadow-md">
+      <div className="erp-hover-card bg-card border border-slate-800/80 rounded-xl overflow-hidden shadow-md">
         {/* Controls Toolbar */}
         <div className="p-4 border-b border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 bg-surface">
           {/* Tabs */}

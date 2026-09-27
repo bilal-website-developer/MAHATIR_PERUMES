@@ -12,6 +12,14 @@
     --text-muted: 92 99 107;
     --accent: 180 143 36;
     --accent-foreground: 255 255 255;
+    --accent-gradient-start: 232 200 116;
+    --accent-gradient-mid: 166 124 0;
+    --accent-gradient-end: 160 122 18;
+    --accent-button-text: 12 14 18;
+    --accent-glow-color: rgb(166 124 0 / 0.25);
+    --shine-sweep-color: rgb(190 143 36 / 0.4);
+    --card-hover-shadow: 0 18px 38px rgb(40 44 50 / 0.2);
+    --sparkle-color: rgb(166 124 0 / 0.82);
     --success: 22 125 82;
     --warning: 166 103 18;
     --danger: 185 55 55;
@@ -29,6 +37,14 @@
     --text-muted: 148 160 173;
     --accent: 212 175 55;
     --accent-foreground: 12 14 18;
+    --accent-gradient-start: 240 212 138;
+    --accent-gradient-mid: 166 124 0;
+    --accent-gradient-end: 184 138 20;
+    --accent-button-text: 12 14 18;
+    --accent-glow-color: rgb(166 124 0 / 0.5);
+    --shine-sweep-color: rgb(255 255 255 / 0.3);
+    --card-hover-shadow: 0 20px 44px rgb(0 0 0 / 0.45), 0 0 24px rgb(166 124 0 / 0.18);
+    --sparkle-color: rgb(240 212 138 / 0.9);
     --success: 52 211 153;
     --warning: 251 191 36;
     --danger: 251 113 133;
@@ -89,6 +105,217 @@
   background: linear-gradient(135deg, rgb(var(--accent-soft)) 0%, rgb(var(--accent)) 50%, rgb(var(--accent) / 0.72) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+@layer utilities {
+  .erp-primary-button.erp-primary-button {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    color: rgb(var(--accent-button-text));
+    background-image: linear-gradient(
+      110deg,
+      rgb(var(--accent-gradient-start)) 0%,
+      rgb(var(--accent-gradient-mid)) 52%,
+      rgb(var(--accent-gradient-end)) 100%
+    );
+    background-size: 200% 100%;
+    background-position: 0% 50%;
+    filter: none;
+    transition: transform 220ms ease, background-position 500ms ease;
+  }
+
+  .erp-primary-button::before,
+  .erp-primary-button::after {
+    position: absolute;
+    pointer-events: none;
+    content: '';
+  }
+
+  .erp-primary-button::before {
+    z-index: 0;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 0 22px 3px var(--accent-glow-color);
+    opacity: 0.65;
+  }
+
+  .erp-primary-button[data-in-view='true']:not(:disabled)::before {
+    animation: erp-button-glow 3s ease-in-out infinite;
+  }
+
+  .erp-primary-button::after {
+    z-index: 1;
+    inset: -80% -50%;
+    background: linear-gradient(115deg, transparent 44%, var(--shine-sweep-color) 50%, transparent 56%);
+    opacity: 0;
+    transform: translateX(-45%);
+    transition: opacity 180ms ease, transform 520ms ease;
+  }
+
+  .erp-primary-button > .erp-button-content {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .erp-primary-button > svg,
+  .erp-primary-button > span {
+    position: relative;
+    z-index: 2;
+  }
+
+  .erp-primary-button.erp-primary-button:hover:not(:disabled),
+  .erp-primary-button.erp-primary-button:focus-visible:not(:disabled) {
+    background-position: 100% 50%;
+    filter: none;
+    box-shadow: 0 8px 24px var(--accent-glow-color);
+    transform: translateY(-3px) scale(1.035);
+  }
+
+  .erp-primary-button.erp-primary-button:hover:not(:disabled)::after,
+  .erp-primary-button.erp-primary-button:focus-visible:not(:disabled)::after {
+    opacity: 1;
+    transform: translateX(45%);
+  }
+
+  .erp-primary-button.erp-primary-button:hover:not(:disabled) svg,
+  .erp-primary-button.erp-primary-button:focus-visible:not(:disabled) svg {
+    transform: translateX(2px) rotate(-4deg);
+  }
+
+  .erp-primary-button svg {
+    transition: transform 220ms ease;
+  }
+
+  .erp-primary-button.erp-primary-button:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  .erp-hover-card.erp-hover-card {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    transition: transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .erp-hover-card::before,
+  .erp-hover-card::after {
+    position: absolute;
+    pointer-events: none;
+    content: '';
+  }
+
+  .erp-hover-card::before {
+    z-index: 0;
+    inset: 0;
+    padding: 1.5px;
+    border-radius: inherit;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      transparent 35%,
+      var(--accent-glow-color) 50%,
+      transparent 65%,
+      transparent 100%
+    );
+    background-size: 280% 100%;
+    background-position: 140% 0;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    -webkit-mask: linear-gradient(currentColor 0 0) content-box, linear-gradient(currentColor 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+
+  .erp-hover-card::after {
+    z-index: 1;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(115deg, transparent 44%, var(--shine-sweep-color) 50%, transparent 56%);
+    background-size: 200% 100%;
+    background-position: 0% 50%;
+    opacity: 0;
+    transition: opacity 180ms ease, background-position 650ms ease;
+  }
+
+  .erp-hover-card:hover,
+  .erp-hover-card:focus-within {
+    z-index: 3;
+    box-shadow: var(--card-hover-shadow);
+    transform: translateY(-8px) scale(1.02);
+  }
+
+  .erp-hover-card:hover::before,
+  .erp-hover-card:focus-within::before {
+    opacity: 1;
+    animation: borderTravel 1.8s linear infinite;
+  }
+
+  .erp-hover-card:hover::after,
+  .erp-hover-card:focus-within::after {
+    opacity: 1;
+    background-position: 100% 50%;
+  }
+
+  .erp-hover-card [data-card-icon] {
+    transition: transform 320ms cubic-bezier(0.2, 1.4, 0.4, 1);
+  }
+
+  .erp-hover-card:hover [data-card-icon],
+  .erp-hover-card:focus-within [data-card-icon] {
+    transform: rotate(-8deg) scale(1.08);
+  }
+}
+
+@keyframes erp-button-glow {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 0.9; }
+}
+
+@keyframes borderTravel {
+  from { background-position: 140% 0; }
+  to { background-position: -140% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .erp-primary-button,
+  .erp-primary-button::after,
+  .erp-primary-button svg,
+  .erp-hover-card,
+  .erp-hover-card::before,
+  .erp-hover-card::after,
+  .erp-hover-card [data-card-icon] {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .erp-primary-button[data-in-view='true']::before,
+  .erp-hover-card:hover::before,
+  .erp-hover-card:focus-within::before {
+    animation: none !important;
+  }
+
+  .erp-hover-card:hover::before,
+  .erp-hover-card:focus-within::before {
+    display: none;
+  }
+
+  .erp-primary-button.erp-primary-button:hover:not(:disabled),
+  .erp-primary-button.erp-primary-button:focus-visible:not(:disabled),
+  .erp-primary-button.erp-primary-button:active:not(:disabled),
+  .erp-hover-card.erp-hover-card:hover,
+  .erp-hover-card.erp-hover-card:focus-within {
+    transform: none;
+  }
+
+  .erp-primary-button::after,
+  .erp-hover-card::after {
+    display: none;
+  }
 }
 
 @media print {

@@ -122,7 +122,7 @@ export const SuppliersPage: React.FC = () => {
           {['admin', 'inventory_manager'].includes(user?.role || '') && (
             <button
               onClick={() => setIsAddModalOpen(true)}
-              className="px-4 py-2.5 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-slate-950 font-semibold text-xs rounded-lg flex items-center space-x-2 shadow-[0_0_15px_rgba(212,175,55,0.2)] transition-all"
+              className="erp-primary-button px-4 py-2.5 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-slate-950 font-semibold text-xs rounded-lg flex items-center space-x-2 shadow-[0_0_15px_rgba(212,175,55,0.2)] transition-all"
             >
               <Plus className="h-4 w-4" />
               <span>Add Supplier</span>
@@ -180,7 +180,7 @@ export const SuppliersPage: React.FC = () => {
           filtered.map((sup) => (
             <div
               key={sup.id}
-              className="bg-sidebar p-5 rounded-2xl border border-slate-800/80 hover:border-gold-500/30 transition-all flex flex-col justify-between shadow-lg"
+              className="erp-hover-card bg-sidebar p-5 rounded-2xl border border-slate-800/80 hover:border-gold-500/30 transition-all flex flex-col justify-between shadow-lg"
             >
               <div>
                 <div className="flex items-start justify-between">
@@ -329,7 +329,7 @@ export const SuppliersPage: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-lg bg-gold-500 hover:bg-gold-400 text-slate-950 font-semibold shadow-md"
+                  className="erp-primary-button px-4 py-2 rounded-lg bg-gold-500 hover:bg-gold-400 text-slate-950 font-semibold shadow-md"
                 >
                   Save Supplier
                 </button>

@@ -339,7 +339,7 @@ export const FormulasPage: React.FC = () => {
           {['admin', 'production_manager'].includes(user?.role || '') && (
             <button
               onClick={() => setIsBuilderOpen(true)}
-              className="px-4 py-2.5 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-slate-950 font-semibold text-xs rounded-lg flex items-center space-x-2 shadow-[0_0_15px_rgba(212,175,55,0.2)] transition-all"
+              className="erp-primary-button px-4 py-2.5 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-slate-950 font-semibold text-xs rounded-lg flex items-center space-x-2 shadow-[0_0_15px_rgba(212,175,55,0.2)] transition-all"
             >
               <Plus className="h-4 w-4" />
               <span>Create New Formula</span>
@@ -371,7 +371,7 @@ export const FormulasPage: React.FC = () => {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800/80">
+        <div className="erp-hover-card p-4 rounded-xl bg-slate-900/60 border border-slate-800/80">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-xs uppercase font-medium tracking-wider">Active Formulas</span>
             <FlaskConical className="h-4 w-4 text-gold-400" />
@@ -382,7 +382,7 @@ export const FormulasPage: React.FC = () => {
           <div className="text-[11px] text-slate-500 mt-1">Unique active blend versions</div>
         </div>
 
-        <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800/80">
+        <div className="erp-hover-card p-4 rounded-xl bg-slate-900/60 border border-slate-800/80">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-xs uppercase font-medium tracking-wider">Locked Recipes</span>
             <Lock className="h-4 w-4 text-amber-400" />
@@ -393,7 +393,7 @@ export const FormulasPage: React.FC = () => {
           <div className="text-[11px] text-slate-500 mt-1">Production verified & immutable</div>
         </div>
 
-        <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800/80">
+        <div className="erp-hover-card p-4 rounded-xl bg-slate-900/60 border border-slate-800/80">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-xs uppercase font-medium tracking-wider">Blending Engine</span>
             <Sparkles className="h-4 w-4 text-emerald-400" />
@@ -448,7 +448,7 @@ export const FormulasPage: React.FC = () => {
           filtered.map((formula) => (
             <div
               key={formula.id}
-              className="bg-sidebar p-5 rounded-2xl border border-slate-800/80 hover:border-gold-500/30 transition-all flex flex-col justify-between shadow-xl relative"
+              className="erp-hover-card bg-sidebar p-5 rounded-2xl border border-slate-800/80 hover:border-gold-500/30 transition-all flex flex-col justify-between shadow-xl relative"
             >
               <div>
                 <div className="flex items-start justify-between">
@@ -520,7 +520,7 @@ export const FormulasPage: React.FC = () => {
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={() => openScaleDrawer(formula)}
-                    className="px-3 py-1.5 bg-gold-500 hover:bg-gold-400 text-slate-950 font-bold text-xs rounded-lg flex items-center space-x-1.5 shadow-[0_0_12px_rgba(212,175,55,0.25)] transition-all"
+                    className="erp-primary-button px-3 py-1.5 bg-gold-500 hover:bg-gold-400 text-slate-950 font-bold text-xs rounded-lg flex items-center space-x-1.5 shadow-[0_0_12px_rgba(212,175,55,0.25)] transition-all"
                   >
                     <Calculator className="h-3.5 w-3.5" />
                     <span>Scale Batch BOM</span>
@@ -894,7 +894,7 @@ export const FormulasPage: React.FC = () => {
                 <button
                   type="submit"
                   disabled={!isValid}
-                  className={`px-4 py-2 rounded-lg font-bold shadow-md ${isValid
+                  className={`erp-primary-button px-4 py-2 rounded-lg font-bold shadow-md ${isValid
                     ? 'bg-gold-500 hover:bg-gold-400 text-slate-950 cursor-pointer'
                     : 'bg-slate-800 text-slate-500 cursor-not-allowed'
                     }`}

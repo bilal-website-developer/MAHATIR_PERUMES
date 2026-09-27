@@ -165,7 +165,7 @@ export const ReportsPage: React.FC = () => {
         <div className="space-y-6">
           {/* Summary KPIs */}
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-            <div className="p-4 rounded-xl border border-gold-500/30 bg-slate-900/60">
+            <div className="erp-hover-card p-4 rounded-xl border border-gold-500/30 bg-slate-900/60">
               <div className="text-[10px] uppercase font-mono tracking-wider text-gold-400">Total Valuation</div>
               <div className="text-xl font-serif font-bold text-slate-100 mt-1">
                 {formatCurrency(valuation?.summary?.total_valuation || 0)}
@@ -175,28 +175,28 @@ export const ReportsPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="p-4 rounded-xl border border-slate-800 bg-slate-900/60">
+            <div className="erp-hover-card p-4 rounded-xl border border-slate-800 bg-slate-900/60">
               <div className="text-[10px] uppercase font-mono tracking-wider text-slate-400">Raw Perfume Oils</div>
               <div className="text-xl font-serif font-bold text-slate-200 mt-1">
                 {formatCurrency(valuation?.summary?.raw_materials_valuation || 0)}
               </div>
             </div>
 
-            <div className="p-4 rounded-xl border border-slate-800 bg-slate-900/60">
+            <div className="erp-hover-card p-4 rounded-xl border border-slate-800 bg-slate-900/60">
               <div className="text-[10px] uppercase font-mono tracking-wider text-slate-400">Bulk Maceration Liquid</div>
               <div className="text-xl font-serif font-bold text-slate-200 mt-1">
                 {formatCurrency(valuation?.summary?.bulk_liquid_valuation || 0)}
               </div>
             </div>
 
-            <div className="p-4 rounded-xl border border-slate-800 bg-slate-900/60">
+            <div className="erp-hover-card p-4 rounded-xl border border-slate-800 bg-slate-900/60">
               <div className="text-[10px] uppercase font-mono tracking-wider text-slate-400">Packaging Materials</div>
               <div className="text-xl font-serif font-bold text-slate-200 mt-1">
                 {formatCurrency(valuation?.summary?.packaging_valuation || 0)}
               </div>
             </div>
 
-            <div className="p-4 rounded-xl border border-slate-800 bg-slate-900/60">
+            <div className="erp-hover-card p-4 rounded-xl border border-slate-800 bg-slate-900/60">
               <div className="text-[10px] uppercase font-mono tracking-wider text-slate-400">Finished Goods Flacons</div>
               <div className="text-xl font-serif font-bold text-slate-200 mt-1">
                 {formatCurrency(valuation?.summary?.finished_goods_valuation || 0)}
@@ -205,7 +205,7 @@ export const ReportsPage: React.FC = () => {
           </div>
 
           {/* Breakdown Table */}
-          <div className="rounded-2xl border border-slate-800/80 bg-slate-900/60 p-6 space-y-4">
+          <div className="erp-hover-card rounded-2xl border border-slate-800/80 bg-slate-900/60 p-6 space-y-4">
             <h2 className="text-sm font-semibold text-slate-200 uppercase tracking-wider">
               Asset Valuation Breakdown by Warehouse Section
             </h2>
@@ -304,7 +304,7 @@ export const ReportsPage: React.FC = () => {
 
           {/* Sales Summary KPIs */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            <div className="p-4 rounded-xl border border-slate-800 bg-slate-900/60">
+            <div className="erp-hover-card p-4 rounded-xl border border-slate-800 bg-slate-900/60">
               <div className="text-[10px] uppercase font-mono tracking-wider text-slate-400">Total Revenue</div>
               <div className="text-2xl font-serif font-bold text-slate-100 mt-1">
                 {formatCurrency(salesReport?.summary?.total_revenue || 0)}
@@ -314,14 +314,14 @@ export const ReportsPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="p-4 rounded-xl border border-slate-800 bg-slate-900/60">
+            <div className="erp-hover-card p-4 rounded-xl border border-slate-800 bg-slate-900/60">
               <div className="text-[10px] uppercase font-mono tracking-wider text-slate-400">Total COGS (Lot Cost)</div>
               <div className="text-2xl font-serif font-bold text-slate-300 mt-1">
                 {formatCurrency(salesReport?.summary?.total_cogs || 0)}
               </div>
             </div>
 
-            <div className="p-4 rounded-xl border border-gold-500/40 bg-gold-500/10">
+            <div className="erp-hover-card p-4 rounded-xl border border-gold-500/40 bg-gold-500/10">
               <div className="text-[10px] uppercase font-mono tracking-wider text-gold-400">Net Gross Profit</div>
               <div className="text-2xl font-serif font-bold text-gold-300 mt-1">
                 {formatCurrency(salesReport?.summary?.total_profit || 0)}
@@ -331,7 +331,7 @@ export const ReportsPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="p-4 rounded-xl border border-slate-800 bg-slate-900/60">
+            <div className="erp-hover-card p-4 rounded-xl border border-slate-800 bg-slate-900/60">
               <div className="text-[10px] uppercase font-mono tracking-wider text-slate-400">Average Order Value</div>
               <div className="text-2xl font-serif font-bold text-slate-100 mt-1">
                 {formatCurrency(salesReport?.summary?.average_order_value || 0)}
@@ -340,7 +340,7 @@ export const ReportsPage: React.FC = () => {
           </div>
 
           {/* Cashier Performance Table */}
-          <div className="rounded-2xl border border-slate-800/80 bg-slate-900/60 p-6 space-y-4">
+          <div className="erp-hover-card rounded-2xl border border-slate-800/80 bg-slate-900/60 p-6 space-y-4">
             <h2 className="text-sm font-semibold text-slate-200 uppercase tracking-wider">
               Cashier & Staff Sales Performance
             </h2>
@@ -376,7 +376,7 @@ export const ReportsPage: React.FC = () => {
 
       {/* 3. SKU Profitability Tab */}
       {activeTab === 'profitability' && (
-        <div className="rounded-2xl border border-slate-800/80 bg-slate-900/60 p-6 space-y-4">
+        <div className="erp-hover-card rounded-2xl border border-slate-800/80 bg-slate-900/60 p-6 space-y-4">
           <h2 className="text-sm font-semibold text-slate-200 uppercase tracking-wider">
             Product & SKU Profitability Ranking
           </h2>
@@ -426,7 +426,7 @@ export const ReportsPage: React.FC = () => {
 
       {/* 4. Batch Cost and Loss Analysis Tab */}
       {activeTab === 'batches' && (
-        <div className="rounded-2xl border border-slate-800/80 bg-slate-900/60 p-6 space-y-4">
+        <div className="erp-hover-card rounded-2xl border border-slate-800/80 bg-slate-900/60 p-6 space-y-4">
           <h2 className="text-sm font-semibold text-slate-200 uppercase tracking-wider">
             Manufacturing Batch Cost & Yield Analysis
           </h2>
@@ -482,7 +482,7 @@ export const ReportsPage: React.FC = () => {
 
       {/* 5. Raw Material Consumption Tab */}
       {activeTab === 'consumption' && (
-        <div className="rounded-2xl border border-slate-800/80 bg-slate-900/60 p-6 space-y-4">
+        <div className="erp-hover-card rounded-2xl border border-slate-800/80 bg-slate-900/60 p-6 space-y-4">
           <h2 className="text-sm font-semibold text-slate-200 uppercase tracking-wider">
             Raw Material Warehouse Consumption Log
           </h2>

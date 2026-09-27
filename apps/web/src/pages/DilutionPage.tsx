@@ -335,7 +335,7 @@ export const DilutionPage: React.FC = () => {
               setShowBatchModal(true);
             }}
             disabled={!calculation}
-            className="flex items-center space-x-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-gold-400 via-amber-500 to-gold-600 text-slate-950 hover:brightness-110 font-semibold text-xs transition-all shadow-md shadow-gold-500/20 disabled:opacity-50"
+            className="erp-primary-button flex items-center space-x-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-gold-400 via-amber-500 to-gold-600 text-slate-950 hover:brightness-110 font-semibold text-xs transition-all shadow-md shadow-gold-500/20 disabled:opacity-50"
           >
             <Factory className="h-4 w-4" />
             <span>Convert to Batch</span>
@@ -369,7 +369,7 @@ export const DilutionPage: React.FC = () => {
             <button
               key={arch.type}
               onClick={() => handleTypeSelect(arch.type)}
-              className={`p-4 rounded-xl border text-left transition-all relative overflow-hidden ${
+              className={`erp-hover-card p-4 rounded-xl border text-left transition-all relative overflow-hidden ${
                 isSelected
                   ? 'border-gold-500/80 bg-gradient-to-b from-slate-900 to-card shadow-lg shadow-gold-500/10'
                   : 'border-slate-800/80 bg-slate-900/60 hover:border-slate-700 text-slate-400'
@@ -396,7 +396,7 @@ export const DilutionPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Compounding Parameters */}
         <div className="lg:col-span-6 space-y-6">
-          <div className="p-6 rounded-2xl border border-slate-800/80 bg-slate-900/60 backdrop-blur-sm space-y-6">
+          <div className="erp-hover-card p-6 rounded-2xl border border-slate-800/80 bg-slate-900/60 backdrop-blur-sm space-y-6">
             <h2 className="text-sm font-semibold uppercase tracking-wider text-gold-400 flex items-center gap-2">
               <FlaskConical className="h-4 w-4" />
               <span>1. Target Production Volume</span>
@@ -598,7 +598,7 @@ export const DilutionPage: React.FC = () => {
 
         {/* Right Column: Visual Breakdown & Costing Card */}
         <div className="lg:col-span-6 space-y-6">
-          <div className="p-6 rounded-2xl border border-slate-800/80 bg-slate-900/60 backdrop-blur-sm space-y-6">
+          <div className="erp-hover-card p-6 rounded-2xl border border-slate-800/80 bg-slate-900/60 backdrop-blur-sm space-y-6">
             <h2 className="text-sm font-semibold uppercase tracking-wider text-gold-400 flex items-center gap-2">
               <Scale className="h-4 w-4" />
               <span>Studio Compounding Output & Financial Telemetry</span>
@@ -831,7 +831,7 @@ export const DilutionPage: React.FC = () => {
                 type="button"
                 onClick={() => saveFormulaMutation.mutate()}
                 disabled={saveFormulaMutation.isPending || !formulaForm.name || !formulaForm.code}
-                className="px-4 py-2 rounded-lg bg-gold-500 text-slate-950 font-semibold text-xs hover:bg-gold-400 transition-colors disabled:opacity-50"
+                className="erp-primary-button px-4 py-2 rounded-lg bg-gold-500 text-slate-950 font-semibold text-xs hover:bg-gold-400 transition-colors disabled:opacity-50"
               >
                 {saveFormulaMutation.isPending ? 'Saving...' : 'Confirm & Save Formula'}
               </button>
@@ -897,7 +897,7 @@ export const DilutionPage: React.FC = () => {
                 type="button"
                 onClick={() => convertBatchMutation.mutate()}
                 disabled={convertBatchMutation.isPending || !batchForm.name}
-                className="px-4 py-2 rounded-lg bg-gradient-to-r from-amber-400 to-amber-600 text-slate-950 font-semibold text-xs hover:brightness-110 transition-all disabled:opacity-50"
+                className="erp-primary-button px-4 py-2 rounded-lg bg-gradient-to-r from-amber-400 to-amber-600 text-slate-950 font-semibold text-xs hover:brightness-110 transition-all disabled:opacity-50"
               >
                 {convertBatchMutation.isPending ? 'Initiating Batch...' : 'Create Production Batch'}
               </button>

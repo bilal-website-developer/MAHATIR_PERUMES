@@ -227,7 +227,7 @@ export const RawMaterialsPage: React.FC = () => {
           {['admin', 'inventory_manager'].includes(user?.role || '') && (
             <button
               onClick={() => setIsAddModalOpen(true)}
-              className="px-4 py-2.5 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-slate-950 font-semibold text-xs rounded-lg flex items-center space-x-2 shadow-[0_0_15px_rgba(212,175,55,0.2)] transition-all"
+              className="erp-primary-button px-4 py-2.5 bg-gradient-to-r from-gold-500 to-amber-600 hover:from-gold-400 hover:to-amber-500 text-slate-950 font-semibold text-xs rounded-lg flex items-center space-x-2 shadow-[0_0_15px_rgba(212,175,55,0.2)] transition-all"
             >
               <Plus className="h-4 w-4" />
               <span>Add Raw Material</span>
@@ -260,7 +260,7 @@ export const RawMaterialsPage: React.FC = () => {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800/80">
+        <div className="erp-hover-card p-4 rounded-xl bg-slate-900/60 border border-slate-800/80">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-xs uppercase font-medium tracking-wider">Total Inventory Value</span>
             <TrendingUp className="h-4 w-4 text-gold-400" />
@@ -271,7 +271,7 @@ export const RawMaterialsPage: React.FC = () => {
           <div className="text-[11px] text-slate-500 mt-1">Weighted average valuation</div>
         </div>
 
-        <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800/80">
+        <div className="erp-hover-card p-4 rounded-xl bg-slate-900/60 border border-slate-800/80">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-xs uppercase font-medium tracking-wider">Total Materials</span>
             <Package className="h-4 w-4 text-sky-400" />
@@ -282,7 +282,7 @@ export const RawMaterialsPage: React.FC = () => {
 
         <div
           onClick={() => setOnlyLowStock(!onlyLowStock)}
-          className={`p-4 rounded-xl border cursor-pointer transition-all ${onlyLowStock
+          className={`erp-hover-card p-4 rounded-xl border cursor-pointer transition-all ${onlyLowStock
             ? 'bg-rose-950/40 border-rose-500/50 shadow-[0_0_15px_rgba(244,63,94,0.15)]'
             : 'bg-slate-900/60 border-slate-800/80 hover:border-rose-900/50'
             }`}
@@ -299,7 +299,7 @@ export const RawMaterialsPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="p-4 rounded-xl bg-slate-900/60 border border-slate-800/80">
+        <div className="erp-hover-card p-4 rounded-xl bg-slate-900/60 border border-slate-800/80">
           <div className="flex items-center justify-between text-slate-400 mb-2">
             <span className="text-xs uppercase font-medium tracking-wider">Unit Engine</span>
             <Sparkles className="h-4 w-4 text-amber-400" />
@@ -347,7 +347,7 @@ export const RawMaterialsPage: React.FC = () => {
       </div>
 
       {/* Materials Table */}
-      <div className="bg-sidebar rounded-xl border border-slate-800/80 overflow-hidden shadow-xl">
+      <div className="erp-hover-card bg-sidebar rounded-xl border border-slate-800/80 overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead className="bg-card text-slate-400 uppercase tracking-wider border-b border-slate-800 text-[10px]">
@@ -553,7 +553,7 @@ export const RawMaterialsPage: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-lg bg-gold-500 hover:bg-gold-400 text-slate-950 font-semibold shadow-md"
+                  className="erp-primary-button px-4 py-2 rounded-lg bg-gold-500 hover:bg-gold-400 text-slate-950 font-semibold shadow-md"
                 >
                   Confirm Adjustment
                 </button>
@@ -700,7 +700,7 @@ export const RawMaterialsPage: React.FC = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-lg bg-gold-500 hover:bg-gold-400 text-slate-950 font-semibold shadow-md"
+                  className="erp-primary-button px-4 py-2 rounded-lg bg-gold-500 hover:bg-gold-400 text-slate-950 font-semibold shadow-md"
                 >
                   Create Material
                 </button>
