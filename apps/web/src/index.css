@@ -108,17 +108,15 @@
 }
 
 @layer utilities {
-  .erp-primary-button.erp-primary-button {
+  .erp-primary-button.erp-primary-button:not(.fixed) {
     position: relative;
     isolation: isolate;
     overflow: hidden;
     color: rgb(var(--accent-button-text));
-    background-image: linear-gradient(
-      110deg,
-      rgb(var(--accent-gradient-start)) 0%,
-      rgb(var(--accent-gradient-mid)) 52%,
-      rgb(var(--accent-gradient-end)) 100%
-    );
+    background-image: linear-gradient(110deg,
+        rgb(var(--accent-gradient-start)) 0%,
+        rgb(var(--accent-gradient-mid)) 52%,
+        rgb(var(--accent-gradient-end)) 100%);
     background-size: 200% 100%;
     background-position: 0% 50%;
     filter: none;
@@ -153,7 +151,7 @@
     transition: opacity 180ms ease, transform 520ms ease;
   }
 
-  .erp-primary-button > .erp-button-content {
+  .erp-primary-button>.erp-button-content {
     position: relative;
     z-index: 2;
     display: inline-flex;
@@ -162,8 +160,8 @@
     gap: 0.5rem;
   }
 
-  .erp-primary-button > svg,
-  .erp-primary-button > span {
+  .erp-primary-button>svg,
+  .erp-primary-button>span {
     position: relative;
     z-index: 2;
   }
@@ -214,14 +212,12 @@
     inset: 0;
     padding: 1.5px;
     border-radius: inherit;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      transparent 35%,
-      var(--accent-glow-color) 50%,
-      transparent 65%,
-      transparent 100%
-    );
+    background: linear-gradient(90deg,
+        transparent 0%,
+        transparent 35%,
+        var(--accent-glow-color) 50%,
+        transparent 65%,
+        transparent 100%);
     background-size: 280% 100%;
     background-position: 140% 0;
     opacity: 0;
@@ -272,16 +268,29 @@
 }
 
 @keyframes erp-button-glow {
-  0%, 100% { opacity: 0.45; }
-  50% { opacity: 0.9; }
+
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+
+  50% {
+    opacity: 0.9;
+  }
 }
 
 @keyframes borderTravel {
-  from { background-position: 140% 0; }
-  to { background-position: -140% 0; }
+  from {
+    background-position: 140% 0;
+  }
+
+  to {
+    background-position: -140% 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .erp-primary-button,
   .erp-primary-button::after,
   .erp-primary-button svg,

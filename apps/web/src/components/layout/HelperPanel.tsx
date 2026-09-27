@@ -2,12 +2,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Bot, Loader2, Send, Sparkles, X } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { apiClient } from '../../lib/api';
+import { useAuth } from '../../context/AuthContext';
 
 interface HelperMessage {
     id: string;
     role: 'user' | 'assistant';
     content: string;
     fallback?: boolean;
+    localWelcome?: boolean;
 }
 
 interface HelperResponse {
@@ -17,6 +19,9 @@ interface HelperResponse {
 }
 
 const STORAGE_KEY = 'mahatir_helper_session';
+
+const HELPER_WELCOME_ID = 'helper-local-welcome';
+const HELPER_GREETING = "Hi, I'm Helper 👋 — click me anytime you need help.";
 
 function loadSession(): { open: boolean; messages: HelperMessage[]; conversationId?: string } {
     try {
@@ -29,6 +34,7 @@ function loadSession(): { open: boolean; messages: HelperMessage[]; conversation
 }
 
 export const HelperPanel: React.FC = () => {
+    const { user } = useAuth();
     const location = useLocation();
     const initialSession = loadSession();
     const [isOpen, setIsOpen] = useState(initialSession.open);
@@ -37,8 +43,39 @@ export const HelperPanel: React.FC = () => {
     const [draft, setDraft] = useState('');
     const [isSending, setIsSending] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [showAutoGreeting, setShowAutoGreeting] = useState(false);
+    const [isGreetingHovered, setIsGreetingHovered] = useState(false);
+    const [greetingMounted, setGreetingMounted] = useState(false);
+    const hoverStateRef = useRef(false);
+    const hoverHideTimerRef = useRef<number | undefined>(undefined);
     const inputRef = useRef<HTMLInputElement>(null);
     const messagesRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!user || isOpen) return undefined;
+
+        const showTimer = window.setTimeout(() => {
+            setGreetingMounted(true);
+            setShowAutoGreeting(true);
+        }, 1200);
+        const dismissTimer = window.setTimeout(() => {
+            setShowAutoGreeting(false);
+            window.setTimeout(() => {
+                if (!hoverStateRef.current) setGreetingMounted(false);
+            }, 350);
+        }, 8200);
+        return () => {
+            window.clearTimeout(showTimer);
+            window.clearTimeout(dismissTimer);
+            window.clearTimeout(hoverHideTimerRef.current);
+        };
+    }, [user, isOpen]);
+
+    useEffect(() => {
+        if (isOpen && messages.length === 0) {
+            setMessages([{ id: HELPER_WELCOME_ID, role: 'assistant', content: '', localWelcome: true }]);
+        }
+    }, [isOpen, messages.length]);
 
     useEffect(() => {
         try {
@@ -96,6 +133,48 @@ export const HelperPanel: React.FC = () => {
         setError(null);
     };
 
+    const openHelper = () => {
+        setShowAutoGreeting(false);
+        setIsGreetingHovered(false);
+        hoverStateRef.current = false;
+        setGreetingMounted(false);
+        setIsOpen(true);
+    };
+
+    const showGreetingOnHover = () => {
+        window.clearTimeout(hoverHideTimerRef.current);
+        hoverStateRef.current = true;
+        setIsGreetingHovered(true);
+        setGreetingMounted(true);
+    };
+
+    const hideGreetingOnHover = () => {
+        hoverStateRef.current = false;
+        setIsGreetingHovered(false);
+        window.clearTimeout(hoverHideTimerRef.current);
+        hoverHideTimerRef.current = window.setTimeout(() => {
+            if (!showAutoGreeting && !hoverStateRef.current) setGreetingMounted(false);
+        }, 120);
+    };
+
+    const renderMessage = (message: HelperMessage) => {
+        if (message.localWelcome) {
+            return (
+                <div className="space-y-3">
+                    <p>Hi! I'm Helper, your assistant inside Mahatir's ERP.</p>
+                    <p>I can help you:</p>
+                    <ul className="list-disc space-y-1 pl-5">
+                        <li>Find things — stock levels, batch costs, past sales</li>
+                        <li>Understand a screen — just ask "what does this do?"</li>
+                        <li>Get started on a task — I'll open a form pre-filled, you always confirm before anything is saved</li>
+                    </ul>
+                    <p>I can't create, delete, or confirm anything on my own — you're always in control. What can I help with?</p>
+                </div>
+            );
+        }
+        return <>{message.content}{message.fallback && <p className="mt-1 text-[11px] opacity-75">You can continue using the ERP normally.</p>}</>;
+    };
+
     return (
         <>
             {isOpen && (
@@ -131,8 +210,7 @@ export const HelperPanel: React.FC = () => {
                         {messages.map((message) => (
                             <div key={message.id} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                                 <div className={`max-w-[88%] rounded-xl px-3 py-2 text-sm leading-5 ${message.role === 'user' ? 'bg-accent text-accent-foreground' : 'bg-surface text-foreground'}`}>
-                                    {message.content}
-                                    {message.fallback && <p className="mt-1 text-[11px] opacity-75">You can continue using the ERP normally.</p>}
+                                    {renderMessage(message)}
                                 </div>
                             </div>
                         ))}
@@ -159,9 +237,24 @@ export const HelperPanel: React.FC = () => {
                     </form>
                 </section>
             )}
+            {greetingMounted && user && (
+                <button
+                    type="button"
+                    onMouseDown={(event) => event.stopPropagation()}
+                    onMouseEnter={showGreetingOnHover}
+                    onMouseLeave={hideGreetingOnHover}
+                    onClick={openHelper}
+                    className={`fixed bottom-20 right-4 z-40 max-w-[min(22rem,calc(100vw-2rem))] rounded-xl border border-accent/30 bg-card px-4 py-3 text-left text-xs leading-5 text-foreground shadow-xl shadow-accent/10 transition-opacity duration-300 motion-reduce:transition-none md:bottom-24 md:right-8 ${showAutoGreeting || isGreetingHovered ? 'opacity-100' : 'opacity-0'}`}
+                >
+                    <span className="block">{HELPER_GREETING}</span>
+                    <span className="absolute -bottom-1.5 right-6 h-3 w-3 rotate-45 border-b border-r border-accent/30 bg-card" aria-hidden="true" />
+                </button>
+            )}
             <button
                 type="button"
-                onClick={() => setIsOpen((open) => !open)}
+                onClick={() => (isOpen ? setIsOpen(false) : openHelper())}
+                onMouseEnter={showGreetingOnHover}
+                onMouseLeave={hideGreetingOnHover}
                 data-print-hidden="true"
                 aria-label={isOpen ? 'Close Helper' : 'Open Helper AI assistant'}
                 title="Helper AI assistant"
