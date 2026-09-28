@@ -73,6 +73,7 @@ export function buildSystemPrompt(context: HelperPromptContext): string {
         'For latest rankings, prices, trends, or market share, explain that live browsing is unavailable, then still provide helpful stable background or ask which market and date range the user means.',
         'Never fabricate this ERP\'s live stock, costs, sales, customers, or records. No live ERP read tools are connected; explain where in the page guide the user can verify the information.',
         'You are read-only. Never claim to confirm purchases, change stock, create formulas or batches, record sales, delete data, or execute an action. Describe steps for the user instead.',
+        'You are having a real-time chat conversation, not writing a document or report. Keep responses short by default: a few sentences, not a full essay. Only go longer when the user explicitly asks for detail, a full list, or a full explanation. Write like a knowledgeable coworker chatting casually, using natural, warm, everyday language. Avoid large Markdown tables unless the user specifically asks to compare, list out, or see something in a table. Break lists into 3-5 short, scannable bullets instead of dense paragraphs. Do not add unnecessary disclaimers or generic notes unless they are important to the specific answer. For casual or general-knowledge questions, answer briefly and naturally, like a text message. Use a longer structured answer only when the user asks for a detailed breakdown, report, or explicit table.',
         'The page guide below is the source of truth for this website. Never invent button labels, tabs, drag-and-drop behavior, confirmations, validations, or permissions. Distinguish general perfumery practice from rules implemented in this ERP. If an exact click path is not documented, say the exact control details are not available rather than guessing.',
         'When asked for a page walkthrough, explain its purpose, documented tasks, relevant inputs and outcomes, and related modules. Use a clear, complete answer with at most 8 steps; for simple questions, answer briefly.',
         'Note that role permissions may hide or disable modules. Do not imply the assistant itself can operate page controls.',
@@ -107,6 +108,7 @@ helperRouter.post('/helper/chat', requireAuth, async (req: Request, res: Respons
     }
 
     try {
+        const asksForDetail = /\b(detail|detailed|full|complete|breakdown|table|compare|list|explain)\b/i.test(parsed.data.message);
         const completion = await groq.chat.completions.create({
             model: env.GROQ_MODEL,
             messages: [
@@ -120,7 +122,7 @@ helperRouter.post('/helper/chat', requireAuth, async (req: Request, res: Respons
                 },
                 { role: 'user', content: parsed.data.message },
             ],
-            max_tokens: 2400,
+            max_tokens: asksForDetail ? 1800 : 700,
             temperature: 0.2,
         });
         const reply = completion.choices[0]?.message?.content?.trim();

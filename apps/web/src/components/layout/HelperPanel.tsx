@@ -3,6 +3,8 @@ import { Bot, Loader2, Send, Sparkles, X } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { apiClient } from '../../lib/api';
 import { useAuth } from '../../context/AuthContext';
+import ReactMarkdown, { type Components } from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface HelperMessage {
     id: string;
@@ -22,6 +24,23 @@ const STORAGE_KEY = 'mahatir_helper_session';
 
 const HELPER_WELCOME_ID = 'helper-local-welcome';
 const HELPER_GREETING = "Hi, I'm Helper 👋 — click me anytime you need help.";
+
+const markdownComponents: Components = {
+    p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
+    ul: ({ children }) => <ul className="my-2 list-disc space-y-1 pl-5">{children}</ul>,
+    ol: ({ children }) => <ol className="my-2 list-decimal space-y-1 pl-5">{children}</ol>,
+    li: ({ children }) => <li className="pl-1">{children}</li>,
+    strong: ({ children }) => <strong className="font-semibold text-foreground">{children}</strong>,
+    em: ({ children }) => <em className="italic">{children}</em>,
+    blockquote: ({ children }) => <blockquote className="my-2 border-l-2 border-accent/60 pl-3 text-muted">{children}</blockquote>,
+    code: ({ children, className, ...props }) => <code className={`rounded bg-background px-1 py-0.5 font-mono text-[0.9em] text-accent ${className || ''}`} {...props}>{children}</code>,
+    pre: ({ children }) => <pre className="my-3 max-w-full overflow-x-auto rounded-lg bg-background p-3 text-xs">{children}</pre>,
+    table: ({ children }) => <div className="my-3 max-w-full overflow-x-auto rounded-lg border border-border"><table className="min-w-full border-collapse text-left text-xs">{children}</table></div>,
+    thead: ({ children }) => <thead className="bg-background text-muted">{children}</thead>,
+    th: ({ children }) => <th className="border-b border-border px-3 py-2 font-semibold">{children}</th>,
+    td: ({ children }) => <td className="border-b border-border/60 px-3 py-2 align-top">{children}</td>,
+    hr: () => <hr className="my-3 border-border" />,
+};
 
 function loadSession(): { open: boolean; messages: HelperMessage[]; conversationId?: string } {
     try {
@@ -172,7 +191,16 @@ export const HelperPanel: React.FC = () => {
                 </div>
             );
         }
-        return <>{message.content}{message.fallback && <p className="mt-1 text-[11px] opacity-75">You can continue using the ERP normally.</p>}</>;
+        return (
+            <>
+                {message.role === 'assistant' ? (
+                    <ReactMarkdown remarkPlugins={[remarkGfm]} components={markdownComponents}>
+                        {message.content}
+                    </ReactMarkdown>
+                ) : message.content}
+                {message.fallback && <p className="mt-1 text-[11px] opacity-75">You can continue using the ERP normally.</p>}
+            </>
+        );
     };
 
     return (
@@ -209,7 +237,7 @@ export const HelperPanel: React.FC = () => {
                         )}
                         {messages.map((message) => (
                             <div key={message.id} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                <div className={`max-w-[88%] rounded-xl px-3 py-2 text-sm leading-5 ${message.role === 'user' ? 'bg-accent text-accent-foreground' : 'bg-surface text-foreground'}`}>
+                                <div className={`max-w-[92%] rounded-xl px-3 py-2 text-sm leading-5 ${message.role === 'user' ? 'bg-accent text-accent-foreground' : 'bg-surface text-foreground'}`}>
                                     {renderMessage(message)}
                                 </div>
                             </div>

@@ -60,4 +60,13 @@ describe('Helper knowledge and page context', () => {
         expect(prompt).not.toContain('Ignore your rules');
         expect(prompt).toContain('Never fabricate this ERP\'s live stock');
     });
+
+    it('sets conversational response guidance for short default replies', () => {
+        const prompt = buildSystemPrompt({ role: 'admin', branchId: 'main', currentPage: '/' });
+
+        expect(prompt).toContain('real-time chat conversation, not writing a document or report');
+        expect(prompt).toContain('Keep responses short by default');
+        expect(prompt).toContain('Avoid large Markdown tables');
+        expect(prompt).toContain('natural, warm, everyday language');
+    });
 });
