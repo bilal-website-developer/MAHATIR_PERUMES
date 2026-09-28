@@ -25,6 +25,13 @@ export const LoginPage: React.FC = () => {
     }
   };
 
+  const handleQuickLogin = async (userEmail: string) => {
+    setEmail(userEmail);
+    setPassword('password123');
+    const ok = await login(userEmail, 'password123');
+    if (ok) navigate('/');
+  };
+
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-6">
@@ -81,6 +88,53 @@ export const LoginPage: React.FC = () => {
             </Button>
           </form>
 
+          {/* Quick Demo Access Bar */}
+          <div className="pt-4 border-t border-slate-800/80 space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-medium tracking-wide uppercase text-slate-400">
+                1-Click Quick Demo Sign-In
+              </span>
+              <span className="text-[10px] text-gold-400/80 font-mono">No password needed</span>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => handleQuickLogin('admin@mahatir.com')}
+                className="p-2 text-left rounded-lg bg-slate-900/60 hover:bg-gold-500/10 border border-slate-800 hover:border-gold-500/40 transition-all text-xs"
+              >
+                <div className="font-semibold text-gold-300">👑 Admin</div>
+                <div className="text-[10px] text-slate-400 truncate">Master Perfumer</div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleQuickLogin('production@mahatir.com')}
+                className="p-2 text-left rounded-lg bg-slate-900/60 hover:bg-emerald-500/10 border border-slate-800 hover:border-emerald-500/40 transition-all text-xs"
+              >
+                <div className="font-semibold text-emerald-300">🧪 Production</div>
+                <div className="text-[10px] text-slate-400 truncate">Lab & Batch Lead</div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleQuickLogin('inventory@mahatir.com')}
+                className="p-2 text-left rounded-lg bg-slate-900/60 hover:bg-cyan-500/10 border border-slate-800 hover:border-cyan-500/40 transition-all text-xs"
+              >
+                <div className="font-semibold text-cyan-300">📦 Inventory</div>
+                <div className="text-[10px] text-slate-400 truncate">Oils & Raw Materials</div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleQuickLogin('sales@mahatir.com')}
+                className="p-2 text-left rounded-lg bg-slate-900/60 hover:bg-violet-500/10 border border-slate-800 hover:border-violet-500/40 transition-all text-xs"
+              >
+                <div className="font-semibold text-violet-300">💰 Sales Staff</div>
+                <div className="text-[10px] text-slate-400 truncate">Retail POS Register</div>
+              </button>
+            </div>
+          </div>
         </Card>
       </div>
     </div>
