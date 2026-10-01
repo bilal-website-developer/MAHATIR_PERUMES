@@ -43,7 +43,28 @@ export async function apiClient<T>(
       headers,
     });
 
-    const json = (await res.json()) as ApiResponse<T>;
+    const responseText = await res.text();
+    let json: ApiResponse<T>;
+    try {
+      json = JSON.parse(responseText) as ApiResponse<T>;
+    } catch {
+      return {
+        data: null,
+        error: {
+          message: `API returned a non-JSON response (HTTP ${res.status}). Check the Vercel project root and API function deployment.`,
+          code: 'INVALID_API_RESPONSE',
+        },
+        meta: null,
+      };
+    }
+
+    if (!res.ok && !json.error) {
+      return {
+        ...json,
+        error: { message: `API request failed (HTTP ${res.status}).`, code: 'HTTP_ERROR' },
+      };
+    }
+
     return json;
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Network request failed';
