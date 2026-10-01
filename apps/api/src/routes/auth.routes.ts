@@ -1,12 +1,21 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
+import { createClient } from '@supabase/supabase-js';
 import { supabaseAdmin } from '../config/supabase.js';
+import { env } from '../config/env.js';
 import { validate } from '../middleware/validate.js';
 import { requireAuth, DEMO_USERS } from '../middleware/auth.js';
 import { ROLE_PERMISSIONS, UserRole } from '../config/permissions.js';
 import { sendSuccess, sendError } from '../utils/response.js';
 
 export const authRouter = Router();
+
+const supabaseAuth = createClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY, {
+  auth: {
+    persistSession: false,
+    autoRefreshToken: false,
+  },
+});
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -33,7 +42,7 @@ authRouter.post(
 
     // Try Supabase Auth
     try {
-      const { data, error } = await supabaseAdmin.auth.signInWithPassword({
+      const { data, error } = await supabaseAuth.auth.signInWithPassword({
         email: req.body.email,
         password: req.body.password,
       });

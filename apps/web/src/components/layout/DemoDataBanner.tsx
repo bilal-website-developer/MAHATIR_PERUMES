@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
 import { Database, Trash2 } from 'lucide-react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../../context/AuthContext';
 import { apiClient } from '../../lib/api';
 import { useLocation } from 'react-router-dom';
 
 const CLEARED_PREFIX = 'mahatir_demo_data_cleared:';
+const DISMISSED_PREFIX = 'mahatir_demo_data_dismissed:';
 
 export const DemoDataBanner: React.FC = () => {
     const { user } = useAuth();
     const { pathname } = useLocation();
+    const queryClient = useQueryClient();
     const storageKey = `${CLEARED_PREFIX}${pathname}`;
-    const [visible, setVisible] = useState(() => localStorage.getItem(storageKey) !== 'true');
+    const dismissedStorageKey = DISMISSED_PREFIX;
+    const [visible, setVisible] = useState(
+        () => localStorage.getItem(storageKey) !== 'true' && localStorage.getItem(dismissedStorageKey) !== 'true',
+    );
     const [isClearing, setIsClearing] = useState(false);
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -31,7 +37,19 @@ export const DemoDataBanner: React.FC = () => {
             return;
         }
 
+        if (!response.data?.cleared && !response.data?.already_cleared) {
+            setError('Cleanup was not confirmed. Please try again.');
+            setIsClearing(false);
+            return;
+        }
+
+        await queryClient.invalidateQueries();
         localStorage.setItem(storageKey, 'true');
+        setVisible(false);
+    };
+
+    const keepDemoData = () => {
+        localStorage.setItem(dismissedStorageKey, 'true');
         setVisible(false);
     };
 
@@ -46,6 +64,14 @@ export const DemoDataBanner: React.FC = () => {
                 </div>
             </div>
             <div className="flex items-center gap-2 shrink-0">
+                <button
+                    type="button"
+                    onClick={keepDemoData}
+                    disabled={isClearing}
+                    className="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-xs font-semibold text-muted hover:bg-surface disabled:opacity-50"
+                >
+                    Keep Demo Data
+                </button>
                 <button
                     type="button"
                     onClick={() => setIsConfirmOpen(true)}

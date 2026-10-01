@@ -1,16 +1,11 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
+import { env } from '../config/env.js';
 import { supabaseAdmin } from '../config/supabase.js';
 import { validate } from '../middleware/validate.js';
 import { requireAuth, requireRole, DEMO_USERS } from '../middleware/auth.js';
 import { sendSuccess, sendError } from '../utils/response.js';
-import { InventoryService } from '../services/inventory.service.js';
-import { FormulaService } from '../services/formula.service.js';
-import { BatchService } from '../services/batch.service.js';
-import { ProductService } from '../services/product.service.js';
-import { BottlingService } from '../services/bottling.service.js';
-import { SalesService } from '../services/sales.service.js';
-import { NotificationService } from '../services/notification.service.js';
+import { markDemoDataCleared } from '../services/demo-data-cleanup.service.js';
 
 export const usersRouter = Router();
 
@@ -103,21 +98,20 @@ usersRouter.get('/users', async (_req: Request, res: Response) => {
 usersRouter.post('/users/clear-demo-data', async (_req: Request, res: Response) => {
   try {
     const { data, error } = await supabaseAdmin.rpc('clear_demo_data');
+
     if (error) {
       if (error.message.includes('clear_demo_data') || error.code === 'PGRST202') {
-        InventoryService.clearDemoData();
-        FormulaService.clearDemoData();
-        BatchService.clearDemoData();
-        ProductService.clearDemoData();
-        BottlingService.clearDemoData();
-        SalesService.clearDemoData();
-        NotificationService.clearDemoData();
+        if (env.NODE_ENV === 'production') {
+          return sendError(res, 'Apply the latest Supabase migrations before clearing demo data.', 503, 'DEMO_CLEANUP_NOT_CONFIGURED');
+        }
+        markDemoDataCleared();
         return sendSuccess(res, { cleared: true, already_cleared: false, storage: 'memory-fallback' });
       }
       return sendError(res, error.message, 400, 'DEMO_DATA_CLEAR_FAILED');
     }
 
-    return sendSuccess(res, data);
+    markDemoDataCleared();
+    return sendSuccess(res, { ...data, memory_fallback_cleared: true });
   } catch (_err) {
     return sendError(res, 'Demo data cleanup service is unavailable', 503, 'DEMO_DATA_CLEAR_UNAVAILABLE');
   }

@@ -25,6 +25,7 @@ import { notificationsRouter } from './routes/notifications.routes.js';
 import { suggestionsRouter } from './routes/suggestions.routes.js';
 import { helperRouter } from './routes/helper.routes.js';
 import { profileRouter } from './routes/profile.routes.js';
+import { syncDemoDataClearance } from './services/demo-data-cleanup.service.js';
 import { sendError } from './utils/response.js';
 
 export function createApp(): Express {
@@ -52,6 +53,11 @@ export function createApp(): Express {
   // Body parsing
   app.use(express.json({ limit: '5mb' }));
   app.use(express.urlencoded({ extended: true, limit: '5mb' }));
+
+  app.use(async (_req, _res, next) => {
+    await syncDemoDataClearance();
+    next();
+  });
 
   // Routes
   app.use('/', healthRouter);

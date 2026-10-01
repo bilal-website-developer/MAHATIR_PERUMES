@@ -19,7 +19,8 @@ interface AuthContextType {
   user: User | null;
   token: string | null;
   isLoading: boolean;
-  login: (email: string, pass: string) => Promise<boolean>;
+  isAuthReady: boolean;
+  login: (email: string, pass: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
   canAccess: (module: string) => boolean;
 }
@@ -30,6 +31,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isAuthReady, setIsAuthReady] = useState(false);
 
   useEffect(() => {
     const savedToken = localStorage.getItem('mahatir_token');
@@ -42,9 +44,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         // use default
       }
     }
+    setIsAuthReady(true);
   }, []);
 
-  const login = async (email: string, pass: string): Promise<boolean> => {
+  const login = async (email: string, pass: string): Promise<{ success: boolean; error?: string }> => {
     setIsLoading(true);
     try {
       const res = await apiClient<{ token: string; user: User }>('/api/v1/auth/login', {
@@ -57,9 +60,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setToken(res.data.token);
         localStorage.setItem('mahatir_token', res.data.token);
         localStorage.setItem('mahatir_user', JSON.stringify(res.data.user));
-        return true;
+        return { success: true };
       }
-      return false;
+      return { success: false, error: res.error?.message || 'Unable to sign in. Please try again.' };
     } finally {
       setIsLoading(false);
     }
@@ -107,6 +110,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         user,
         token,
         isLoading,
+        isAuthReady,
         login,
         logout,
         canAccess,

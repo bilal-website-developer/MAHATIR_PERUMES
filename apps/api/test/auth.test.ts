@@ -1,6 +1,8 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { createApp } from '../src/app.js';
 import { hasPermission } from '../src/config/permissions.js';
+import { supabaseAdmin } from '../src/config/supabase.js';
+import { InventoryService } from '../src/services/inventory.service.js';
 
 describe('Phase 1: Authentication, Roles, Permissions and Audit', () => {
   const app = createApp();
@@ -49,6 +51,35 @@ describe('Phase 1: Authentication, Roles, Permissions and Audit', () => {
       expect(body.data.user).toHaveProperty('role', 'admin');
       expect(body.data).toHaveProperty('permissions');
     } finally {
+      server.close();
+    }
+  });
+
+  it('POST /api/v1/users/clear-demo-data clears memory fixtures after a successful database cleanup', async () => {
+    const rpcSpy = vi.spyOn(supabaseAdmin, 'rpc').mockResolvedValue({
+      data: { cleared: true, already_cleared: false },
+      error: null,
+    } as never);
+    const server = app.listen(0);
+    const address = server.address();
+    const port = typeof address === 'object' && address ? address.port : 4000;
+
+    try {
+      const before = await InventoryService.getRawMaterials({ activeOnly: true });
+      expect(before.data.some((material) => material.id.includes('00000001'))).toBe(true);
+
+      const response = await fetch(`http://127.0.0.1:${port}/api/v1/users/clear-demo-data`, {
+        method: 'POST',
+        headers: { Authorization: 'Bearer demo-admin' },
+      });
+      const body = await response.json();
+      const after = await InventoryService.getRawMaterials({ activeOnly: true });
+
+      expect(response.status).toBe(200);
+      expect(body.data.memory_fallback_cleared).toBe(true);
+      expect(after.data.some((material) => material.id.includes('00000001'))).toBe(false);
+    } finally {
+      rpcSpy.mockRestore();
       server.close();
     }
   });

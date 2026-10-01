@@ -4,7 +4,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { AppLayout } from './components/layout/AppLayout';
 import { DashboardPage } from './pages/DashboardPage';
-import { HealthPage } from './pages/HealthPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { UsersPage } from './pages/UsersPage';
 import { AuditLogPage } from './pages/AuditLogPage';
@@ -40,7 +39,11 @@ const ProtectedRoute: React.FC<{
   module: string;
   children: React.ReactElement;
 }> = ({ module, children }) => {
-  const { user, canAccess } = useAuth();
+  const { user, canAccess, isAuthReady } = useAuth();
+
+  if (!isAuthReady) {
+    return <div className="min-h-screen bg-background" aria-busy="true" />;
+  }
 
   if (!user) {
     return <Navigate to="/login" replace />;
@@ -57,9 +60,15 @@ export const AppRoutes: React.FC = () => {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/" element={<AppLayout />}>
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute module="dashboard">
+            <AppLayout />
+          </ProtectedRoute>
+        }
+      >
         <Route index element={<DashboardPage />} />
-        <Route path="health" element={<HealthPage />} />
         <Route
           path="settings"
           element={

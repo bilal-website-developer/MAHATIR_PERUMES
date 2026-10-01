@@ -12,7 +12,6 @@ import {
   Compass,
   ShieldAlert,
   Settings,
-  Activity,
   Sparkles,
   Users,
   Bell,
@@ -31,8 +30,6 @@ interface NavItem {
 
 const navigation: NavItem[] = [
   { name: 'Dashboard', href: '/', icon: LayoutDashboard, module: 'dashboard' },
-  { name: 'System Diagnostics', href: '/health', icon: Activity, module: 'health' },
-  { name: 'System Settings', href: '/settings', icon: Settings, module: 'settings' },
   { name: 'Staff & Roles', href: '/users', icon: Users, module: 'users' },
   { name: 'Raw Materials', href: '/raw-materials', icon: Layers, module: 'raw_materials' },
   { name: 'Purchase Orders', href: '/purchase-orders', icon: FileSpreadsheet, module: 'purchases' },
@@ -47,6 +44,7 @@ const navigation: NavItem[] = [
   { name: 'Alerts & System Health', href: '/alerts', icon: Bell, module: 'dashboard' },
   { name: 'Production Suggestions', href: '/suggestions', icon: Sparkles, module: 'batches' },
   { name: 'Audit Ledger', href: '/audit', icon: ShieldAlert, module: 'audit' },
+  { name: 'System Settings', href: '/settings', icon: Settings, module: 'settings' },
 ];
 
 export const Sidebar: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
