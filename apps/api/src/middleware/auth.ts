@@ -51,6 +51,10 @@ export const DEMO_USERS: Record<string, AuthenticatedUser> = {
   },
 };
 
+export function isDemoAuthEnabled(): boolean {
+  return process.env.NODE_ENV !== 'production';
+}
+
 export async function requireAuth(req: Request, res: Response, next: NextFunction): Promise<void> {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -65,7 +69,7 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
   }
 
   // 1. Check for demo session tokens (e.g. Bearer demo-admin)
-  if (DEMO_USERS[token]) {
+  if (isDemoAuthEnabled() && DEMO_USERS[token]) {
     req.user = DEMO_USERS[token];
     return next();
   }

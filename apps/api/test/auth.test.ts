@@ -3,6 +3,7 @@ import { createApp } from '../src/app.js';
 import { hasPermission } from '../src/config/permissions.js';
 import { supabaseAdmin } from '../src/config/supabase.js';
 import { InventoryService } from '../src/services/inventory.service.js';
+import { isDemoAuthEnabled } from '../src/middleware/auth.js';
 
 describe('Phase 1: Authentication, Roles, Permissions and Audit', () => {
   const app = createApp();
@@ -28,6 +29,12 @@ describe('Phase 1: Authentication, Roles, Permissions and Audit', () => {
     expect(hasPermission('sales_staff', 'pos', 'create')).toBe(true);
     expect(hasPermission('sales_staff', 'formulas', 'read')).toBe(false);
     expect(hasPermission('sales_staff', 'raw_materials', 'read')).toBe(false);
+  });
+
+  it('disables built-in demo authentication in production', () => {
+    vi.stubEnv('NODE_ENV', 'production');
+    expect(isDemoAuthEnabled()).toBe(false);
+    vi.unstubAllEnvs();
   });
 
   it('POST /api/v1/auth/login succeeds for demo admin credentials and returns user and token', async () => {

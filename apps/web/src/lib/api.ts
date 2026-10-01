@@ -44,19 +44,35 @@ export async function apiClient<T>(
     });
 
     const responseText = await res.text();
-    let json: ApiResponse<T>;
+    let parsed: unknown;
     try {
-      json = JSON.parse(responseText) as ApiResponse<T>;
+      parsed = JSON.parse(responseText) as unknown;
     } catch {
       return {
         data: null,
         error: {
-          message: `API returned a non-JSON response (HTTP ${res.status}). Check the Vercel project root and API function deployment.`,
+          message: `API returned a non-JSON response (HTTP ${res.status}). Check Vercel Deployment Protection and Function Logs.`,
           code: 'INVALID_API_RESPONSE',
         },
         meta: null,
       };
     }
+
+    if (typeof parsed !== 'object' || parsed === null || !('data' in parsed) || !('error' in parsed)) {
+      const gatewayResponse = typeof parsed === 'object' && parsed !== null
+        ? parsed as Record<string, unknown>
+        : {};
+      const gatewayMessage = typeof gatewayResponse.message === 'string'
+        ? gatewayResponse.message
+        : `Unexpected API response (HTTP ${res.status}). Check Vercel Deployment Protection and Function Logs.`;
+      return {
+        data: null,
+        error: { message: gatewayMessage, code: 'INVALID_API_RESPONSE' },
+        meta: null,
+      };
+    }
+
+    const json = parsed as ApiResponse<T>;
 
     if (!res.ok && !json.error) {
       return {

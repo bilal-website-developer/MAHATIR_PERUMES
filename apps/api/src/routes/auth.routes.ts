@@ -4,7 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 import { supabaseAdmin } from '../config/supabase.js';
 import { env } from '../config/env.js';
 import { validate } from '../middleware/validate.js';
-import { requireAuth, DEMO_USERS } from '../middleware/auth.js';
+import { requireAuth, DEMO_USERS, isDemoAuthEnabled } from '../middleware/auth.js';
 import { ROLE_PERMISSIONS, UserRole } from '../config/permissions.js';
 import { sendSuccess, sendError } from '../utils/response.js';
 
@@ -30,13 +30,15 @@ authRouter.post(
     const { email } = req.body;
 
     // Check for demo login
-    for (const [token, demoUser] of Object.entries(DEMO_USERS)) {
-      if (demoUser.email.toLowerCase() === email.toLowerCase()) {
-        return sendSuccess(res, {
-          token,
-          user: demoUser,
-          permissions: ROLE_PERMISSIONS[demoUser.role],
-        });
+    if (isDemoAuthEnabled()) {
+      for (const [token, demoUser] of Object.entries(DEMO_USERS)) {
+        if (demoUser.email.toLowerCase() === email.toLowerCase()) {
+          return sendSuccess(res, {
+            token,
+            user: demoUser,
+            permissions: ROLE_PERMISSIONS[demoUser.role],
+          });
+        }
       }
     }
 
