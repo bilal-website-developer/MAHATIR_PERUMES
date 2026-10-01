@@ -3,7 +3,7 @@ import { createApp } from '../src/app.js';
 import { hasPermission } from '../src/config/permissions.js';
 import { supabaseAdmin } from '../src/config/supabase.js';
 import { InventoryService } from '../src/services/inventory.service.js';
-import { isDemoAuthEnabled } from '../src/middleware/auth.js';
+import { isDemoAuthEnabled, loadAuthenticatedUserProfile } from '../src/middleware/auth.js';
 
 describe('Phase 1: Authentication, Roles, Permissions and Audit', () => {
   const app = createApp();
@@ -35,6 +35,82 @@ describe('Phase 1: Authentication, Roles, Permissions and Audit', () => {
     vi.stubEnv('NODE_ENV', 'production');
     expect(isDemoAuthEnabled()).toBe(false);
     vi.unstubAllEnvs();
+  });
+
+  it('returns a specific JSON error when a protected request has no authorization header', async () => {
+    const server = app.listen(0);
+    const address = server.address();
+    const port = typeof address === 'object' && address ? address.port : 4000;
+
+    try {
+      const response = await fetch(`http://127.0.0.1:${port}/api/v1/users`);
+      const body = await response.json();
+
+      expect(response.status).toBe(401);
+      expect(body.error).toMatchObject({
+        code: 'MISSING_AUTHORIZATION',
+        message: 'Authorization header is required.',
+      });
+    } finally {
+      server.close();
+    }
+  });
+
+  it('returns a specific JSON error when Supabase rejects a bearer token', async () => {
+    const getUserSpy = vi.spyOn(supabaseAdmin.auth, 'getUser').mockResolvedValue({
+      data: { user: null },
+      error: {
+        name: 'AuthApiError',
+        message: 'Invalid JWT',
+        status: 401,
+        code: 'bad_jwt',
+      },
+    } as never);
+    const server = app.listen(0);
+    const address = server.address();
+    const port = typeof address === 'object' && address ? address.port : 4000;
+
+    try {
+      const response = await fetch(`http://127.0.0.1:${port}/api/v1/users`, {
+        headers: { Authorization: 'Bearer invalid-test-token' },
+      });
+      const body = await response.json();
+
+      expect(response.status).toBe(401);
+      expect(body.error).toMatchObject({ code: 'INVALID_OR_FOREIGN_TOKEN' });
+      expect(body.error.message).toContain('different Supabase project');
+    } finally {
+      getUserSpy.mockRestore();
+      server.close();
+    }
+  });
+
+  it('does not fall back to sales staff when the profile lookup fails', async () => {
+    const fromSpy = vi.spyOn(supabaseAdmin, 'from').mockReturnValue({
+      select: () => ({
+        eq: () => ({
+          maybeSingle: async () => ({
+            data: null,
+            error: { code: 'PGRST301', message: 'Invalid service key' },
+          }),
+        }),
+      }),
+    } as never);
+
+    try {
+      const result = await loadAuthenticatedUserProfile({
+        id: '55555555-5555-5555-5555-555555555555',
+        email: 'admin@example.com',
+      });
+
+      expect(result.user).toBeUndefined();
+      expect(result.error).toMatchObject({
+        status: 503,
+        code: 'PROFILE_LOOKUP_FAILED',
+      });
+    } finally {
+      fromSpy.mockRestore();
+    }
   });
 
   it('POST /api/v1/auth/login succeeds for demo admin credentials and returns user and token', async () => {
@@ -100,6 +176,8 @@ describe('Phase 1: Authentication, Roles, Permissions and Audit', () => {
       // 1. Unauthenticated request -> 401
       const resUnauth = await fetch(`http://127.0.0.1:${port}/api/v1/users`);
       expect(resUnauth.status).toBe(401);
+      const unauthBody = await resUnauth.json();
+      expect(unauthBody.error.code).toBe('MISSING_AUTHORIZATION');
 
       // 2. Sales staff request -> 403 Forbidden
       const resSales = await fetch(`http://127.0.0.1:${port}/api/v1/users`, {

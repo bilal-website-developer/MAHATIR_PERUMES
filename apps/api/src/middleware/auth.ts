@@ -11,6 +11,105 @@ export interface AuthenticatedUser {
   branchId: string;
 }
 
+const USER_ROLES: readonly UserRole[] = [
+  'admin',
+  'production_manager',
+  'sales_staff',
+  'inventory_manager',
+];
+
+export function isUserRole(role: unknown): role is UserRole {
+  return typeof role === 'string' && USER_ROLES.includes(role as UserRole);
+}
+
+export type ProfileUserResult =
+  | { user: AuthenticatedUser; error?: never }
+  | { user?: never; error: { status: 403 | 503; code: string; message: string } };
+
+export async function loadAuthenticatedUserProfile(authUser: {
+  id: string;
+  email?: string;
+}): Promise<ProfileUserResult> {
+  try {
+    const { data: profile, error } = await supabaseAdmin
+      .from('profiles')
+      .select('id, email, full_name, role, branch_id, is_active, deleted_at')
+      .eq('id', authUser.id)
+      .maybeSingle();
+
+    if (error) {
+      console.error('Authenticated profile lookup failed', {
+        userId: authUser.id,
+        code: error.code,
+        message: error.message,
+      });
+      return {
+        error: {
+          status: 503,
+          code: 'PROFILE_LOOKUP_FAILED',
+          message: 'Could not load your profile. Verify the API Supabase URL and service-role key.',
+        },
+      };
+    }
+
+    if (!profile) {
+      return {
+        error: {
+          status: 403,
+          code: 'PROFILE_NOT_FOUND',
+          message: 'No profile is linked to this authenticated Supabase user.',
+        },
+      };
+    }
+
+    if (!isUserRole(profile.role)) {
+      console.error('Authenticated profile has an invalid role', {
+        userId: authUser.id,
+        role: profile.role,
+      });
+      return {
+        error: {
+          status: 403,
+          code: 'INVALID_PROFILE_ROLE',
+          message: 'Your profile has an unsupported role. Ask an administrator to correct it.',
+        },
+      };
+    }
+
+    if (!profile.is_active || profile.deleted_at) {
+      return {
+        error: {
+          status: 403,
+          code: 'PROFILE_INACTIVE',
+          message: 'This account profile is inactive or deleted.',
+        },
+      };
+    }
+
+    return {
+      user: {
+        id: authUser.id,
+        email: authUser.email || profile.email,
+        fullName: profile.full_name,
+        role: profile.role,
+        branchId: profile.branch_id || '00000000-0000-0000-0000-000000000001',
+      },
+    };
+  } catch (error: unknown) {
+    console.error('Authenticated profile lookup threw an error', {
+      userId: authUser.id,
+      message: error instanceof Error ? error.message : 'Unknown profile lookup error',
+    });
+    return {
+      error: {
+        status: 503,
+        code: 'PROFILE_LOOKUP_FAILED',
+        message: 'Could not load your profile. Verify the API Supabase URL and service-role key.',
+      },
+    };
+  }
+}
+
 declare global {
   namespace Express {
     interface Request {
@@ -57,14 +156,19 @@ export function isDemoAuthEnabled(): boolean {
 
 export async function requireAuth(req: Request, res: Response, next: NextFunction): Promise<void> {
   const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    sendError(res, 'Authentication token required', 401, 'UNAUTHORIZED');
+  if (!authHeader) {
+    sendError(res, 'Authorization header is required.', 401, 'MISSING_AUTHORIZATION');
+    return;
+  }
+
+  if (!authHeader.startsWith('Bearer ')) {
+    sendError(res, 'Authorization header must use the Bearer scheme.', 401, 'INVALID_AUTHORIZATION');
     return;
   }
 
   const token = authHeader.split(' ')[1];
   if (!token) {
-    sendError(res, 'Invalid authorization format', 401, 'UNAUTHORIZED');
+    sendError(res, 'Bearer token is missing.', 401, 'MISSING_BEARER_TOKEN');
     return;
   }
 
@@ -78,39 +182,44 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
   try {
     const { data: { user }, error } = await supabaseAdmin.auth.getUser(token);
     if (error || !user) {
-      sendError(res, 'Invalid or expired session token', 401, 'UNAUTHORIZED');
+      console.warn('Supabase rejected an API bearer token', {
+        code: error?.code,
+        status: error?.status,
+        message: error?.message,
+      });
+      sendError(
+        res,
+        'Session token was rejected. It may be expired or from a different Supabase project; verify Vercel SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY.',
+        401,
+        'INVALID_OR_FOREIGN_TOKEN',
+      );
       return;
     }
 
-    // Fetch profile from profiles table
-    const { data: profile } = await supabaseAdmin
-      .from('profiles')
-      .select('*')
-      .eq('id', user.id)
-      .maybeSingle();
+    const result = await loadAuthenticatedUserProfile(user);
+    if (!result.user) {
+      sendError(res, result.error.message, result.error.status, result.error.code);
+      return;
+    }
 
-    const role = (profile?.role || user.user_metadata?.role || 'sales_staff') as UserRole;
-    const branchId = profile?.branch_id || '00000000-0000-0000-0000-000000000001';
-
-    req.user = {
-      id: user.id,
-      email: user.email || 'user@mahatir.com',
-      fullName: profile?.full_name || user.user_metadata?.full_name || 'Staff Member',
-      role,
-      branchId,
-    };
+    req.user = result.user;
 
     next();
   } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : 'Auth verification error';
-    sendError(res, msg, 401, 'UNAUTHORIZED');
+    console.error('Supabase token verification failed', err);
+    sendError(
+      res,
+      'The authentication service could not verify this token. Check the API Supabase URL and service-role key.',
+      503,
+      'AUTH_VERIFICATION_UNAVAILABLE',
+    );
   }
 }
 
 export function requireRole(...allowedRoles: UserRole[]) {
   return (req: Request, res: Response, next: NextFunction): void => {
     if (!req.user) {
-      sendError(res, 'Authentication required', 401, 'UNAUTHORIZED');
+      sendError(res, 'No authenticated user is attached to this request.', 401, 'MISSING_AUTHENTICATED_USER');
       return;
     }
 
@@ -131,7 +240,7 @@ export function requireRole(...allowedRoles: UserRole[]) {
 export function requirePermission(resource: AppResource, action: Action) {
   return (req: Request, res: Response, next: NextFunction): void => {
     if (!req.user) {
-      sendError(res, 'Authentication required', 401, 'UNAUTHORIZED');
+      sendError(res, 'No authenticated user is attached to this request.', 401, 'MISSING_AUTHENTICATED_USER');
       return;
     }
 

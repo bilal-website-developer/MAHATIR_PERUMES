@@ -1,11 +1,10 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import { createClient } from '@supabase/supabase-js';
-import { supabaseAdmin } from '../config/supabase.js';
 import { env } from '../config/env.js';
 import { validate } from '../middleware/validate.js';
-import { requireAuth, DEMO_USERS, isDemoAuthEnabled } from '../middleware/auth.js';
-import { ROLE_PERMISSIONS, UserRole } from '../config/permissions.js';
+import { requireAuth, DEMO_USERS, isDemoAuthEnabled, loadAuthenticatedUserProfile } from '../middleware/auth.js';
+import { ROLE_PERMISSIONS } from '../config/permissions.js';
 import { sendSuccess, sendError } from '../utils/response.js';
 
 export const authRouter = Router();
@@ -53,29 +52,26 @@ authRouter.post(
         return sendError(res, error?.message || 'Invalid email or password', 401, 'INVALID_CREDENTIALS');
       }
 
-      // Fetch user profile
-      const { data: profile } = await supabaseAdmin
-        .from('profiles')
-        .select('*')
-        .eq('id', data.user.id)
-        .maybeSingle();
+      const profileResult = await loadAuthenticatedUserProfile(data.user);
+      if (!profileResult.user) {
+        return sendError(
+          res,
+          profileResult.error.message,
+          profileResult.error.status,
+          profileResult.error.code,
+        );
+      }
 
-      const role = (profile?.role || 'sales_staff') as UserRole;
-      const user = {
-        id: data.user.id,
-        email: data.user.email,
-        fullName: profile?.full_name || 'Staff Member',
-        role,
-        branchId: profile?.branch_id || '00000000-0000-0000-0000-000000000001',
-      };
+      const user = profileResult.user;
 
       return sendSuccess(res, {
         token: data.session.access_token,
         user,
-        permissions: ROLE_PERMISSIONS[role],
+        permissions: ROLE_PERMISSIONS[user.role],
       });
-    } catch (_err) {
-      return sendError(res, 'Authentication service error', 500, 'AUTH_ERROR');
+    } catch (err: unknown) {
+      console.error('Supabase sign-in failed', err);
+      return sendError(res, 'Authentication service unavailable.', 503, 'AUTH_SERVICE_UNAVAILABLE');
     }
   },
 );
