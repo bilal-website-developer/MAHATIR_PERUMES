@@ -2,6 +2,7 @@
   "name": "mahatir-perfumes-erp",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "description": "Mahatir Perfumes: Perfume Manufacturing ERP + Retail POS Monorepo",
   "workspaces": [
     "apps/*"
